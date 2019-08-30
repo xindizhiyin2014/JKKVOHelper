@@ -1,0 +1,6 @@
+framework module Pods_JKKVOHelper_Example {
+  umbrella header "Pods-JKKVOHelper_Example-umbrella.h"
+
+  export *
+  module * { export * }
+}
