@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'JKKVOHelper_Example' do
+  pod 'JKKVOHelper', :path => '../'
+
+  target 'JKKVOHelper_Tests' do
+    inherit! :search_paths
+
+    pod 'Kiwi'
+  end
+end
