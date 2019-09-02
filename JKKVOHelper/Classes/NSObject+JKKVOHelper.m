@@ -235,7 +235,7 @@ static NSMutableSet *jk_observeredSet = nil;    ///< 方法被替换的被观察
         observerOnceToken = -1;
     }
     dispatch_once(&observerOnceToken, ^{
-        Class class = [self class];
+        Class class = [observer class];
         SEL observeValueForKeyPath = @selector(observeValueForKeyPath:ofObject:change:context:);
         SEL jk_ObserveValueForKeyPath = @selector(jk_observeValueForKeyPath:ofObject:change:context:);
         [NSObject jk_exchangeInstanceMethod:class originalSel:observeValueForKeyPath swizzledSel:jk_ObserveValueForKeyPath];
