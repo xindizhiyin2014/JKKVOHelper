@@ -7,6 +7,7 @@
 //
 
 #import "JKViewController.h"
+#import "JKAViewController.h"
 
 @interface JKViewController ()
 
@@ -18,6 +19,13 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    [self performSelector:@selector(showVC) withObject:nil afterDelay:3];
+}
+
+- (void)showVC
+{
+    JKAViewController *vc = [JKAViewController new];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning

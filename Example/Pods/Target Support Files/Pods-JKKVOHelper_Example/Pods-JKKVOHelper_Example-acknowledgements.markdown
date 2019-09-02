@@ -3,7 +3,7 @@ This application makes use of the following third party libraries:
 
 ## JKKVOHelper
 
-Copyright (c) 2019 xindizhiyin2014 <hlhan@vova.com.hk>
+Copyright (c) 2019 xindizhiyin2014 <929097264@qq.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

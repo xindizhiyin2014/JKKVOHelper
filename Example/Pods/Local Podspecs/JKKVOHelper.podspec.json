@@ -1,15 +1,15 @@
 {
   "name": "JKKVOHelper",
   "version": "0.1.0",
-  "summary": "A short description of JKKVOHelper.",
-  "description": "TODO: Add long description of the pod here.",
+  "summary": "this is a tool to help developer to easily use KVO.",
+  "description": "this is a tool to help developer to easily use KVO,it will update with the need",
   "homepage": "https://github.com/xindizhiyin2014/JKKVOHelper",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
   },
   "authors": {
-    "xindizhiyin2014": "hlhan@vova.com.hk"
+    "xindizhiyin2014": "929097264@qq.com"
   },
   "source": {
     "git": "https://github.com/xindizhiyin2014/JKKVOHelper.git",

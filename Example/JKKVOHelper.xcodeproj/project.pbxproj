@@ -24,6 +24,10 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		7A8845EBF590A3ED9228F142 /* Pods_JKKVOHelper_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7EA99FD495DA0189DD4351 /* Pods_JKKVOHelper_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		BD07E6E6231CE61E0085656E /* JKPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6E5231CE61E0085656E /* JKPersonModel.m */; };
+		BD07E6EC231CE64D0085656E /* JKTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EB231CE64D0085656E /* JKTeacher.m */; };
+		BD07E6EF231CE65A0085656E /* JKWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EE231CE65A0085656E /* JKWorker.m */; };
+		BD07E6F2231CE7870085656E /* JKAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6F1231CE7870085656E /* JKAViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +68,14 @@
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A091022606EF4AF30CA11FDD /* Pods-JKKVOHelper_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JKKVOHelper_Tests.debug.xcconfig"; path = "Target Support Files/Pods-JKKVOHelper_Tests/Pods-JKKVOHelper_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		BD07E6E4231CE61E0085656E /* JKPersonModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKPersonModel.h; sourceTree = "<group>"; };
+		BD07E6E5231CE61E0085656E /* JKPersonModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKPersonModel.m; sourceTree = "<group>"; };
+		BD07E6EA231CE64D0085656E /* JKTeacher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKTeacher.h; sourceTree = "<group>"; };
+		BD07E6EB231CE64D0085656E /* JKTeacher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKTeacher.m; sourceTree = "<group>"; };
+		BD07E6ED231CE65A0085656E /* JKWorker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKWorker.h; sourceTree = "<group>"; };
+		BD07E6EE231CE65A0085656E /* JKWorker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKWorker.m; sourceTree = "<group>"; };
+		BD07E6F0231CE7870085656E /* JKAViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKAViewController.h; sourceTree = "<group>"; };
+		BD07E6F1231CE7870085656E /* JKAViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKAViewController.m; sourceTree = "<group>"; };
 		D0AD695BB10D4D41769BFA81 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D2F9F6559735B21AF0053ADB /* Pods_JKKVOHelper_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JKKVOHelper_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D98DC9E94F7FE7BB409C8048 /* JKKVOHelper.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = JKKVOHelper.podspec; path = ../JKKVOHelper.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -148,6 +160,14 @@
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F5A5195388D20070C39A /* JKViewController.h */,
 				6003F5A6195388D20070C39A /* JKViewController.m */,
+				BD07E6F0231CE7870085656E /* JKAViewController.h */,
+				BD07E6F1231CE7870085656E /* JKAViewController.m */,
+				BD07E6E4231CE61E0085656E /* JKPersonModel.h */,
+				BD07E6E5231CE61E0085656E /* JKPersonModel.m */,
+				BD07E6EA231CE64D0085656E /* JKTeacher.h */,
+				BD07E6EB231CE64D0085656E /* JKTeacher.m */,
+				BD07E6ED231CE65A0085656E /* JKWorker.h */,
+				BD07E6EE231CE65A0085656E /* JKWorker.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -245,7 +265,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = JK;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 1030;
 				ORGANIZATIONNAME = xindizhiyin2014;
 				TargetAttributes = {
 					6003F5AD195388D20070C39A = {
@@ -385,7 +405,11 @@
 			files = (
 				6003F59E195388D20070C39A /* JKAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* JKViewController.m in Sources */,
+				BD07E6EF231CE65A0085656E /* JKWorker.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				BD07E6E6231CE61E0085656E /* JKPersonModel.m in Sources */,
+				BD07E6EC231CE64D0085656E /* JKTeacher.m in Sources */,
+				BD07E6F2231CE7870085656E /* JKAViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,23 +463,37 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -479,22 +517,36 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;

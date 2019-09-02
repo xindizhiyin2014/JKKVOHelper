@@ -10,6 +10,8 @@
 #endif
 #endif
 
+#import "JKKVOHelper.h"
+#import "NSObject+JKKVOHelper.h"
 
 FOUNDATION_EXPORT double JKKVOHelperVersionNumber;
 FOUNDATION_EXPORT const unsigned char JKKVOHelperVersionString[];

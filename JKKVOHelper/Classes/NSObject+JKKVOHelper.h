@@ -65,6 +65,12 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)jk_removeObservers:(NSArray <NSObject *>*)observers
                 forKeyPath:(NSString *)keyPath;
 
+
+/**
+ 移除所有通过jk_前缀添加的观察者，默认在被观察的对象dealloc的时候调用
+ */
+- (void)jk_removeObservers;
+
 /**
  所有的观察者列表
  
@@ -94,6 +100,8 @@ NS_ASSUME_NONNULL_BEGIN
  @return keyPath组成的列表
  */
 - (NSArray *)jk_keyPathsObserveredBy:(NSObject *)observer;
+
+
 @end
 
 NS_ASSUME_NONNULL_END
