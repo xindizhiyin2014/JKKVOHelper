@@ -187,7 +187,6 @@ static NSMutableSet *jk_observeredSet = nil;    ///< 方法被替换的被观察
     [self.jk_observerLock unlock];
 }
 
-
 #pragma mark - setter -
 - (void)setJk_kvoHelperItems:(NSMutableSet *)jk_kvoHelperItems
 {
@@ -247,8 +246,8 @@ static NSMutableSet *jk_observeredSet = nil;    ///< 方法被替换的被观察
     }
     
     dispatch_once_t observeredOnceToken = 0;
-    if (![jk_observerSet containsObject:NSStringFromClass([observered class])]) {
-        [jk_observerSet addObject:NSStringFromClass([observered class])];
+    if (![jk_observeredSet containsObject:NSStringFromClass([observered class])]) {
+        [jk_observeredSet addObject:NSStringFromClass([observered class])];
     } else {
         observeredOnceToken = -1;
     }
