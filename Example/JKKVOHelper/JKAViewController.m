@@ -7,13 +7,10 @@
 //
 
 #import "JKAViewController.h"
-#import "JKPersonModel.h"
 #import "JKKVOHelper.h"
 
 
 @interface JKAViewController ()
-
-@property (nonatomic,strong) JKPersonModel *person;
 
 @end
 
@@ -22,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.person = [JKPersonModel new];
+//    self.person = [JKPersonModel new];
     [self.person jk_addObserver:self forKeyPath:@"name" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
         NSLog(@"change %@",change);
     }];
