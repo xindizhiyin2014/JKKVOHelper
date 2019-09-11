@@ -101,7 +101,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSArray *)jk_keyPathsObserveredBy:(NSObject *)observer;
 
-
 @end
 
 NS_ASSUME_NONNULL_END

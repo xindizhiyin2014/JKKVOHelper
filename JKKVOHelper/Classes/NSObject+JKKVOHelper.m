@@ -44,8 +44,16 @@
 
 static NSMutableSet *jk_observerSet = nil;      ///< observer方法被替换的观察者类的集合
 static void *jk_kvoHelperItemsKey = &jk_kvoHelperItemsKey;
-static void *jk_observerLockKey = &jk_observerLockKey;
 static void *jk_kvoObserveredItemsKey = &jk_kvoObserveredItemsKey;
+
+static NSLock *jk_observerLock = nil;
+- (void)jk_createLock
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        jk_observerLock = [[NSLock alloc] init];
+    });
+}
 
 - (void)jk_addObserver:(NSObject *)observer
             forKeyPath:(NSString *)keyPath
@@ -64,7 +72,8 @@ static void *jk_kvoObserveredItemsKey = &jk_kvoObserveredItemsKey;
     if (!observer || !keyPath || !block) {
         return;
     }
-    [self.jk_observerLock lock];
+    [self jk_createLock];
+    [jk_observerLock lock];
     if (![self jk_IsContainObserver:observer andKeyPath:keyPath]) {
         JKKVOHelperItem *item = [JKKVOHelperItem new];
         item.observerAddress = [NSString stringWithFormat:@"%p",observer];
@@ -80,7 +89,7 @@ static void *jk_kvoObserveredItemsKey = &jk_kvoObserveredItemsKey;
         [NSObject jk_exchangeMethodWithObserver:observer observered:self];
         [self addObserver:observer forKeyPath:keyPath options:options context:context];
     }
-    [self.jk_observerLock unlock];
+    [jk_observerLock unlock];
 }
 
 - (void)jk_removeObserver:(NSObject *)observer
@@ -89,12 +98,12 @@ static void *jk_kvoObserveredItemsKey = &jk_kvoObserveredItemsKey;
     if (!keyPath || !observer) {
         return;
     }
-    [self.jk_observerLock lock];
+    [jk_observerLock lock];
     if ([self jk_IsContainObserver:observer andKeyPath:keyPath]) {
         [self jk_removeKVOHelperItemWithObserver:observer andKeyPath:keyPath];
         [self removeObserver:observer forKeyPath:keyPath];
     }
-    [self.jk_observerLock unlock];
+    [jk_observerLock unlock];
 }
 
 - (void)jk_removeObserver:(NSObject *)observer
@@ -239,11 +248,6 @@ static void *jk_kvoObserveredItemsKey = &jk_kvoObserveredItemsKey;
     objc_setAssociatedObject(self, jk_kvoHelperItemsKey, jk_kvoHelperItems, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)setJk_observerLock:(NSLock *)jk_observerLock
-{
-    objc_setAssociatedObject(self, jk_observerLockKey, jk_observerLock, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
 - (void)setJk_kvoObserveredItems:(NSMutableSet *)jk_kvoObserveredItems
 {
   objc_setAssociatedObject(self, jk_kvoObserveredItemsKey, jk_kvoObserveredItems, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -258,16 +262,6 @@ static void *jk_kvoObserveredItemsKey = &jk_kvoObserveredItemsKey;
         set = objc_getAssociatedObject(self, jk_kvoHelperItemsKey);
     }
     return set;
-}
-
-- (NSLock *)jk_observerLock
-{
-    NSLock *lock = objc_getAssociatedObject(self, jk_observerLockKey);
-    if (!lock) {
-        [self setJk_observerLock:[NSLock new]];
-        lock = objc_getAssociatedObject(self, jk_observerLockKey);
-    }
-    return lock;
 }
 
 - (NSMutableSet *)jk_kvoObserveredItems
