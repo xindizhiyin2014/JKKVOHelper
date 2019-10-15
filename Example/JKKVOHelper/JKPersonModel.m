@@ -14,6 +14,5 @@
 {
     
     NSLog(@"BBBB");
-//    [self jk_removeObservers:nil forKeyPath:@"name"];
 }
 @end

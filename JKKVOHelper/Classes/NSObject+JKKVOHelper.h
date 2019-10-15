@@ -47,6 +47,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)jk_removeObserver:(NSObject *)observer
                forKeyPath:(NSString *)keyPath;
 
+/// 移除keyPath监听
+/// @param observer 观察者
+/// @param keyPath keyPath
+/// @param context context
+- (void)jk_removeObserver:(NSObject *)observer
+               forKeyPath:(NSString *)keyPath
+                  context:(nullable void *)context;
+
 /**
  移除某个observer下的对应的keyPath列表监听
  
@@ -65,7 +73,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)jk_removeObservers:(NSArray <NSObject *>*)observers
                 forKeyPath:(NSString *)keyPath;
 
-
 /**
  移除所有通过jk_前缀添加的观察者，默认在被观察的对象dealloc的时候调用
  */
@@ -77,6 +84,9 @@ NS_ASSUME_NONNULL_BEGIN
  @return 观察者列表的数组
  */
 - (NSArray *)jk_observers;
+
+/// 所有的被观察者列表的数组
+- (NSArray *)jk_observereds;
 
 /**
  所有的被监听的keyPath列表

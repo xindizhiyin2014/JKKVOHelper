@@ -11,6 +11,7 @@
 #endif
 
 #import "JKKVOHelper.h"
+#import "JKKVOItemManager.h"
 #import "NSObject+JKKVOHelper.h"
 
 FOUNDATION_EXPORT double JKKVOHelperVersionNumber;
