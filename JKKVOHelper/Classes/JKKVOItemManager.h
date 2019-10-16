@@ -12,12 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JKKVOItem : NSObject
 
 @property (nonatomic, copy) NSString *observerAddress;                        ///< 观察者
-@property (nonatomic, weak) id observered;             ///< 被监听的对象
+@property (nonatomic, weak) id observered;                        ///< 被监听的对象
 @property (nonatomic, copy) NSString *keyPath;         ///< 监听的keyPath
 
 @property (nonatomic) void *context;                   ///< 上下文
 
 @property (nonatomic, copy) void(^block)(NSDictionary *change,void *context);  ///< 回调
+@property (nonatomic, copy) void(^detailBlock)(NSString *keyPath, NSDictionary *change, void *context); ///< 返回更详细信息的回调
 
 @end
 

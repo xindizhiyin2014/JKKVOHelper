@@ -50,7 +50,6 @@ static JKKVOItemManager *_manager = nil;
     if (observer) {
         [[JKKVOItemManager sharedManager].classes addObject:[observer class]];
     }
-    
 }
 
 + (void)removeItem:(JKKVOItem *)item
@@ -72,7 +71,8 @@ static JKKVOItemManager *_manager = nil;
     if (!observer || !observered) {
         return nil;
     }
-    for (JKKVOItem *item in [JKKVOItemManager sharedManager].items) {
+    NSArray *items = [[JKKVOItemManager sharedManager].items allObjects];
+    for (JKKVOItem *item in items) {
         NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
         if ([observerAddress isEqualToString:item.observerAddress]
             && [observered isEqual:item.observered]
@@ -87,9 +87,16 @@ static JKKVOItemManager *_manager = nil;
 + (BOOL)isContainItemWithObserver:(id)observer
                        observered:(id)observered
 {
-    JKKVOItem *item = [self isContainItemWithObserver:observer observered:observered keyPath:nil context:nil];
-    if (item) {
-        return YES;
+    if (!observer || !observered) {
+        return NO;
+    }
+    NSArray *items = [[JKKVOItemManager sharedManager].items allObjects];
+    for (JKKVOItem *item in items) {
+        NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
+        if ([observerAddress isEqualToString:item.observerAddress]
+            && [observered isEqual:item.observered]) {
+            return YES;
+        }
     }
     return NO;
 }

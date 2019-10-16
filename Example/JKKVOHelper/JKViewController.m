@@ -23,7 +23,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 
-    [self performSelector:@selector(showVC) withObject:nil afterDelay:3];
+//    [self performSelector:@selector(showVC) withObject:nil afterDelay:3];
 }
 
 - (void)showVC

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JKWorker : JKPersonModel
 
-@property (nonatomic, copy) NSString *facotry;
+@property (nonatomic, copy) NSString *factory;
 
 @end
 
