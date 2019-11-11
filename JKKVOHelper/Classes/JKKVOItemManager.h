@@ -24,6 +24,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JKKVOItemManager : NSObject
 
++ (instancetype)new NS_UNAVAILABLE;
+
++ (instancetype)init NS_UNAVAILABLE;
+
++ (instancetype)sharedManager;
+
 + (void)lock;
 
 + (void)unLock;
@@ -88,6 +94,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (id)objectWithAddressStr:(NSString *)addressStr;
 
+/**
+ 实例方法替换
+ 
+ @param targetClass targetClass
+ @param originalSel 源方法
+ @param swizzledSel 替换方法
+ */
++ (void)jk_exchangeInstanceMethod:(Class)targetClass
+                   originalSel:(SEL)originalSel
+swizzledSel:(SEL)swizzledSel;
 @end
 
 NS_ASSUME_NONNULL_END

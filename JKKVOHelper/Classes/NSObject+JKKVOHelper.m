@@ -6,7 +6,6 @@
 //
 
 #import "NSObject+JKKVOHelper.h"
-#import <objc/runtime.h>
 #import "JKKVOItemManager.h"
 
 @implementation NSObject (JKKVOHelper)
@@ -41,7 +40,12 @@
         item.block = block;
         item.context = context;
         [JKKVOItemManager addItem:item];
-        [self addObserver:observer forKeyPath:keyPath options:options context:context];
+        if ([self isEqual:observer]) {
+            [self addObserver:[JKKVOItemManager sharedManager] forKeyPath:keyPath options:options context:context];
+        } else {
+            [self addObserver:observer forKeyPath:keyPath options:options context:context];
+        }
+        
     }
     [JKKVOItemManager unLock];
 }
@@ -69,7 +73,11 @@
             item.detailBlock = detailBlock;
             item.context = context;
             [JKKVOItemManager addItem:item];
-            [self addObserver:observer forKeyPath:keyPath options:options context:context];
+            if ([self isEqual:observer]) {
+                [self addObserver:[JKKVOItemManager sharedManager] forKeyPath:keyPath options:options context:context];
+            } else {
+                [self addObserver:observer forKeyPath:keyPath options:options context:context];
+            }
         }
     }
     
@@ -96,7 +104,11 @@ forKeyPath:(NSString *)keyPath
                                                           context:context];
     [JKKVOItemManager unLock];
     if (item) {
-        [self removeObserver:observer forKeyPath:keyPath context:context];
+        if ([self isEqual:observer]) {
+            [self removeObserver:[JKKVOItemManager sharedManager] forKeyPath:keyPath context:context];
+        } else {
+           [self removeObserver:observer forKeyPath:keyPath context:context];
+        }
     }
     
 }
@@ -289,62 +301,34 @@ forKeyPath:(NSString *)keyPath
        [self jk_removeObservereds];
        [self jkhook_dealloc];
     }else {
-      [self jkhook_dealloc];
+       [self jkhook_dealloc];
     }
 }
 
 #pragma mark - private method
 - (void)jk_exchangeMethodWithObserver:(NSObject *)observer
 {
+    if ([self isEqual:observer]) {
+        return;
+    }
     if (![JKKVOItemManager obseverMethodHasExchangedOfObserver:observer]) {
        Class class = [observer class];
         SEL observeValueForKeyPath = @selector(observeValueForKeyPath:ofObject:change:context:);
         SEL jk_ObserveValueForKeyPath = @selector(jkhook_observeValueForKeyPath:ofObject:change:context:);
-        [NSObject jk_exchangeInstanceMethod:class originalSel:observeValueForKeyPath swizzledSel:jk_ObserveValueForKeyPath];
+        [JKKVOItemManager jk_exchangeInstanceMethod:class originalSel:observeValueForKeyPath swizzledSel:jk_ObserveValueForKeyPath];
         
         SEL observeredDealloc = NSSelectorFromString(@"dealloc");
         SEL jk_observerdDealloc = NSSelectorFromString(@"jkhook_dealloc");
-        [NSObject jk_exchangeInstanceMethod:class originalSel:observeredDealloc swizzledSel:jk_observerdDealloc];
+        [JKKVOItemManager jk_exchangeInstanceMethod:class originalSel:observeredDealloc swizzledSel:jk_observerdDealloc];
         SEL removeObserver1 = NSSelectorFromString(@"removeObserver:forKeyPath:");
         SEL jk_removeObserver1 = NSSelectorFromString(@"jkhook_removeObserver:forKeyPath:");
-        [NSObject jk_exchangeInstanceMethod:class originalSel:removeObserver1 swizzledSel:jk_removeObserver1];
+        [JKKVOItemManager jk_exchangeInstanceMethod:class originalSel:removeObserver1 swizzledSel:jk_removeObserver1];
         SEL removeObserver2 = NSSelectorFromString(@"removeObserver:forKeyPath:context:");
         SEL jk_removeObserver2 = NSSelectorFromString(@"jkhook_removeObserver:forKeyPath:context:");
-        [NSObject jk_exchangeInstanceMethod:class originalSel:removeObserver2 swizzledSel:jk_removeObserver2];
+        [JKKVOItemManager jk_exchangeInstanceMethod:class originalSel:removeObserver2 swizzledSel:jk_removeObserver2];
     }
 }
 
-/**
- 实例方法替换
- 
- @param fdClass class
- @param originalSel 源方法
- @param swizzledSel 替换方法
- */
-+ (void)jk_exchangeInstanceMethod:(Class)fdClass
-                   originalSel:(SEL)originalSel
-                   swizzledSel:(SEL)swizzledSel
-{
-    Method originalMethod = class_getInstanceMethod(fdClass, originalSel);
-    Method swizzledMethod = class_getInstanceMethod(fdClass, swizzledSel);
-    
-    // 这里用这个方法做判断，看看origin方法是否有实现，如果没实现，直接用我们自己的方法，如果有实现，则进行交换
-    BOOL isAddMethod =
-    class_addMethod(fdClass,
-                    originalSel,
-                    method_getImplementation(swizzledMethod),
-                    method_getTypeEncoding(swizzledMethod));
-    
-    if (isAddMethod) {
-        class_replaceMethod(fdClass,
-                            swizzledSel,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    }
-    
-    else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
+
 
 @end

@@ -9,5 +9,11 @@
 #import "JKWorker.h"
 
 @implementation JKWorker
-
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+    }
+    return self;
+}
 @end

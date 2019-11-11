@@ -7,12 +7,12 @@
 //
 
 #import "JKPersonModel.h"
+#import "JKFactory.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface JKWorker : JKPersonModel
-
-@property (nonatomic, copy) NSString *factory;
+@property (nonatomic, strong) JKFactory *facotory;
 
 @end
 
