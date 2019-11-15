@@ -40,11 +40,7 @@
         item.block = block;
         item.context = context;
         [JKKVOItemManager addItem:item];
-        if ([self isEqual:observer]) {
-            [self addObserver:[JKKVOItemManager sharedManager] forKeyPath:keyPath options:options context:context];
-        } else {
-            [self addObserver:observer forKeyPath:keyPath options:options context:context];
-        }
+        [self addObserver:observer forKeyPath:keyPath options:options context:context];
         
     }
     [JKKVOItemManager unLock];
@@ -73,11 +69,7 @@
             item.detailBlock = detailBlock;
             item.context = context;
             [JKKVOItemManager addItem:item];
-            if ([self isEqual:observer]) {
-                [self addObserver:[JKKVOItemManager sharedManager] forKeyPath:keyPath options:options context:context];
-            } else {
-                [self addObserver:observer forKeyPath:keyPath options:options context:context];
-            }
+            [self addObserver:observer forKeyPath:keyPath options:options context:context];
         }
     }
     
@@ -104,11 +96,7 @@ forKeyPath:(NSString *)keyPath
                                                           context:context];
     [JKKVOItemManager unLock];
     if (item) {
-        if ([self isEqual:observer]) {
-            [self removeObserver:[JKKVOItemManager sharedManager] forKeyPath:keyPath context:context];
-        } else {
-           [self removeObserver:observer forKeyPath:keyPath context:context];
-        }
+        [self removeObserver:observer forKeyPath:keyPath context:context];
     }
     
 }
@@ -308,9 +296,7 @@ forKeyPath:(NSString *)keyPath
 #pragma mark - private method
 - (void)jk_exchangeMethodWithObserver:(NSObject *)observer
 {
-    if ([self isEqual:observer]) {
-        return;
-    }
+    
     if (![JKKVOItemManager obseverMethodHasExchangedOfObserver:observer]) {
        Class class = [observer class];
         SEL observeValueForKeyPath = @selector(observeValueForKeyPath:ofObject:change:context:);

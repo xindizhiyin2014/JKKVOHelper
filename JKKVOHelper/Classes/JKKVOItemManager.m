@@ -31,7 +31,6 @@ static JKKVOItemManager *_manager = nil;
         _manager.lock = [[NSLock alloc] init];
         _manager.items = [NSMutableSet new];
         _manager.classes = [NSMutableSet new];
-        [self jk_exchangeMethods];
     });
     return _manager;
 }
@@ -50,7 +49,7 @@ static JKKVOItemManager *_manager = nil;
 {
     [[JKKVOItemManager sharedManager].items addObject:item];
     id observer = [self objectWithAddressStr:item.observerAddress];
-    if (observer && ![observer isEqual:item.observered]) {
+    if (observer) {
         [[JKKVOItemManager sharedManager].classes addObject:[observer class]];
     }
 }
@@ -221,35 +220,7 @@ static JKKVOItemManager *_manager = nil;
     return [tmpSet allObjects];
 }
 
-- (void)jkhook_observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
-{
-    if ([object isKindOfClass:[NSObject class]]) {
-        NSObject *observeredObject = (NSObject *)object;
-        BOOL isContain = [JKKVOItemManager isContainItemWithObserver:observeredObject observered:observeredObject];
-        if (isContain) {
-           JKKVOItem *item = [JKKVOItemManager isContainItemWithObserver:observeredObject observered:observeredObject keyPath:keyPath context:context];
 
-            if (item) {
-                if (item.block) {
-                    void(^block)(NSDictionary *change, void *context) = item.block;
-                    if (block) {
-                        block(change,context);
-                    }
-                } else if (item.detailBlock) {
-                    void(^detailBlock)(NSString *keyPath, NSDictionary *change, void *context) = item.detailBlock;
-                    if (detailBlock) {
-                        detailBlock(keyPath,change,context);
-                    }
-                }
-            }
-        } else{
-            [self jkhook_observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-        }
-        
-    }else{
-        [self jkhook_observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
-}
 
 /**
  根据内存地址转换对应的对象
@@ -270,19 +241,11 @@ static JKKVOItemManager *_manager = nil;
         NSLog(@"JKKVOHelper exception %@",exception);
 #endif
     } @finally {
-        object = nil;
+
     }
     return object;
 }
 
-+ (void)jk_exchangeMethods
-{
-    
-       Class class = [self class];
-        SEL observeValueForKeyPath = @selector(observeValueForKeyPath:ofObject:change:context:);
-        SEL jk_ObserveValueForKeyPath = @selector(jkhook_observeValueForKeyPath:ofObject:change:context:);
-        [self jk_exchangeInstanceMethod:class originalSel:observeValueForKeyPath swizzledSel:jk_ObserveValueForKeyPath];
-}
 /**
  实例方法替换
  
