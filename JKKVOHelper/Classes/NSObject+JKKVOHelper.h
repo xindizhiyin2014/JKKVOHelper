@@ -50,6 +50,40 @@ NS_ASSUME_NONNULL_BEGIN
                options:(NSKeyValueObservingOptions)options
                context:(nullable void *)context
        withDetailBlock:(void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock;
+
+/**
+ 添加keyPath监听,观察者是自己
+ 
+ @param keyPath keyPath
+ @param options options
+ @param block 回调
+ */
+- (void)jk_addObserverForKeyPath:(NSString *)keyPath
+                         options:(NSKeyValueObservingOptions)options
+                       withBlock:(void(^)(NSDictionary *change, void *context))block;
+
+/**
+ 添加keyPath监听,观察者是自己
+ 
+ @param keyPath keyPath
+ @param options options
+ @param context context
+ @param block 回调
+ */
+- (void)jk_addObserverForKeyPath:(NSString *)keyPath
+                         options:(NSKeyValueObservingOptions)options
+                         context:(nullable void *)context
+                       withBlock:(void(^)(NSDictionary *change, void *context))block;
+
+/// 添加一组keyPath监听,观察者是自己
+/// @param keyPaths keyPath数组
+/// @param options options
+/// @param context context
+/// @param detailBlock 回调
+- (void)jk_addObserverForKeyPaths:(NSArray <NSString *>*)keyPaths
+                          options:(NSKeyValueObservingOptions)options
+                          context:(nullable void *)context
+                  withDetailBlock:(void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock;
 /**
  移除keyPath监听
  

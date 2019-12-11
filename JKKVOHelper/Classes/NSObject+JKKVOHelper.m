@@ -76,6 +76,29 @@
     [JKKVOItemManager unLock];
 }
 
+- (void)jk_addObserverForKeyPath:(NSString *)keyPath
+                         options:(NSKeyValueObservingOptions)options
+                       withBlock:(void(^)(NSDictionary *change, void *context))block
+{
+    [self jk_addObserver:self forKeyPath:keyPath options:options withBlock:block];
+}
+
+- (void)jk_addObserverForKeyPaths:(NSArray <NSString *>*)keyPaths
+                          options:(NSKeyValueObservingOptions)options
+                          context:(nullable void *)context
+                  withDetailBlock:(void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock
+{
+    [self jk_addObserver:self forKeyPaths:keyPaths options:options context:context withDetailBlock:detailBlock];
+}
+
+- (void)jk_addObserverForKeyPath:(NSString *)keyPath
+                         options:(NSKeyValueObservingOptions)options
+                         context:(nullable void *)context
+                       withBlock:(void(^)(NSDictionary *change, void *context))block
+{
+    [self jk_addObserver:self forKeyPath:keyPath options:options context:context withBlock:block];
+}
+
 - (void)jk_removeObserver:(NSObject *)observer
                forKeyPath:(NSString *)keyPath
 {
