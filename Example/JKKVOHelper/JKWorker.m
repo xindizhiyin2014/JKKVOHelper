@@ -7,6 +7,7 @@
 //
 
 #import "JKWorker.h"
+#import "JKKVOItemManager.h"
 
 @implementation JKWorker
 - (instancetype)init
@@ -15,5 +16,12 @@
     if (self) {
     }
     return self;
+}
+
+- (void)dealloc
+{
+//    NSArray *array = [JKKVOItemManager items];
+    NSLog(@"JKWorker dealloc");// count %@",@([array count]));
+
 }
 @end

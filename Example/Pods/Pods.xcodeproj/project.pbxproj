@@ -17,9 +17,7 @@
 		0A3AD1AD88F6A611F70FC084722B21C4 /* KWMessageTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F90067AADA0C44EFB61849D435BCF8C /* KWMessageTracker.m */; };
 		0A8954F8CF85C7F699C04C73E91A5B38 /* KWSharedExample.m in Sources */ = {isa = PBXBuildFile; fileRef = 954B49E2BF4F165EE2B36A071DE2CC8B /* KWSharedExample.m */; };
 		0BB33445FD5FB877ED9EF29C70A95EF4 /* NSProxy+KiwiVerifierAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 083CC1F31080B6BD5D53A5022B9EA426 /* NSProxy+KiwiVerifierAdditions.m */; };
-		0C3F96DAD6FD50C2ECCF5A27D9CF9590 /* Pods-JKKVOHelper_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D30D49ED60C7123EAD4E59A90A8E7D9 /* Pods-JKKVOHelper_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0F89BD3F84DB7DE7B7692F385C295531 /* NSObject+KiwiStubAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = FC0F8A602554E2C5BF57FAF0EC24D7BD /* NSObject+KiwiStubAdditions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		135305D71806DED0D5BAC3640AFCFE79 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033A36A29482FD32230FE0CA177F9BD3 /* Foundation.framework */; };
 		135EA78DF787D2987A359A3436AAA38B /* KWAfterEachNode.m in Sources */ = {isa = PBXBuildFile; fileRef = EB2BBFB25A111635065652E5B671F6C7 /* KWAfterEachNode.m */; };
 		140C4A4674B8E0142EA1BE39DCE9C101 /* KWNotificationMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E1939CFA5B291200DEA0FB49DD5D586 /* KWNotificationMatcher.m */; };
 		14F02EFA84CF80116DE1581CDACF1CAF /* JKKVOHelper-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 449D9FA6AB2C8E59BE0A198FE7AD1FD9 /* JKKVOHelper-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -47,6 +45,7 @@
 		277F493F2093FCAEA4E8EF2F8712F9EA /* KWIntercept.h in Headers */ = {isa = PBXBuildFile; fileRef = 399851D4B11D996B139D6F5AD9AD2A77 /* KWIntercept.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		27D6B36B293DC8603F9DECBD03076AC6 /* KWSharedExampleRegistry.h in Headers */ = {isa = PBXBuildFile; fileRef = C140D46EF27B10FC78132563B73C2AC1 /* KWSharedExampleRegistry.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		28BC0268C8876709176605DE2124D68D /* Kiwi-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D898D2BBC851EEFD9D708768D3DA226 /* Kiwi-dummy.m */; };
+		2B8DF367EB68E2D77CBA055CF70DC068 /* Pods-JKKVOHelper_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E66AF18B1BD441A19DA7C5A39564F2 /* Pods-JKKVOHelper_Example-dummy.m */; };
 		2CC0CF3444006977E8B05AC1D254194A /* KWBeZeroMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 267EEF650B35DDBB5E0369E7D223D4DD /* KWBeZeroMatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		32E3575A9536CB741D117DBA6EBC150C /* KWCallSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 24154C86F9E6EA139EBC3F1CDC41C2BE /* KWCallSite.m */; };
 		330BF28E26860EB055FBA85D740D341B /* NSMethodSignature+KiwiAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F3A7FFD934ADEE7504BDD1B9327F7C4 /* NSMethodSignature+KiwiAdditions.m */; };
@@ -74,6 +73,7 @@
 		5971948A685E206168F8D78483F52F18 /* KiwiMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 876372F55B9B7E8B9F0E1E795B1698DB /* KiwiMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5971C7965ABECFD046D4121ACEA0C3EF /* KWStringUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = 93978D402F19A1D659D2A126BCD81AC9 /* KWStringUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		59752ED9904709AC0EFEE6BAC5C93CDF /* KiwiBlockMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = CE3094C0242447834C87591D327EE088 /* KiwiBlockMacros.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5AA31813B21EAEC95AE5586E6D8C28D3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 033A36A29482FD32230FE0CA177F9BD3 /* Foundation.framework */; };
 		5AD6AFD0A674F7FDFDA6D7BD452BB771 /* KWSharedExampleRegistry.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B4BE8F5188E11A4F335EDE2C9824A9C /* KWSharedExampleRegistry.m */; };
 		5BCE6A3C3798DC89B07C3CD4CAC8CD97 /* KWNull.h in Headers */ = {isa = PBXBuildFile; fileRef = A43852F2FCB0936B23120E06FE1F9B41 /* KWNull.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5BFF4F31AD167C8256DF656382E89012 /* KWGenericMatchEvaluator.h in Headers */ = {isa = PBXBuildFile; fileRef = 3438F8DCEE76DAC4F04B97FBF2DF1CCB /* KWGenericMatchEvaluator.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -95,7 +95,6 @@
 		685F2A847E0E5CE1E7C3EDA97C05E0DE /* KWRegisterMatchersNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B437A6CD843744E700A8FC2A29C4AF8 /* KWRegisterMatchersNode.m */; };
 		6C32F04CB5E5F03C50F9598786ACD882 /* KWBeKindOfClassMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 1908402989A71FC53828145916468680 /* KWBeKindOfClassMatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6C59F4AC4CB08BA5DA5F04AE59C5CEA6 /* KWNilMatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 14A7A2202D66E8380C5FF91BBCA678CA /* KWNilMatcher.m */; };
-		6CAC8A7DC663CE76A96A4434FC2B796B /* Pods-JKKVOHelper_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E66AF18B1BD441A19DA7C5A39564F2 /* Pods-JKKVOHelper_Example-dummy.m */; };
 		6CE8F545FA4F0D77F488BAF11D29510E /* KWBackgroundTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 65BC66F22C08CC8FE4D458C664EEBD3C /* KWBackgroundTask.m */; };
 		6EA2C946AE0F26E4109D53B0233B6432 /* KWBeIdenticalToMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 454C41915029108010346CC94B8BA8DA /* KWBeIdenticalToMatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		70B0C01F7127743A957368494017A043 /* KWBeMemberOfClassMatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 2C4BB2E489CE438BA98148F158D1A89B /* KWBeMemberOfClassMatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -163,6 +162,7 @@
 		C015416161F6C15368919102BAB3A6DC /* KWFailure.m in Sources */ = {isa = PBXBuildFile; fileRef = 453797BA3BF9DE2AE0F2FA73EF86ED72 /* KWFailure.m */; };
 		C056FD8ADE6D8D54E2F221FD59774979 /* KWExistVerifier.h in Headers */ = {isa = PBXBuildFile; fileRef = 536384B3EE79C39520D39FE4C809621B /* KWExistVerifier.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C15A07F0EAC150AED92F3C598EAC1843 /* KWInvocationCapturer.h in Headers */ = {isa = PBXBuildFile; fileRef = 978628A25CCD80F79D9C6E8BE9928DCB /* KWInvocationCapturer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C1674806D46425456C10D0AAD44F4027 /* Pods-JKKVOHelper_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 8D30D49ED60C7123EAD4E59A90A8E7D9 /* Pods-JKKVOHelper_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2D37F887B571934B39F3CE1E678BEEB /* NSObject+JKKVOHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = D9792975107BDAC9DF283C462933CEC0 /* NSObject+JKKVOHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C2F9A8B71949A643B4C16757CDB9EAA6 /* KWPendingNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 98D1C1622B340331A210009A80E7A718 /* KWPendingNode.m */; };
 		C3217811697384BE9FA9F9589CCA6A25 /* KWSuiteConfigurationBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D22793C4E87A0A634555A18E2A0870D /* KWSuiteConfigurationBase.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -219,26 +219,19 @@
 			remoteGlobalIDString = D5A4060DC193E269FE369F036E4781A9;
 			remoteInfo = Kiwi;
 		};
-		8B01816ABFFF39D04359E6DD70229C64 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 929DD6C61E0CCCD754D1EA39783598B9;
-			remoteInfo = "Pods-JKKVOHelper_Example";
-		};
-		C2C209693A02DC4E1DD50C05BDF48557 /* PBXContainerItemProxy */ = {
+		593B05E44BE482A977197F81B3A7B3A0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = A49F33819825BFBAB24D1C234BE175B0;
 			remoteInfo = JKKVOHelper;
 		};
-		CCAAA5C7DFB11670BD4DA8297103633F /* PBXContainerItemProxy */ = {
+		8B01816ABFFF39D04359E6DD70229C64 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D5A4060DC193E269FE369F036E4781A9;
-			remoteInfo = Kiwi;
+			remoteGlobalIDString = 929DD6C61E0CCCD754D1EA39783598B9;
+			remoteInfo = "Pods-JKKVOHelper_Example";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -492,11 +485,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7DACDE81B50EBB4159A5449F0358BE9A /* Frameworks */ = {
+		B4BB961360B29E0A1831093A365BA9A1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				135305D71806DED0D5BAC3640AFCFE79 /* Foundation.framework in Frameworks */,
+				5AA31813B21EAEC95AE5586E6D8C28D3 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -867,14 +860,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		97808BA985BCF2DFA029634411E05575 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0C3F96DAD6FD50C2ECCF5A27D9CF9590 /* Pods-JKKVOHelper_Example-umbrella.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		999CBAB4F3F036648AD1F760B5B0000D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -993,23 +978,30 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E43233DF15D2893ECFB88185AA292EC1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1674806D46425456C10D0AAD44F4027 /* Pods-JKKVOHelper_Example-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		929DD6C61E0CCCD754D1EA39783598B9 /* Pods-JKKVOHelper_Example */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BCC720831BA627B7227FCCDE583F6CF6 /* Build configuration list for PBXNativeTarget "Pods-JKKVOHelper_Example" */;
+			buildConfigurationList = F7BE8D757169BE6740161B4265BBA133 /* Build configuration list for PBXNativeTarget "Pods-JKKVOHelper_Example" */;
 			buildPhases = (
-				97808BA985BCF2DFA029634411E05575 /* Headers */,
-				695199A7DE48930FFD183276AE208444 /* Sources */,
-				7DACDE81B50EBB4159A5449F0358BE9A /* Frameworks */,
-				CCD15D7637508BFE74A9044E2EC5ADD4 /* Resources */,
+				E43233DF15D2893ECFB88185AA292EC1 /* Headers */,
+				20CD1DB74BF52964EB91E47AE572A824 /* Sources */,
+				B4BB961360B29E0A1831093A365BA9A1 /* Frameworks */,
+				1AC31B1C40317FBE209C060087A7F421 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				661DEFD6EF25B36A2AB59A1C35CB42BA /* PBXTargetDependency */,
-				D19123CA29D817057A8E63D3587882B5 /* PBXTargetDependency */,
+				67A75952714EB3FD423CCC8C2DD3C855 /* PBXTargetDependency */,
 			);
 			name = "Pods-JKKVOHelper_Example";
 			productName = "Pods-JKKVOHelper_Example";
@@ -1102,14 +1094,14 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		747DC120DBD276F306208EC279A05EDD /* Resources */ = {
+		1AC31B1C40317FBE209C060087A7F421 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CCD15D7637508BFE74A9044E2EC5ADD4 /* Resources */ = {
+		747DC120DBD276F306208EC279A05EDD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1226,6 +1218,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		20CD1DB74BF52964EB91E47AE572A824 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B8DF367EB68E2D77CBA055CF70DC068 /* Pods-JKKVOHelper_Example-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3768548541F16C0E26A8679A338AB6F3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1233,14 +1233,6 @@
 				217B27867F370658FE3A6F5FB2E57C5E /* JKKVOHelper-dummy.m in Sources */,
 				1DAA4A51FBA6A50617126DA26567D084 /* JKKVOItemManager.m in Sources */,
 				A448E40FB8590164B81099D336C95EED /* NSObject+JKKVOHelper.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		695199A7DE48930FFD183276AE208444 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6CAC8A7DC663CE76A96A4434FC2B796B /* Pods-JKKVOHelper_Example-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1267,55 +1259,15 @@
 			target = D5A4060DC193E269FE369F036E4781A9 /* Kiwi */;
 			targetProxy = 2052FB74D503DD977791B1025B792453 /* PBXContainerItemProxy */;
 		};
-		661DEFD6EF25B36A2AB59A1C35CB42BA /* PBXTargetDependency */ = {
+		67A75952714EB3FD423CCC8C2DD3C855 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = JKKVOHelper;
 			target = A49F33819825BFBAB24D1C234BE175B0 /* JKKVOHelper */;
-			targetProxy = C2C209693A02DC4E1DD50C05BDF48557 /* PBXContainerItemProxy */;
-		};
-		D19123CA29D817057A8E63D3587882B5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Kiwi;
-			target = D5A4060DC193E269FE369F036E4781A9 /* Kiwi */;
-			targetProxy = CCAAA5C7DFB11670BD4DA8297103633F /* PBXContainerItemProxy */;
+			targetProxy = 593B05E44BE482A977197F81B3A7B3A0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		0698B1EB0C94EC863AE1D47AAA7A6196 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B2AD89DAC20AD91BED4F255EB6A11131 /* Pods-JKKVOHelper_Example.release.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-JKKVOHelper_Example/Pods-JKKVOHelper_Example-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-JKKVOHelper_Example/Pods-JKKVOHelper_Example.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		1996DB22DB89B6EE5E91E1767E8AA700 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88E6383CB8C1609D1EDDFEDE52E4667A /* Pods-JKKVOHelper_Tests.debug.xcconfig */;
@@ -1336,6 +1288,39 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-JKKVOHelper_Tests/Pods-JKKVOHelper_Tests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3002C0EEF829E12F62DE82C9DA32E9EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DCDA3D4870A1D8D966ECEAF6B963AB5 /* Pods-JKKVOHelper_Example.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-JKKVOHelper_Example/Pods-JKKVOHelper_Example-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-JKKVOHelper_Example/Pods-JKKVOHelper_Example.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1473,9 +1458,9 @@
 			};
 			name = Release;
 		};
-		5AB69A3F39068E002C261CB3643038D9 /* Debug */ = {
+		64ABC1ACA7E939D54CD7CA2BE88F7464 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7DCDA3D4870A1D8D966ECEAF6B963AB5 /* Pods-JKKVOHelper_Example.debug.xcconfig */;
+			baseConfigurationReference = B2AD89DAC20AD91BED4F255EB6A11131 /* Pods-JKKVOHelper_Example.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1501,10 +1486,11 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Debug;
+			name = Release;
 		};
 		7EF7227D9B20A1D549000096ACCB23D7 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1696,20 +1682,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BCC720831BA627B7227FCCDE583F6CF6 /* Build configuration list for PBXNativeTarget "Pods-JKKVOHelper_Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5AB69A3F39068E002C261CB3643038D9 /* Debug */,
-				0698B1EB0C94EC863AE1D47AAA7A6196 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		D199D06A71607352BB7F4D0A6CDADC67 /* Build configuration list for PBXNativeTarget "Kiwi" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8ABE5B6DCDB1F483A66028991DD5BA35 /* Debug */,
 				44A1AB3A37F3625B365BFACF1C14CBBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F7BE8D757169BE6740161B4265BBA133 /* Build configuration list for PBXNativeTarget "Pods-JKKVOHelper_Example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3002C0EEF829E12F62DE82C9DA32E9EE /* Debug */,
+				64ABC1ACA7E939D54CD7CA2BE88F7464 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

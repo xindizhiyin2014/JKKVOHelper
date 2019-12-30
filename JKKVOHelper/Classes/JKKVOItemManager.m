@@ -8,14 +8,99 @@
 #import "JKKVOItemManager.h"
 #import <objc/runtime.h>
 
-@implementation JKKVOItem
+@interface JKKVOObserver()
+@property (nonatomic, copy, nonnull) NSString *originObserverAddress;
+@end
+
+@implementation JKKVOObserver
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+       Class class = [JKKVOObserver class];
+        SEL observeValueForKeyPath = @selector(observeValueForKeyPath:ofObject:change:context:);
+        SEL jk_ObserveValueForKeyPath = @selector(jkhook_observeValueForKeyPath:ofObject:change:context:);
+        [JKKVOItemManager jk_exchangeInstanceMethod:class originalSel:observeValueForKeyPath swizzledSel:jk_ObserveValueForKeyPath];
+    });
+}
+
++ (instancetype)initWithOriginObserver:(id)originObserver
+{
+    JKKVOObserver *kvoObserver = [[self alloc] init];
+    if (kvoObserver) {
+        kvoObserver.originObserverAddress = [NSString stringWithFormat:@"%p",originObserver];
+    }
+    return kvoObserver;
+}
+
+- (void)jkhook_observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+{
+    if ([object isKindOfClass:[NSObject class]]) {
+        NSObject *observeredObject = (NSObject *)object;
+        JKKVOItem *item = [JKKVOItemManager isContainItemWith_kvoObserver:self observered:observeredObject keyPath:keyPath context:context];
+        if (item) {
+            if (item.block) {
+                void(^block)(NSDictionary *change, void *context) = item.block;
+                if (block) {
+                    block(change,context);
+                }
+            } else if (item.detailBlock) {
+                void(^detailBlock)(NSString *keyPath, NSDictionary *change, void *context) = item.detailBlock;
+                if (detailBlock) {
+                    detailBlock(keyPath,change,context);
+                }
+            }
+        }
+        
+    }
+}
 
 @end
+#pragma mark - - JKKVOItem - -
+@interface JKKVOItem()
+/// 观察者
+@property (nonatomic, strong, nonnull, readwrite) JKKVOObserver *kvoObserver;
+/// 被监听的对象
+@property (nonatomic, weak, nullable, readwrite) id observered;
+/// 监听的keyPath
+@property (nonatomic, copy, nonnull, readwrite) NSString *keyPath;
+/// 上下文
+@property (nonatomic, nullable, readwrite) void *context;
+/// 回调
+@property (nonatomic, copy, readwrite) void(^block)(NSDictionary *change,void *context);
+/// 返回更详细信息的回调
+@property (nonatomic, copy, readwrite) void(^detailBlock)(NSString *keyPath, NSDictionary *change, void *context);
+@end
+
+@implementation JKKVOItem
+
++ (instancetype)initWith_kvoObserver:(nonnull JKKVOObserver *)kvoObserver
+                          observered:(nonnull id)observered
+                             keyPath:(nonnull NSString *)keyPath
+                             context:(nullable void *)context
+                               block:(nullable void(^)(NSDictionary *change,void *context))block
+                         detailBlock:(nullable void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock
+{
+    JKKVOItem *item = [[self alloc] init];
+    if (item) {
+        item.kvoObserver = kvoObserver;
+        item.observered = observered;
+        item.keyPath = keyPath;
+        item.context = context;
+        item.block = block;
+        item.detailBlock = detailBlock;
+    }
+    return item;
+}
+
+@end
+
+#pragma mark - - JKKVOItemManager - -
 
 @interface JKKVOItemManager()
 
 @property (nonatomic, strong) NSMutableSet *items;
-@property (nonatomic, strong) NSMutableSet *classes;    ///< 保存被交换方法的类名
 @property (nonatomic, strong) NSLock *lock;
 
 @end
@@ -30,7 +115,6 @@ static JKKVOItemManager *_manager = nil;
         _manager = [[self alloc] init];
         _manager.lock = [[NSLock alloc] init];
         _manager.items = [NSMutableSet new];
-        _manager.classes = [NSMutableSet new];
     });
     return _manager;
 }
@@ -48,10 +132,6 @@ static JKKVOItemManager *_manager = nil;
 + (void)addItem:(JKKVOItem *)item
 {
     [[JKKVOItemManager sharedManager].items addObject:item];
-    id observer = [self objectWithAddressStr:item.observerAddress];
-    if (observer) {
-        [[JKKVOItemManager sharedManager].classes addObject:[observer class]];
-    }
 }
 
 + (void)removeItem:(JKKVOItem *)item
@@ -61,7 +141,6 @@ static JKKVOItemManager *_manager = nil;
 
 + (NSArray *)items
 {
-
     return [[JKKVOItemManager sharedManager].items allObjects];
 }
 
@@ -76,7 +155,7 @@ static JKKVOItemManager *_manager = nil;
     NSArray *items = [[JKKVOItemManager sharedManager].items allObjects];
     for (JKKVOItem *item in items) {
         NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
-        if ([observerAddress isEqualToString:item.observerAddress]
+        if ([observerAddress isEqualToString:item.kvoObserver.originObserverAddress]
             && [observered isEqual:item.observered]
             && [keyPath isEqualToString:item.keyPath]
             && context == item.context) {
@@ -95,7 +174,7 @@ static JKKVOItemManager *_manager = nil;
     NSArray *items = [[JKKVOItemManager sharedManager].items allObjects];
     for (JKKVOItem *item in items) {
         NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
-        if ([observerAddress isEqualToString:item.observerAddress]
+        if ([observerAddress isEqualToString:item.kvoObserver.originObserverAddress]
             && [observered isEqual:item.observered]) {
             return YES;
         }
@@ -103,24 +182,34 @@ static JKKVOItemManager *_manager = nil;
     return NO;
 }
 
-+ (BOOL)obseverMethodHasExchangedOfObserver:(id)observer
++ (JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
+                                  observered:(id)observered
+                                     keyPath:(nullable NSString *)keyPath
+                                     context:(nullable void *)context
 {
-    Class observerClass = [observer class];
-    for (Class class in [JKKVOItemManager sharedManager].classes) {
-        if ([observerClass isSubclassOfClass:class]) {
-            return YES;
+ if (!kvoObserver || !observered) {
+        return nil;
+    }
+    NSArray *items = [[JKKVOItemManager sharedManager].items allObjects];
+    for (JKKVOItem *item in items) {
+        if ([kvoObserver isEqual:item.kvoObserver]
+            && [observered isEqual:item.observered]) {
+            return item;
         }
     }
-    return NO;
+    return nil;
 }
 
-+ (NSArray *)itemsWithObserver:(id)observer observered:(id)observered keyPath:(nullable NSString *)keyPath
++ (NSArray <JKKVOItem *>*)itemsWithObserver:(id)observer
+                    observered:(id)observered
+                       keyPath:(nullable NSString *)keyPath
 {
     NSMutableArray *tmpArray = [NSMutableArray new];
     NSArray *items =  [[JKKVOItemManager sharedManager].items allObjects];
     for (JKKVOItem *item in items) {
         NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
-        if ([observerAddress isEqualToString:item.observerAddress] && [observered isEqual:item.observered]) {
+        if ([observerAddress isEqualToString:item.kvoObserver.originObserverAddress]
+            && [observered isEqual:item.observered]) {
             if (keyPath) {
                 if ([keyPath isEqualToString:item.keyPath]) {
                     [tmpArray addObject:item];
@@ -133,118 +222,98 @@ static JKKVOItemManager *_manager = nil;
     return [tmpArray copy];
 }
 
-+ (NSArray *)observersOfObserered:(id)observered
++ (NSArray <JKKVOItem *>*)observerItemsOfObserered:(id)observered
 {
-    return [self observersOfObserered:observered keyPath:nil];
+    return [self observerItemsOfObserered:observered keyPath:nil];
 }
 
-+ (NSArray *)observeredsOfObserver:(id)observer
++ (NSArray <JKKVOItem *>*)observerItemsOfObserered:(id)observered
+                                           keyPath:(nullable NSString *)keyPath
 {
     NSMutableSet *tmpSet = [NSMutableSet new];
     NSArray *items =  [[JKKVOItemManager sharedManager].items allObjects];
-    for (JKKVOItem *item in items) {
-        NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
-        if ([observerAddress isEqualToString:item.observerAddress]) {
-            id observered = item.observered;
-            if (observered) {
-                [tmpSet addObject:observered];
-            } else {
-                [self removeItem:item];
-            }
-        }
-    }
-    return [tmpSet allObjects];
-}
-
-+ (NSArray *)observeredKeyPathsOfObservered:(id)observered
-{
-    NSMutableSet *tmpSet = [NSMutableSet new];
-    NSArray *items =  [[JKKVOItemManager sharedManager].items allObjects];
-    for (JKKVOItem *item in items) {
-        if ([observered isEqual:item.observered]) {
-            if (item.keyPath) {
-                [tmpSet addObject:item.keyPath];
-            } else {
-                [self removeItem:item];
-            }
-        }
-    }
-    return [tmpSet allObjects];
-}
-
-+ (NSArray *)observersOfObserered:(id)observered
-                          keyPath:(nullable NSString *)keyPath
-{
-    NSMutableSet *tmpSet = [NSMutableSet new];
-    NSArray *items =  [[JKKVOItemManager sharedManager].items allObjects];
-    for (JKKVOItem *item in items) {
+    for (JKKVOItem *item in [items mutableCopy]) {
         if ([observered isEqual:item.observered]) {
             if (keyPath) {
                 if ([keyPath isEqualToString:item.keyPath]) {
-                    id observer = [self observeredsOfObserver:item.observerAddress];
-                    if (observer) {
-                        [tmpSet addObject:observer];
-                    } else {
-                        [self removeItem:item];
-                    }
-                    
+                    [tmpSet addObject:item];
                 }
             } else {
-                id observer = [self observeredsOfObserver:item.observerAddress];
-              if (observer) {
-                  [tmpSet addObject:observer];
-              } else {
-                  [self removeItem:item];
-              }
+               [tmpSet addObject:item];
             }
         }
     }
     return [tmpSet allObjects];
 }
 
-+ (NSArray *)observeredKeyPathsOfObserered:(id)observered
++ (NSArray <JKKVOItem *>*)observeredItemsOfObserver:(id)observer
+{
+    NSMutableSet *tmpSet = [NSMutableSet new];
+    NSArray *items =  [[JKKVOItemManager sharedManager].items allObjects];
+    for (JKKVOItem *item in [items mutableCopy]) {
+        NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
+        if ([observerAddress isEqualToString:item.kvoObserver.originObserverAddress]) {
+            [tmpSet addObject:item];
+        }
+    }
+    return [tmpSet allObjects];
+}
+
++ (NSArray <NSString *>*)observeredKeyPathsOfObservered:(id)observered
+{
+    NSMutableSet *tmpSet = [NSMutableSet new];
+    NSArray *items =  [[JKKVOItemManager sharedManager].items allObjects];
+    for (JKKVOItem *item in [items mutableCopy]) {
+        if ([observered isEqual:item.observered]) {
+            if (item.keyPath) {
+                [tmpSet addObject:item.keyPath];
+            }
+        }
+    }
+    return [tmpSet allObjects];
+}
+
++ (NSArray <NSString *>*)observeredKeyPathsOfObserered:(id)observered
                                   observer:(id)observer
 {
     NSMutableSet *tmpSet = [NSMutableSet new];
     NSArray *items =  [[JKKVOItemManager sharedManager].items allObjects];
-    for (JKKVOItem *item in items) {
-        id itemObserver = [self objectWithAddressStr:item.observerAddress];
-        if ([observered isEqual:item.observered] && [observer isEqual:itemObserver]) {
+    for (JKKVOItem *item in [items mutableCopy]) {
+        NSString *observerAddress = [NSString stringWithFormat:@"%p",observer];
+        if ([observered isEqual:item.observered]
+            && [observerAddress isEqualToString:item.kvoObserver.originObserverAddress]) {
             if (item.keyPath) {
                 [tmpSet addObject:item.keyPath];
-            } else {
-                [self removeItem:item];
             }
         }
     }
     return [tmpSet allObjects];
 }
 
-
-
+#pragma mark - - private method - -
 /**
  根据内存地址转换对应的对象
 
  @param addressStr 内存地址
  @return 转换后的对象
  */
-#pragma clang diagnostic ignored "-Wshorten-64-to-32"
-+ (id)objectWithAddressStr:(NSString *)addressStr
-{
-    addressStr = [addressStr hasPrefix:@"0x"] ? addressStr : [@"0x" stringByAppendingString:addressStr];
-    uintptr_t hex = strtoull(addressStr.UTF8String, NULL, 0);
-    id object = nil;
-    @try {
-        object = (__bridge id)(void *)hex;
-    } @catch (NSException *exception) {
-#if DEBUG
-        NSLog(@"JKKVOHelper exception %@",exception);
-#endif
-    } @finally {
-
-    }
-    return object;
-}
+//#pragma clang diagnostic ignored "-Wshorten-64-to-32"
+//+ (id)objectWithAddressStr:(NSString *)addressStr
+//{
+//    addressStr = [addressStr hasPrefix:@"0x"] ? addressStr : [@"0x" stringByAppendingString:addressStr];
+//    uintptr_t hex = strtoull(addressStr.UTF8String, NULL, 0);
+//    id object = nil;
+//    @try {
+//        object = (__bridge id)(void *)hex;
+//    } @catch (NSException *exception) {
+//#if DEBUG
+//        NSLog(@"JKKVOHelper exception %@",exception);
+//#endif
+//    } @finally {
+//
+//    }
+//    return object;
+//}
 
 /**
  实例方法替换

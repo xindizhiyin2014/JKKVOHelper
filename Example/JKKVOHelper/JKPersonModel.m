@@ -8,11 +8,16 @@
 
 #import "JKPersonModel.h"
 #import "JKKVOHelper.h"
+#import "JKKVOItemManager.h"
+
 @implementation JKPersonModel
 
 - (void)dealloc
 {
+//    NSArray *array = [JKKVOItemManager items];
+    NSLog(@"JKPersonModel dealloc ");//count %@",@([array count]));
+//  NSString *className = NSStringFromClass([super class]);
+//    NSLog(@"className %@",className);
     
-    NSLog(@"BBBB");
 }
 @end

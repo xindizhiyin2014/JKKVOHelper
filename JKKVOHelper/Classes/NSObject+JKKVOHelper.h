@@ -125,29 +125,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)jk_removeObservers;
 
 /**
- 所有的观察者列表
- 
- @return 观察者列表的数组
- */
-- (NSArray *)jk_observers;
-
-/// 所有的被观察者列表的数组
-- (NSArray *)jk_observereds;
-
-/**
  所有的被监听的keyPath列表
  
  @return 被监听的keyPath组成的列表
  */
-- (NSArray *)jk_observeredKeyPaths;
-
-/**
- 某个keyPath对应的观察者列表
- 
- @param keyPath keyPath
- @return 观察者列表的数组
- */
-- (NSArray *)jk_observersForKeyPath:(NSString *)keyPath;
+- (NSArray <NSString *>*)jk_observeredKeyPaths;
 
 /**
  某个观察者监听的keyPath组成的列表
@@ -155,7 +137,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param observer 观察者
  @return keyPath组成的列表
  */
-- (NSArray *)jk_keyPathsObserveredBy:(NSObject *)observer;
+- (NSArray <NSString *>*)jk_keyPathsObserveredBy:(NSObject *)observer;
 
 @end
 

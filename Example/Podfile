@@ -4,7 +4,6 @@ platform :ios, '8.0'
 
 target 'JKKVOHelper_Example' do
   pod 'JKKVOHelper', :path => '../'
-  pod 'Kiwi'
 
 
   target 'JKKVOHelper_Tests' do

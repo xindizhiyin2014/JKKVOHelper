@@ -19,7 +19,6 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		63BF776423A782700A27D0FE /* Pods_JKKVOHelper_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2F9F6559735B21AF0053ADB /* Pods_JKKVOHelper_Example.framework */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		7A8845EBF590A3ED9228F142 /* Pods_JKKVOHelper_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A7EA99FD495DA0189DD4351 /* Pods_JKKVOHelper_Tests.framework */; };
@@ -28,8 +27,9 @@
 		BD07E6EC231CE64D0085656E /* JKTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EB231CE64D0085656E /* JKTeacher.m */; };
 		BD07E6EF231CE65A0085656E /* JKWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EE231CE65A0085656E /* JKWorker.m */; };
 		BD07E6F2231CE7870085656E /* JKAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6F1231CE7870085656E /* JKAViewController.m */; };
+		BD58FCAC23B6EBE7007B339A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = BD58FCAB23B6EBE7007B339A /* Tests.m */; };
+		BD58FCAE23B6EBF4007B339A /* JKKVOHelperSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = BD58FCAD23B6EBF4007B339A /* JKKVOHelperSpec.m */; };
 		BD5C617C236D154900E2112A /* JKFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5C617B236D154900E2112A /* JKFactory.m */; };
-		BDA08F62235573C100487E37 /* JKKVOHelperSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = BDA08F61235573C100487E37 /* JKKVOHelperSpec.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,7 +64,6 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6A7EA99FD495DA0189DD4351 /* Pods_JKKVOHelper_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JKKVOHelper_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,9 +77,10 @@
 		BD07E6EE231CE65A0085656E /* JKWorker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKWorker.m; sourceTree = "<group>"; };
 		BD07E6F0231CE7870085656E /* JKAViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKAViewController.h; sourceTree = "<group>"; };
 		BD07E6F1231CE7870085656E /* JKAViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKAViewController.m; sourceTree = "<group>"; };
+		BD58FCAB23B6EBE7007B339A /* Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
+		BD58FCAD23B6EBF4007B339A /* JKKVOHelperSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKKVOHelperSpec.m; sourceTree = "<group>"; };
 		BD5C617A236D154900E2112A /* JKFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKFactory.h; sourceTree = "<group>"; };
 		BD5C617B236D154900E2112A /* JKFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKFactory.m; sourceTree = "<group>"; };
-		BDA08F61235573C100487E37 /* JKKVOHelperSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKKVOHelperSpec.m; sourceTree = "<group>"; };
 		D0AD695BB10D4D41769BFA81 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D2F9F6559735B21AF0053ADB /* Pods_JKKVOHelper_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JKKVOHelper_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D98DC9E94F7FE7BB409C8048 /* JKKVOHelper.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = JKKVOHelper.podspec; path = ../JKKVOHelper.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -197,8 +197,8 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
-				BDA08F61235573C100487E37 /* JKKVOHelperSpec.m */,
+				BD58FCAB23B6EBE7007B339A /* Tests.m */,
+				BD58FCAD23B6EBF4007B339A /* JKKVOHelperSpec.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -371,12 +371,10 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JKKVOHelper_Example/Pods-JKKVOHelper_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/JKKVOHelper/JKKVOHelper.framework",
-				"${BUILT_PRODUCTS_DIR}/Kiwi/Kiwi.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JKKVOHelper.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kiwi.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -416,7 +414,6 @@
 				6003F5A7195388D20070C39A /* JKViewController.m in Sources */,
 				BD07E6EF231CE65A0085656E /* JKWorker.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				BDA08F62235573C100487E37 /* JKKVOHelperSpec.m in Sources */,
 				BD07E6E6231CE61E0085656E /* JKPersonModel.m in Sources */,
 				BD07E6EC231CE64D0085656E /* JKTeacher.m in Sources */,
 				BD5C617C236D154900E2112A /* JKFactory.m in Sources */,
@@ -428,7 +425,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				BD58FCAE23B6EBF4007B339A /* JKKVOHelperSpec.m in Sources */,
+				BD58FCAC23B6EBE7007B339A /* Tests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

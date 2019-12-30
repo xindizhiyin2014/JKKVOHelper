@@ -22,7 +22,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-
+    [self addObserver:self forKeyPath:@"aaa" options:NSKeyValueObservingOptionNew context:nil];
+    
 //    [self performSelector:@selector(showVC) withObject:nil afterDelay:3];
 }
 
@@ -32,6 +33,7 @@
     self.person = [JKPersonModel new];
     vc.person = self.person;
     [self presentViewController:vc animated:YES completion:nil];
+
 }
 
 - (void)didReceiveMemoryWarning

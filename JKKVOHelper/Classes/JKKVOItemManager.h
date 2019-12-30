@@ -9,17 +9,38 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@interface JKKVOObserver : NSObject
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
++ (instancetype)initWithOriginObserver:(id)originObserver;
+
+@end
+
 @interface JKKVOItem : NSObject
+/// 观察者
+@property (nonatomic, strong, nonnull, readonly) JKKVOObserver *kvoObserver;
+/// 被监听的对象
+@property (nonatomic, weak, nullable, readonly) id observered;
+/// 监听的keyPath
+@property (nonatomic, copy, nonnull, readonly) NSString *keyPath;
+/// 上下文
+@property (nonatomic, nullable, readonly) void *context;
+/// 回调
+@property (nonatomic, copy, readonly) void(^block)(NSDictionary *change,void *context);
+/// 返回更详细信息的回调
+@property (nonatomic, copy, readonly) void(^detailBlock)(NSString *keyPath, NSDictionary *change, void *context);
 
-@property (nonatomic, copy) NSString *observerAddress;                        ///< 观察者
-@property (nonatomic, weak) id observered;                        ///< 被监听的对象
-@property (nonatomic, copy) NSString *keyPath;         ///< 监听的keyPath
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
-@property (nonatomic) void *context;                   ///< 上下文
-
-@property (nonatomic, copy) void(^block)(NSDictionary *change,void *context);  ///< 回调
-@property (nonatomic, copy) void(^detailBlock)(NSString *keyPath, NSDictionary *change, void *context); ///< 返回更详细信息的回调
-
++ (instancetype)initWith_kvoObserver:(nonnull JKKVOObserver *)kvoObserver
+                          observered:(nonnull id)observered
+                             keyPath:(nonnull NSString *)keyPath
+                             context:(nullable void *)context
+                               block:(nullable void(^)(NSDictionary *change,void *context))block
+                         detailBlock:(nullable void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock;
 @end
 
 @interface JKKVOItemManager : NSObject
@@ -56,43 +77,46 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isContainItemWithObserver:(id)observer
                        observered:(id)observered;
 
-/// observer 中observeValueForKeyPath:ofObject:change:context: 方法是否已经被交换了
-/// @param observer 观察者
-+ (BOOL)obseverMethodHasExchangedOfObserver:(id)observer;
+/// 判断是否存在item
+/// @param kvoObserver 观察者
+/// @param observered 被观察者
+/// @param keyPath keyPath
+/// @param context context
++ (JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
+                              observered:(id)observered
+                                 keyPath:(nullable NSString *)keyPath
+                                 context:(nullable void *)context;
 
 /// 获取item列表
 /// @param observer 观察者
 /// @param observered 被观察者
 /// @param keyPath keyPath
 + (NSArray <JKKVOItem *>*)itemsWithObserver:(id)observer
-                    observered:(id)observered
-                       keyPath:(nullable NSString *)keyPath;
+                                 observered:(id)observered
+                                    keyPath:(nullable NSString *)keyPath;
 
-/// 获取观察者列表
+/// 获取observered 作为被观察者对应的JKKVOItem列表
 /// @param observered 被观察者
-+ (NSArray *)observersOfObserered:(id)observered;
++ (NSArray <JKKVOItem *>*)observerItemsOfObserered:(id)observered;
 
-/// 获取被观察列表
+/// 获取observered 作为被观察者对应的JKKVOItem列表
+/// @param observered 被观察者
+/// @param keyPath keyPath
++ (NSArray <JKKVOItem *>*)observerItemsOfObserered:(id)observered
+                                           keyPath:(nullable NSString *)keyPath;
+/// 获取observer 作为观察者对应的JKKVOItem列表
 /// @param observer 观察者
-+ (NSArray *)observeredsOfObserver:(id)observer;
++ (NSArray <JKKVOItem *>*)observeredItemsOfObserver:(id)observer;
 
 /// 获取被观察的keyPath列表
 /// @param observered 被观察者
-+ (NSArray *)observeredKeyPathsOfObservered:(id)observered;
-
-/// 获取观察者列表
-/// @param observered 被观察者
-/// @param keyPath keyPath
-+ (NSArray *)observersOfObserered:(id)observered
-                          keyPath:(nullable NSString *)keyPath;
++ (NSArray <NSString *>*)observeredKeyPathsOfObservered:(id)observered;
 
 /// 获取被观察keyPath列表
 /// @param observered 被观察者
 /// @param observer 观察者
-+ (NSArray *)observeredKeyPathsOfObserered:(id)observered
++ (NSArray <NSString *>*)observeredKeyPathsOfObserered:(id)observered
                                   observer:(id)observer;
-
-+ (id)objectWithAddressStr:(NSString *)addressStr;
 
 /**
  实例方法替换
@@ -102,8 +126,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param swizzledSel 替换方法
  */
 + (void)jk_exchangeInstanceMethod:(Class)targetClass
-                   originalSel:(SEL)originalSel
-swizzledSel:(SEL)swizzledSel;
+                      originalSel:(SEL)originalSel
+                      swizzledSel:(SEL)swizzledSel;
 @end
 
 NS_ASSUME_NONNULL_END
