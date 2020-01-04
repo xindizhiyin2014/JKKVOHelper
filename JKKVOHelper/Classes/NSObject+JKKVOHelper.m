@@ -8,19 +8,19 @@
 #import "NSObject+JKKVOHelper.h"
 #import "JKKVOItemManager.h"
 #import <objc/runtime.h>
-static const void *is_jk_observerKey = &is_jk_observerKey;
+static const void *is_jk_observeredKey = &is_jk_observeredKey;
 
 @implementation NSObject (JKKVOHelper)
 
 #pragma mark - - setter - -
-- (void)setIs_jk_observer:(BOOL)is_jk_observer
+- (void)setIs_jk_observered:(BOOL)is_jk_observered
 {
-    objc_setAssociatedObject(self, is_jk_observerKey, @(is_jk_observer), OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, is_jk_observeredKey, @(is_jk_observered), OBJC_ASSOCIATION_RETAIN);
 }
 #pragma mark - - getter - -
-- (BOOL)is_jk_observer
+- (BOOL)is_jk_observered
 {
-    return [objc_getAssociatedObject(self, is_jk_observerKey) boolValue];
+    return [objc_getAssociatedObject(self, is_jk_observeredKey) boolValue];
 }
 - (void)jk_addObserver:(NSObject *)observer
             forKeyPath:(NSString *)keyPath
@@ -45,7 +45,7 @@ static const void *is_jk_observerKey = &is_jk_observerKey;
                                           observered:self
                                              keyPath:keyPath
                                              context:context]) {
-        [observer setIs_jk_observer:YES];
+        [self setIs_jk_observered:YES];
         JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
         JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:block detailBlock:nil];
         [JKKVOItemManager addItem:item];
@@ -72,7 +72,7 @@ static const void *is_jk_observerKey = &is_jk_observerKey;
                                               observered:self
                                                  keyPath:keyPath
                                                  context:context]) {
-            [observer setIs_jk_observer:YES];
+            [self setIs_jk_observered:YES];
             JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
             JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:nil detailBlock:detailBlock];
             [JKKVOItemManager addItem:item];
@@ -200,13 +200,13 @@ forKeyPath:(NSString *)keyPath
 
 #pragma mark - - private method - -
 
-- (void)jkhook_dealloc
+- (void)vvhook_dealloc
 {
-    if ([self is_jk_observer] ) {
-        [self jk_removeObserveredItems];
-        [self jkhook_dealloc];
+    if ([self is_jk_observered] ) {
+        [self vv_removeObserverItems];
+        [self vvhook_dealloc];
     } else {
-      [self jkhook_dealloc];
+      [self vvhook_dealloc];
     }
 }
 
@@ -240,16 +240,11 @@ forKeyPath:(NSString *)keyPath
     return items;
 }
 
-- (void)jk_removeObserveredItems
+- (void)vv_removeObserverItems
 {
-    NSArray <JKKVOItem *>*items = [self jk_observeredItems];
+    NSArray <JKKVOItem *>*items = [self jk_observerItems];
     for (JKKVOItem *item in [items mutableCopy]) {
-        if (item.observered) {
-            [item.observered jk_remove_kvoObserverWithItem:item];
-        } else {
-            [JKKVOItemManager removeItem:item];
-        }
-        
+        [self jk_remove_kvoObserverWithItem:item];
     }
 }
 

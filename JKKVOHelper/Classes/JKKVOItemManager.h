@@ -21,8 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @interface JKKVOItem : NSObject
 /// 观察者
 @property (nonatomic, strong, nonnull, readonly) JKKVOObserver *kvoObserver;
-/// 被监听的对象
-@property (nonatomic, weak, nullable, readonly) id observered;
+/// 被监听的对象的内存地址
+@property (nonatomic, copy, nullable, readonly) NSString *observeredAddress;
 /// 监听的keyPath
 @property (nonatomic, copy, nonnull, readonly) NSString *keyPath;
 /// 上下文
