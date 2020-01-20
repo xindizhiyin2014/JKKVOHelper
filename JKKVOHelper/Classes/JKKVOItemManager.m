@@ -101,7 +101,7 @@
 @interface JKKVOItemManager()
 
 @property (nonatomic, strong) NSMutableSet *items;
-@property (nonatomic, strong) NSLock *lock;
+@property (nonatomic, strong) NSRecursiveLock *lock;
 
 @end
 
@@ -113,7 +113,7 @@ static JKKVOItemManager *_manager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _manager = [[self alloc] init];
-        _manager.lock = [[NSLock alloc] init];
+        _manager.lock = [[NSRecursiveLock alloc] init];
         _manager.items = [NSMutableSet new];
     });
     return _manager;

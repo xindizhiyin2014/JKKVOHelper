@@ -7,13 +7,11 @@
 //
 
 #import "JKViewController.h"
-#import "JKAViewController.h"
-#import "JKPersonModel.h"
 
-@interface JKViewController ()
+@interface JKViewController ()<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic,strong) JKPersonModel *person;
-
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *datas;
 @end
 
 @implementation JKViewController
@@ -21,20 +19,57 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-    [self addObserver:self forKeyPath:@"aaa" options:NSKeyValueObservingOptionNew context:nil];
+    self.datas = [NSMutableArray new];
+    for (NSInteger i = 0; i< 100; i++) {
+        NSString *title = [NSString stringWithFormat:@"aaa %@",@(i)];
+        [self.datas addObject:title];
+    }
     
-//    [self performSelector:@selector(showVC) withObject:nil afterDelay:3];
 }
 
-- (void)showVC
+- (void)reload
 {
-    JKAViewController *vc = [JKAViewController new];
-    self.person = [JKPersonModel new];
-    vc.person = self.person;
-    [self presentViewController:vc animated:YES completion:nil];
-
+    [self.tableView reloadData];
 }
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.datas.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell"];
+    cell.textLabel.text = self.datas[indexPath.row];
+    return cell;
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSLog(@"AAA");
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate) {
+        NSLog(@"BBB");
+    }
+}
+
+
+#pragma mark - - getter - -
+- (UITableView *)tableView
+{
+    if (!_tableView) {
+        _tableView = [[UITableView alloc] initWithFrame:self.view.frame];
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        [_tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+        [self.view addSubview:_tableView];
+    }
+    return _tableView;
+}
+
 
 - (void)didReceiveMemoryWarning
 {
