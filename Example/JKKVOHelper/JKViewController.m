@@ -7,6 +7,8 @@
 //
 
 #import "JKViewController.h"
+#import "JKTeacher.h"
+#import "JKKVOItemManager.h"
 
 @interface JKViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -19,12 +21,34 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.datas = [NSMutableArray new];
-    for (NSInteger i = 0; i< 100; i++) {
-        NSString *title = [NSString stringWithFormat:@"aaa %@",@(i)];
-        [self.datas addObject:title];
-    }
-    
+//    self.datas = [NSMutableArray new];
+//    for (NSInteger i = 0; i< 100; i++) {
+//        NSString *title = [NSString stringWithFormat:@"aaa %@",@(i)];
+//        [self.datas addObject:title];
+//    }
+    JKTeacher *teacher = [JKTeacher new];
+//    [JKKVOItemManager jk_exchangeClassMethod:[NSMutableArray class] originalSel:@selector(new)
+//    swizzledSel:NSSelectorFromString(@"jk_new")];
+    JKTeacher *teacher1 = [JKTeacher new];
+
+//   NSMutableArray *array = [NSMutableArray new];
+//    NSLog(@"array %@",array.description);
+//    [array addObject:teacher];
+//    NSLog(@"array1 %@",array.description);
+//    [array addObject:teacher];
+//    NSLog(@"array2 %@",array.description);
+////    [array removeLastObject];
+////    NSLog(@"array3 %@",array.description);
+//    NSMutableDictionary *dic = [NSMutableDictionary new];
+//    [dic setObject:teacher forKey:@"a"];
+//    NSLog(@"dic %@",dic.description);
+//    [dic setObject:teacher forKey:@"a1"];
+//    NSLog(@"dic1 %@",dic.description);
+
+
+
+
+
 }
 
 - (void)reload
