@@ -8,6 +8,7 @@
 #ifndef JKKVOHelper_h
 #define JKKVOHelper_h
 #import "NSObject+JKKVOHelper.h"
+#import "NSMutableArray+JKKVOHelper.h"
 
 
 #endif /* JKKVOHelper_h */

@@ -30,57 +30,55 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
     [self jk_addObserver:observer forKeyPath:keyPath options:options context:nil withBlock:block];
 }
 
-- (void)jk_addObserver:(NSObject *)observer
+- (void)jk_addObserver:(__kindof NSObject *)observer
             forKeyPath:(NSString *)keyPath
                options:(NSKeyValueObservingOptions)options
                context:(nullable void *)context
              withBlock:(void(^)(NSDictionary *change, void *context))block
 {
-    [self jk_exchangeDeallocMethod];
     if (!observer || !keyPath || !block) {
         return;
     }
-    [JKKVOItemManager lock];
+    [self jk_exchangeDeallocMethod];
     if (![JKKVOItemManager isContainItemWithObserver:observer
                                           observered:self
                                              keyPath:keyPath
                                              context:context]) {
+        [JKKVOItemManager lock];
         [self setIs_jk_observered:YES];
         JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
-        JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:block detailBlock:nil];
+        JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self observered_property:[self valueForKeyPath:keyPath] keyPath:keyPath context:context block:block detailBlock:nil];
         [JKKVOItemManager addItem:item];
         [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
-        
+        [JKKVOItemManager unLock];
     }
-    [JKKVOItemManager unLock];
 }
 
-- (void)jk_addObserver:(NSObject *)observer
+- (void)jk_addObserver:(__kindof NSObject *)observer
            forKeyPaths:(NSArray <NSString *>*)keyPaths
                options:(NSKeyValueObservingOptions)options
                context:(nullable void *)context
        withDetailBlock:(void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock
 {
-    [self jk_exchangeDeallocMethod];
     if (!observer || !keyPaths || keyPaths.count == 0 || !detailBlock) {
         return;
     }
-    
-    [JKKVOItemManager lock];
+    [self jk_exchangeDeallocMethod];
     for (NSString *keyPath in keyPaths) {
         if (![JKKVOItemManager isContainItemWithObserver:observer
                                               observered:self
                                                  keyPath:keyPath
                                                  context:context]) {
+            [JKKVOItemManager lock];
             [self setIs_jk_observered:YES];
             JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
-            JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:nil detailBlock:detailBlock];
+            JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self observered_property:[self valueForKeyPath:keyPath] keyPath:keyPath context:context block:nil detailBlock:detailBlock];
             [JKKVOItemManager addItem:item];
             [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
+            [JKKVOItemManager unLock];
         }
     }
     
-    [JKKVOItemManager unLock];
 }
 
 - (void)jk_addObserverForKeyPath:(NSString *)keyPath
@@ -106,46 +104,43 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
     [self jk_addObserver:self forKeyPath:keyPath options:options context:context withBlock:block];
 }
 
-- (void)jk_removeObserver:(NSObject *)observer
+- (void)jk_removeObserver:(__kindof NSObject *)observer
                forKeyPath:(NSString *)keyPath
 {
     [self jk_removeObserver:observer forKeyPath:keyPath context:nil];
 }
 
-- (void)jk_removeObserver:(NSObject *)observer
-forKeyPath:(NSString *)keyPath
-   context:(nullable void *)context
+- (void)jk_removeObserver:(__kindof NSObject *)observer
+               forKeyPath:(NSString *)keyPath
+                  context:(nullable void *)context
 {
   if (!keyPath || !observer) {
         return;
     }
-    [JKKVOItemManager lock];
     JKKVOItem *item = [JKKVOItemManager isContainItemWithObserver:observer
                                                        observered:self
                                                           keyPath:keyPath
                                                           context:context];
     if (item) {
+        [JKKVOItemManager lock];
         [self removeObserver:item.kvoObserver forKeyPath:keyPath context:context];
         [JKKVOItemManager removeItem:item];
+        [JKKVOItemManager unLock];
     }
-    [JKKVOItemManager unLock];
 }
 
-- (void)jk_removeObserver:(NSObject *)observer
+- (void)jk_removeObserver:(__kindof NSObject *)observer
               forKeyPaths:(NSArray <NSString *>*)keyPaths
 {
     for (NSString *keyPath in keyPaths) {
-        [JKKVOItemManager lock];
         NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsWithObserver:observer observered:self keyPath:keyPath];
-        for (JKKVOItem *item in [items mutableCopy]) {
+        for (JKKVOItem *item in items) {
               [self jk_remove_kvoObserverWithItem:item];
         }
-        [JKKVOItemManager unLock];
-
     }
 }
 
-- (void)jk_removeObservers:(NSArray <NSObject *>*)observers
+- (void)jk_removeObservers:(NSArray <__kindof NSObject *>*)observers
                 forKeyPath:(NSString *)keyPath
 {
     if (!keyPath) {
@@ -154,21 +149,19 @@ forKeyPath:(NSString *)keyPath
     if (!observers) {
         [JKKVOItemManager lock];
         NSArray *items = [JKKVOItemManager items];
-         for (JKKVOItem *item in [items mutableCopy]) {
+        [JKKVOItemManager unLock];
+         for (JKKVOItem *item in items) {
              if ([item.keyPath isEqualToString:keyPath]) {
                  [self jk_remove_kvoObserverWithItem:item];
              }
          }
-        [JKKVOItemManager unLock];
     } else {
-        [JKKVOItemManager lock];
         for (NSObject *observer in observers) {
             NSArray <JKKVOItem *>* items = [JKKVOItemManager itemsWithObserver:observer observered:self keyPath:keyPath];
-            for (JKKVOItem *item in [items mutableCopy]) {
+            for (JKKVOItem *item in items) {
                 [self jk_remove_kvoObserverWithItem:item];
             }
         }
-        [JKKVOItemManager unLock];
 
     }
 }
@@ -176,25 +169,27 @@ forKeyPath:(NSString *)keyPath
 - (void)jk_removeObservers
 {
     NSArray <JKKVOItem *>*items = [self jk_observerItems];
-    for (JKKVOItem *item in [items mutableCopy]) {
-        NSArray *keyPaths = [self jk_keyPathsObserveredBy:item.kvoObserver];
+    for (JKKVOItem *item in items) {
+        NSArray *keyPaths = [JKKVOItemManager observeredKeyPathsOfKvo_observer:item.kvoObserver];
         [self jk_remove_kvoObserverWithItem:item forKeyPaths:keyPaths];
     }
 }
 
 - (NSArray <NSString *>*)jk_observeredKeyPaths
 {
-    [JKKVOItemManager lock];
     NSArray <NSString *>*keyPaths = [JKKVOItemManager observeredKeyPathsOfObservered:self];
-    [JKKVOItemManager unLock];
     return keyPaths;
 }
 
-- (NSArray <NSString *>*)jk_keyPathsObserveredBy:(NSObject *)observer
+- (NSArray <NSObject *>*)jk_observersOfKeyPath:(NSString *)keyPath
 {
-    [JKKVOItemManager lock];
+    NSArray <__kindof NSObject *>*observers = [JKKVOItemManager observersOfObservered:self keyPath:keyPath];
+    return observers;
+}
+
+- (NSArray <NSString *>*)jk_keyPathsObserveredBy:(__kindof NSObject *)observer
+{
     NSArray *keyPaths = [JKKVOItemManager observeredKeyPathsOfObserered:self observer:observer];
-    [JKKVOItemManager unLock];
     return keyPaths;
 }
 
@@ -213,13 +208,11 @@ forKeyPath:(NSString *)keyPath
 - (void)jk_remove_kvoObserverWithItem:(JKKVOItem *)item
                           forKeyPaths:(NSArray <NSString *>*)keyPaths
 {
-    [JKKVOItemManager lock];
     for (NSString *keyPath in keyPaths) {
         if ([item.keyPath isEqualToString:keyPath]) {
             [self jk_remove_kvoObserverWithItem:item];
         }
     }
-    [JKKVOItemManager unLock];
 }
 
 - (void)jk_remove_kvoObserverWithItem:(JKKVOItem *)item
@@ -227,40 +220,35 @@ forKeyPath:(NSString *)keyPath
   if (!item) {
         return;
     }
+    [JKKVOItemManager lock];
     [self removeObserver:item.kvoObserver forKeyPath:item.keyPath context:item.context];
     [JKKVOItemManager removeItem:item];
-    
+    [JKKVOItemManager unLock];
 }
 
 - (NSArray <JKKVOItem *>*)jk_observerItemsForKeyPath:(NSString *)keyPath
 {
-    [JKKVOItemManager lock];
-    NSArray <JKKVOItem *>*items = [JKKVOItemManager observerItemsOfObserered:self keyPath:keyPath];
-    [JKKVOItemManager unLock];
+    NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered:self keyPath:keyPath];
     return items;
 }
 
 - (void)vv_removeObserverItems
 {
     NSArray <JKKVOItem *>*items = [self jk_observerItems];
-    for (JKKVOItem *item in [items mutableCopy]) {
+    for (JKKVOItem *item in items) {
         [self jk_remove_kvoObserverWithItem:item];
     }
 }
 
 - (NSArray <JKKVOItem *>*)jk_observerItems;
 {
-    [JKKVOItemManager lock];
-    NSArray <JKKVOItem *>*items = [JKKVOItemManager observerItemsOfObserered:self];
-    [JKKVOItemManager unLock];
+    NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered:self];
     return items;
 }
 
 - (NSArray <JKKVOItem *>*)jk_observeredItems
 {
-   [JKKVOItemManager lock];
-    NSArray <JKKVOItem *>*items = [JKKVOItemManager observeredItemsOfObserver:self];
-    [JKKVOItemManager unLock];
+    NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObserver:self];
     return items;
 }
 

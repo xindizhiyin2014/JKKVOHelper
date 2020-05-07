@@ -18,13 +18,13 @@ NS_ASSUME_NONNULL_BEGIN
  @param options options
  @param block 回调
  */
-- (void)jk_addObserver:(NSObject *)observer
+- (void)jk_addObserver:(__kindof NSObject *)observer
             forKeyPath:(NSString *)keyPath
                options:(NSKeyValueObservingOptions)options
              withBlock:(void(^)(NSDictionary *change, void *context))block;
 
 /**
- 添加keyPath监听
+ 添加keyPath监听，有context
  
  @param observer 观察者
  @param keyPath keyPath
@@ -32,20 +32,20 @@ NS_ASSUME_NONNULL_BEGIN
  @param context context
  @param block 回调
  */
-- (void)jk_addObserver:(NSObject *)observer
+- (void)jk_addObserver:(__kindof NSObject *)observer
             forKeyPath:(NSString *)keyPath
                options:(NSKeyValueObservingOptions)options
                context:(nullable void *)context
              withBlock:(void(^)(NSDictionary *change, void *context))block;
 
 
-/// 添加一组keyPath监听
+/// 添加一组keyPath监听，有context
 /// @param observer 观察者
 /// @param keyPaths keyPath数组
 /// @param options options
 /// @param context context
 /// @param detailBlock 回调
-- (void)jk_addObserver:(NSObject *)observer
+- (void)jk_addObserver:(__kindof NSObject *)observer
            forKeyPaths:(NSArray <NSString *>*)keyPaths
                options:(NSKeyValueObservingOptions)options
                context:(nullable void *)context
@@ -63,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
                        withBlock:(void(^)(NSDictionary *change, void *context))block;
 
 /**
- 添加keyPath监听,观察者是自己
+ 添加keyPath监听,观察者是自己，有context
  
  @param keyPath keyPath
  @param options options
@@ -75,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
                          context:(nullable void *)context
                        withBlock:(void(^)(NSDictionary *change, void *context))block;
 
-/// 添加一组keyPath监听,观察者是自己
+/// 添加一组keyPath监听,观察者是自己,有context
 /// @param keyPaths keyPath数组
 /// @param options options
 /// @param context context
@@ -90,14 +90,14 @@ NS_ASSUME_NONNULL_BEGIN
  @param observer 观察者
  @param keyPath keyPath
  */
-- (void)jk_removeObserver:(NSObject *)observer
+- (void)jk_removeObserver:(__kindof NSObject *)observer
                forKeyPath:(NSString *)keyPath;
 
-/// 移除keyPath监听
+/// 移除keyPath监听,有context
 /// @param observer 观察者
 /// @param keyPath keyPath
 /// @param context context
-- (void)jk_removeObserver:(NSObject *)observer
+- (void)jk_removeObserver:(__kindof NSObject *)observer
                forKeyPath:(NSString *)keyPath
                   context:(nullable void *)context;
 
@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param observer 观察者
  @param keyPaths keyPath组成的数组
  */
-- (void)jk_removeObserver:(NSObject *)observer
+- (void)jk_removeObserver:(__kindof NSObject *)observer
               forKeyPaths:(NSArray <NSString *>*)keyPaths;
 
 /**
@@ -116,7 +116,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param observers 观察者数组
  @param keyPath keyPath
  */
-- (void)jk_removeObservers:(NSArray <NSObject *>*)observers
+- (void)jk_removeObservers:(NSArray <__kindof NSObject *>*)observers
                 forKeyPath:(NSString *)keyPath;
 
 /**
@@ -131,13 +131,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSArray <NSString *>*)jk_observeredKeyPaths;
 
+/// 监听某一个属性的所有监听者的列表
+/// @param keyPath keyPath
+- (NSArray <NSObject *>*)jk_observersOfKeyPath:(NSString *)keyPath;
+
 /**
  某个观察者监听的keyPath组成的列表
  
  @param observer 观察者
  @return keyPath组成的列表
  */
-- (NSArray <NSString *>*)jk_keyPathsObserveredBy:(NSObject *)observer;
+- (NSArray <NSString *>*)jk_keyPathsObserveredBy:(__kindof NSObject *)observer;
 
 @end
 
