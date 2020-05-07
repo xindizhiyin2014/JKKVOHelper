@@ -8,7 +8,7 @@
 
 #import "JKViewController.h"
 #import "JKTeacher.h"
-#import "JKKVOItemManager.h"
+#import "JKKVOHelper.h"
 
 @interface JKViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -21,29 +21,26 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    self.datas = [NSMutableArray new];
-//    for (NSInteger i = 0; i< 100; i++) {
-//        NSString *title = [NSString stringWithFormat:@"aaa %@",@(i)];
-//        [self.datas addObject:title];
-//    }
-    JKTeacher *teacher = [JKTeacher new];
-//    [JKKVOItemManager jk_exchangeClassMethod:[NSMutableArray class] originalSel:@selector(new)
-//    swizzledSel:NSSelectorFromString(@"jk_new")];
-    JKTeacher *teacher1 = [JKTeacher new];
+    
+//    JKTeacher *teacher = [JKTeacher new];
+//    [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+//        NSLog(@"change %@",change);
+//    }];
+//    JKPersonModel *person = [JKPersonModel new];
+//    person.name = @"1";
+//    teacher.students = @[person].mutableCopy;
+//    JKPersonModel *person1 = [JKPersonModel new];
+//    person1.name = @"2";
+//    [teacher.students jk_addObject:person1];
+//    teacher.students = @[person,person1].mutableCopy;
+//    teacher.students = nil;
+    
+//    NSMutableArray *array = [NSMutableArray new];
+//    [array addObject:@1];
+//    [array removeObjectAtIndex:1];
+    
+    
 
-//   NSMutableArray *array = [NSMutableArray new];
-//    NSLog(@"array %@",array.description);
-//    [array addObject:teacher];
-//    NSLog(@"array1 %@",array.description);
-//    [array addObject:teacher];
-//    NSLog(@"array2 %@",array.description);
-////    [array removeLastObject];
-////    NSLog(@"array3 %@",array.description);
-//    NSMutableDictionary *dic = [NSMutableDictionary new];
-//    [dic setObject:teacher forKey:@"a"];
-//    NSLog(@"dic %@",dic.description);
-//    [dic setObject:teacher forKey:@"a1"];
-//    NSLog(@"dic1 %@",dic.description);
 
 
 

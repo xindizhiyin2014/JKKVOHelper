@@ -9,9 +9,9 @@
 #import "JKFactory.h"
 
 @implementation JKFactory
-static JKFactory *_factory = nil;
 + (instancetype)sharedInstance
 {
+    static JKFactory *_factory = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _factory = [[self alloc] init];

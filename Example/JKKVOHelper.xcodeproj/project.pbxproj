@@ -25,11 +25,15 @@
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		BD07E6E6231CE61E0085656E /* JKPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6E5231CE61E0085656E /* JKPersonModel.m */; };
 		BD07E6EC231CE64D0085656E /* JKTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EB231CE64D0085656E /* JKTeacher.m */; };
-		BD07E6EF231CE65A0085656E /* JKWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EE231CE65A0085656E /* JKWorker.m */; };
 		BD07E6F2231CE7870085656E /* JKAViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6F1231CE7870085656E /* JKAViewController.m */; };
 		BD58FCAC23B6EBE7007B339A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = BD58FCAB23B6EBE7007B339A /* Tests.m */; };
 		BD58FCAE23B6EBF4007B339A /* JKKVOHelperSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = BD58FCAD23B6EBF4007B339A /* JKKVOHelperSpec.m */; };
 		BD5C617C236D154900E2112A /* JKFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5C617B236D154900E2112A /* JKFactory.m */; };
+		BD691AF62460146B00BAD240 /* JKWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD691AF52460146B00BAD240 /* JKWorker.m */; };
+		BD691AFB2460151900BAD240 /* JKPersonModel.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6E5231CE61E0085656E /* JKPersonModel.m */; };
+		BD691AFC2460151900BAD240 /* JKTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EB231CE64D0085656E /* JKTeacher.m */; };
+		BD691AFD2460151900BAD240 /* JKWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD691AF52460146B00BAD240 /* JKWorker.m */; };
+		BD691AFE2460151900BAD240 /* JKFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5C617B236D154900E2112A /* JKFactory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,14 +77,14 @@
 		BD07E6E5231CE61E0085656E /* JKPersonModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKPersonModel.m; sourceTree = "<group>"; };
 		BD07E6EA231CE64D0085656E /* JKTeacher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKTeacher.h; sourceTree = "<group>"; };
 		BD07E6EB231CE64D0085656E /* JKTeacher.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKTeacher.m; sourceTree = "<group>"; };
-		BD07E6ED231CE65A0085656E /* JKWorker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKWorker.h; sourceTree = "<group>"; };
-		BD07E6EE231CE65A0085656E /* JKWorker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKWorker.m; sourceTree = "<group>"; };
 		BD07E6F0231CE7870085656E /* JKAViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKAViewController.h; sourceTree = "<group>"; };
 		BD07E6F1231CE7870085656E /* JKAViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKAViewController.m; sourceTree = "<group>"; };
 		BD58FCAB23B6EBE7007B339A /* Tests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		BD58FCAD23B6EBF4007B339A /* JKKVOHelperSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKKVOHelperSpec.m; sourceTree = "<group>"; };
 		BD5C617A236D154900E2112A /* JKFactory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JKFactory.h; sourceTree = "<group>"; };
 		BD5C617B236D154900E2112A /* JKFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKFactory.m; sourceTree = "<group>"; };
+		BD691AF42460146B00BAD240 /* JKWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKWorker.h; sourceTree = "<group>"; };
+		BD691AF52460146B00BAD240 /* JKWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKWorker.m; sourceTree = "<group>"; };
 		D0AD695BB10D4D41769BFA81 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D2F9F6559735B21AF0053ADB /* Pods_JKKVOHelper_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JKKVOHelper_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D98DC9E94F7FE7BB409C8048 /* JKKVOHelper.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = JKKVOHelper.podspec; path = ../JKKVOHelper.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -171,8 +175,8 @@
 				BD07E6E5231CE61E0085656E /* JKPersonModel.m */,
 				BD07E6EA231CE64D0085656E /* JKTeacher.h */,
 				BD07E6EB231CE64D0085656E /* JKTeacher.m */,
-				BD07E6ED231CE65A0085656E /* JKWorker.h */,
-				BD07E6EE231CE65A0085656E /* JKWorker.m */,
+				BD691AF42460146B00BAD240 /* JKWorker.h */,
+				BD691AF52460146B00BAD240 /* JKWorker.m */,
 				BD5C617A236D154900E2112A /* JKFactory.h */,
 				BD5C617B236D154900E2112A /* JKFactory.m */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
@@ -412,9 +416,9 @@
 			files = (
 				6003F59E195388D20070C39A /* JKAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* JKViewController.m in Sources */,
-				BD07E6EF231CE65A0085656E /* JKWorker.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				BD07E6E6231CE61E0085656E /* JKPersonModel.m in Sources */,
+				BD691AF62460146B00BAD240 /* JKWorker.m in Sources */,
 				BD07E6EC231CE64D0085656E /* JKTeacher.m in Sources */,
 				BD5C617C236D154900E2112A /* JKFactory.m in Sources */,
 				BD07E6F2231CE7870085656E /* JKAViewController.m in Sources */,
@@ -425,6 +429,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD691AFB2460151900BAD240 /* JKPersonModel.m in Sources */,
+				BD691AFC2460151900BAD240 /* JKTeacher.m in Sources */,
+				BD691AFD2460151900BAD240 /* JKWorker.m in Sources */,
+				BD691AFE2460151900BAD240 /* JKFactory.m in Sources */,
 				BD58FCAE23B6EBF4007B339A /* JKKVOHelperSpec.m in Sources */,
 				BD58FCAC23B6EBE7007B339A /* Tests.m in Sources */,
 			);

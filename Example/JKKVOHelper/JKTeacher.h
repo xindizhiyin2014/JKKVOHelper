@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface JKTeacher : JKPersonModel
 @property (nonatomic, copy) NSString *school;
+@property (nonatomic, strong) NSMutableArray <JKPersonModel *>*students; /// 学生
 @end
 
 NS_ASSUME_NONNULL_END

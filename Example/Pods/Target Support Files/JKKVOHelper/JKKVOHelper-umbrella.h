@@ -12,6 +12,7 @@
 
 #import "JKKVOHelper.h"
 #import "JKKVOItemManager.h"
+#import "NSMutableArray+JKKVOHelper.h"
 #import "NSObject+JKKVOHelper.h"
 
 FOUNDATION_EXPORT double JKKVOHelperVersionNumber;
