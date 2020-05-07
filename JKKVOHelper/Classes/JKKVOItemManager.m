@@ -50,6 +50,9 @@
     if ([object isKindOfClass:[NSObject class]]) {
         NSObject *observeredObject = (NSObject *)object;
         JKKVOItem *item = [JKKVOItemManager isContainItemWith_kvoObserver:self observered:observeredObject keyPath:keyPath context:context];
+        if (!item.kvoObserver.originObserver) {
+            return;
+        }
         item.observered_property = [observeredObject valueForKeyPath:keyPath];
         if (item) {
             if (item.block) {
@@ -135,11 +138,6 @@
         _manager.items = [NSMutableArray new];
     });
     return _manager;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 + (void)lock
