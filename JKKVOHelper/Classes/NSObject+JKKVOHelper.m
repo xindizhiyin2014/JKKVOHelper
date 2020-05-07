@@ -195,13 +195,13 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
 
 #pragma mark - - private method - -
 
-- (void)vvhook_dealloc
+- (void)jkhook_dealloc
 {
     if ([self is_jk_observered] ) {
-        [self vv_removeObserverItems];
-        [self vvhook_dealloc];
+        [self jk_removeObserverItems];
+        [self jkhook_dealloc];
     } else {
-      [self vvhook_dealloc];
+      [self jkhook_dealloc];
     }
 }
 
@@ -232,7 +232,7 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
     return items;
 }
 
-- (void)vv_removeObserverItems
+- (void)jk_removeObserverItems
 {
     NSArray <JKKVOItem *>*items = [self jk_observerItems];
     for (JKKVOItem *item in items) {
