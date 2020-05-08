@@ -190,27 +190,27 @@
     }
 }
 
-- (void)jk_setNil:(NSMutableArray **)array
-{
-#if DEBUG
-    NSAssert(array != NULL, @"make sure array != NULL be YES");
-    NSString *self_address = [NSString stringWithFormat:@"%p",self];
-    NSString *array_address = [NSString stringWithFormat:@"%p",*array];
-    NSAssert([self_address isEqualToString:array_address] , @"make sure [self_address isEqualToString:array_address] be YES");
-#endif
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
-        if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
-                [item.observered setValue:nil forKeyPath:item.keyPath];
-                [item.observered didChangeValueForKey:item.keyPath];
-            }
-        } else {
-            if (array != NULL) {
-                *array = nil;
-            }
-        }
-}
+//- (void)jk_setNil:(NSMutableArray **)array
+//{
+//#if DEBUG
+//    NSAssert(array != NULL, @"make sure array != NULL be YES");
+//    NSString *self_address = [NSString stringWithFormat:@"%p",self];
+//    NSString *array_address = [NSString stringWithFormat:@"%p",*array];
+//    NSAssert([self_address isEqualToString:array_address] , @"make sure [self_address isEqualToString:array_address] be YES");
+//#endif
+//        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+//        if (items.count > 0) {
+//            for (JKKVOItem *item in items) {
+//                [item.observered willChangeValueForKey:item.keyPath];
+//                [item.observered setValue:nil forKeyPath:item.keyPath];
+//                [item.observered didChangeValueForKey:item.keyPath];
+//            }
+//        } else {
+//            if (array != NULL) {
+//                *array = nil;
+//            }
+//        }
+//}
 
 
 @end

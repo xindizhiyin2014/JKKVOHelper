@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JKKVOHelper'
-  s.version          = '0.1.16'
+  s.version          = '0.1.17'
   s.summary          = 'this is a tool to help developer to easily use KVO.'
 
 # This description is used to generate tags and improve search results.

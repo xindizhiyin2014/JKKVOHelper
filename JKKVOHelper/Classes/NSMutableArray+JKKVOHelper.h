@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)jk_exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 - (void)jk_removeAllObjects;
 - (void)jk_removeObject:(id)anObject;
-- (void)jk_setNil:(NSMutableArray *_Nonnull*_Nonnull)array;
+//- (void)jk_setNil:(NSMutableArray *_Nonnull*_Nonnull)array;
 /*
 - (void)jk_removeObject:(ObjectType)anObject inRange:(NSRange)range;
 - (void)jk_removeObjectIdenticalTo:(ObjectType)anObject inRange:(NSRange)range;

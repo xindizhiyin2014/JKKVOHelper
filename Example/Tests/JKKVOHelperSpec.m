@@ -238,8 +238,8 @@ describe(@"JKKVOHelper", ^{
                 [[keyPaths should] haveCountOf:2];
             });
 });
-         
-    
+
+
      context(@"remove", ^{
         beforeAll(^{
            NSArray *array = [JKKVOItemManager items];
@@ -322,14 +322,14 @@ describe(@"JKKVOHelper", ^{
 
 });
          context(@"array action", ^{
-    
+
         afterEach(^{
            NSArray *array = [JKKVOItemManager items];
             for(JKKVOItem *item in array) {
                 [JKKVOItemManager removeItem:item];
             }
         });
-    
+
         it(@"init", ^{
             JKTeacher *teacher = [JKTeacher new];
             __block BOOL invoked = NO;
@@ -340,65 +340,65 @@ describe(@"JKKVOHelper", ^{
             }];
             teacher.students = @[].mutableCopy;
             [[theValue(invoked) shouldEventually] beYes];
-            
-        });
-    
-    it(@"array is nil", ^{
-        JKTeacher *teacher = [JKTeacher new];
-        __block BOOL invoked = NO;
-        NSMutableArray *students = [NSMutableArray new];
-        JKPersonModel *person1 = [JKPersonModel new];
-        person1.name = @"1";
-        [students addObject:person1];
-        teacher.students = students;
 
-        [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
-            [[[change objectForKey:@"new"] should] equal:[NSNull null]];
-            invoked = YES;
-        }];
-//        teacher.students = nil;
-        [students jk_setNil:&students];
-        [[theValue(invoked) shouldEventually] beYes];
-    });
-    
-    it(@"array is nil_1", ^{
-            JKTeacher *teacher = [JKTeacher new];
-            NSMutableArray *students = [NSMutableArray new];
-            JKPersonModel *person1 = [JKPersonModel new];
-            person1.name = @"1";
-            [students addObject:person1];
-            teacher.students = students;
-            [students jk_setNil:&students];
-           [[students should] beNil];
         });
-    
-    it(@"array is nil_2", ^{
-        JKTeacher *teacher = [JKTeacher new];
-        NSMutableArray *students = [NSMutableArray new];
-        JKPersonModel *person1 = [JKPersonModel new];
-        person1.name = @"1";
-        [students addObject:person1];
-        teacher.students = students;
-        [[theBlock(^{
-            [students jk_setNil:nil];
-        }) should] raiseWithReason:@"make sure array != NULL be YES"];
-         
-       
-    });
-    
-    it(@"array is nil_3", ^{
-        JKTeacher *teacher = [JKTeacher new];
-        NSMutableArray *students = [NSMutableArray new];
-        JKPersonModel *person1 = [JKPersonModel new];
-        person1.name = @"1";
-        [students addObject:person1];
-        teacher.students = students;
-        [[theBlock(^{
-            NSMutableArray *tmpArray = [NSMutableArray new];
-            [students jk_setNil:&tmpArray];
-        }) should] raiseWithReason:@"make sure [self_address isEqualToString:array_address] be YES"];
-    });
-    
+
+//    it(@"array is nil", ^{
+//        JKTeacher *teacher = [JKTeacher new];
+//        __block BOOL invoked = NO;
+//        NSMutableArray *students = [NSMutableArray new];
+//        JKPersonModel *person1 = [JKPersonModel new];
+//        person1.name = @"1";
+//        [students addObject:person1];
+//        teacher.students = students;
+//
+//        [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+//            [[[change objectForKey:@"new"] should] equal:[NSNull null]];
+//            invoked = YES;
+//        }];
+////        teacher.students = nil;
+//        [students jk_setNil:&students];
+//        [[theValue(invoked) shouldEventually] beYes];
+//    });
+//
+//    it(@"array is nil_1", ^{
+//            JKTeacher *teacher = [JKTeacher new];
+//            NSMutableArray *students = [NSMutableArray new];
+//            JKPersonModel *person1 = [JKPersonModel new];
+//            person1.name = @"1";
+//            [students addObject:person1];
+//            teacher.students = students;
+//            [students jk_setNil:&students];
+//           [[students should] beNil];
+//        });
+//
+//    it(@"array is nil_2", ^{
+//        JKTeacher *teacher = [JKTeacher new];
+//        NSMutableArray *students = [NSMutableArray new];
+//        JKPersonModel *person1 = [JKPersonModel new];
+//        person1.name = @"1";
+//        [students addObject:person1];
+//        teacher.students = students;
+//        [[theBlock(^{
+//            [students jk_setNil:nil];
+//        }) should] raiseWithReason:@"make sure array != NULL be YES"];
+//
+//
+//    });
+
+//    it(@"array is nil_3", ^{
+//        JKTeacher *teacher = [JKTeacher new];
+//        NSMutableArray *students = [NSMutableArray new];
+//        JKPersonModel *person1 = [JKPersonModel new];
+//        person1.name = @"1";
+//        [students addObject:person1];
+//        teacher.students = students;
+//        [[theBlock(^{
+//            NSMutableArray *tmpArray = [NSMutableArray new];
+//            [students jk_setNil:&tmpArray];
+//        }) should] raiseWithReason:@"make sure [self_address isEqualToString:array_address] be YES"];
+//    });
+
         it(@"jk_addObject", ^{
             JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -413,7 +413,7 @@ describe(@"JKKVOHelper", ^{
             [students jk_addObject:person1];
             [[theValue(invoked) shouldEventually] beYes];
         });
-    
+
         it(@"jk_insertObject:atIndex:", ^{
            JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -425,10 +425,10 @@ describe(@"JKKVOHelper", ^{
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
             [students jk_addObject:person2];
-            
+
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
-            
+
             __block BOOL invoked = NO;
             [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
                 [[[change objectForKey:@"new"] should] haveCountOf:3];
@@ -448,10 +448,10 @@ describe(@"JKKVOHelper", ^{
         JKPersonModel *person2 = [JKPersonModel new];
         person2.name = @"2";
         [students jk_addObject:person2];
-        
+
         JKPersonModel *person3 = [JKPersonModel new];
         person3.name = @"3";
-        
+
         __block BOOL invoked = NO;
         [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
             [[[change objectForKey:@"new"] should] haveCountOf:3];
@@ -460,7 +460,7 @@ describe(@"JKKVOHelper", ^{
         [students jk_insertObject:person3 atIndex:2];
         [[theValue(invoked) shouldEventually] beYes];
     });
-    
+
         it(@"jk_removeLastObject", ^{
             JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -472,7 +472,7 @@ describe(@"JKKVOHelper", ^{
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
             [students jk_addObject:person2];
-            
+
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
             [students jk_addObject:person2];
@@ -485,7 +485,7 @@ describe(@"JKKVOHelper", ^{
             [students jk_removeLastObject];
             [[theValue(invoked) shouldEventually] beYes];
         });
-    
+
         it(@"jk_removeObjectAtIndex", ^{
             JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -497,7 +497,7 @@ describe(@"JKKVOHelper", ^{
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
             [students jk_addObject:person2];
-            
+
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
             [students jk_addObject:person2];
@@ -510,7 +510,7 @@ describe(@"JKKVOHelper", ^{
             [students jk_removeObjectAtIndex:1];
             [[theValue(invoked) shouldEventually] beYes];
         });
-    
+
         it(@"jk_replaceObjectAtIndex:withObject:", ^{
             JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -522,7 +522,7 @@ describe(@"JKKVOHelper", ^{
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
             [students jk_addObject:person2];
-            
+
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
             [students jk_addObject:person3];
@@ -540,7 +540,7 @@ describe(@"JKKVOHelper", ^{
             [students jk_replaceObjectAtIndex:2 withObject:person4];
             [[theValue(invoked) shouldEventually] beYes];
         });
-        
+
         it(@"jk_addObjectsFromArray:", ^{
           JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -552,10 +552,10 @@ describe(@"JKKVOHelper", ^{
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
             [students jk_addObject:person2];
-            
+
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
-            
+
             JKPersonModel *person4 = [JKPersonModel new];
             NSArray *array = @[person3,person4];
 
@@ -567,7 +567,7 @@ describe(@"JKKVOHelper", ^{
             [students jk_addObjectsFromArray:array];
             [[theValue(invoked) shouldEventually] beYes];
         });
-    
+
         it(@"jk_exchangeObjectAtIndex:withObjectAtIndex:", ^{
             JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -579,7 +579,7 @@ describe(@"JKKVOHelper", ^{
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
             [students jk_addObject:person2];
-            
+
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
             [students jk_addObject:person3];
@@ -601,7 +601,7 @@ describe(@"JKKVOHelper", ^{
             [students jk_exchangeObjectAtIndex:2 withObjectAtIndex:3];
             [[theValue(invoked) shouldEventually] beYes];
         });
-    
+
         it(@"jk_removeAllObjects", ^{
             JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -613,7 +613,7 @@ describe(@"JKKVOHelper", ^{
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
             [students jk_addObject:person2];
-            
+
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
             [students jk_addObject:person3];
@@ -629,7 +629,7 @@ describe(@"JKKVOHelper", ^{
             [students jk_removeAllObjects];
             [[theValue(invoked) shouldEventually] beYes];
         });
-    
+
         it(@"jk_removeObject:", ^{
             JKTeacher *teacher = [JKTeacher new];
             NSMutableArray *students = [NSMutableArray new];
@@ -645,8 +645,29 @@ describe(@"JKKVOHelper", ^{
             [students jk_removeObject:person1];
             [[theValue(invoked) shouldEventually] beYes];
         });
-    
+
          });
+         
+         context(@"observerd is nil", ^{
+            beforeAll(^{
+                NSArray *array = [JKKVOItemManager items];
+                for(JKKVOItem *item in array) {
+                    [JKKVOItemManager removeItem:item];
+                }
+            });
+            it(@"observerd is nil", ^{
+                JKPersonModel *person = [JKPersonModel new];
+                JKWorker *worker = [JKWorker new];
+                [person jk_addObserver:worker forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+                    
+                }];
+                
+    });
+    afterAll(^{
+        NSArray *array = [JKKVOItemManager items];
+        [[array should]haveCountOf:0];
+    });
+});
         
 
 });
