@@ -10,7 +10,7 @@
 
 @implementation NSMutableArray (JKKVOHelper)
 
-- (void)jk_addObject:(id)anObject
+- (void)kvo_addObject:(id)anObject
 {
 #if DEBUG
     NSAssert(anObject, @"anObject can't be nil");
@@ -29,7 +29,7 @@
         
     }
 }
-- (void)jk_insertObject:(id)anObject atIndex:(NSUInteger)index
+- (void)kvo_insertObject:(id)anObject atIndex:(NSUInteger)index
 {
 #if DEBUG
     NSAssert(anObject, @"anObject can't be nil");
@@ -50,7 +50,7 @@
     }
 }
 
-- (void)jk_removeLastObject
+- (void)kvo_removeLastObject
 {
 #if DEBUG
     NSAssert(self.count > 0, @"make sure self.count > 0 be YES");
@@ -68,7 +68,7 @@
         }
     }
 }
-- (void)jk_removeObjectAtIndex:(NSUInteger)index
+- (void)kvo_removeObjectAtIndex:(NSUInteger)index
 {
 #if DEBUG
     NSAssert(index < self.count, @"make sure index < self.count be YES");
@@ -87,7 +87,7 @@
     }
 }
 
-- (void)jk_replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject
+- (void)kvo_replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject
 {
 #if DEBUG
     NSAssert(anObject, @"anObject can't be nil");
@@ -109,7 +109,7 @@
     }
 }
 
-- (void)jk_addObjectsFromArray:(NSArray<id> *)otherArray
+- (void)kvo_addObjectsFromArray:(NSArray<id> *)otherArray
 {
 #if DEBUG
     NSAssert(otherArray.count > 0, @"make sure otherArray.count > 0 be YES");
@@ -128,7 +128,7 @@
     }
 }
 
-- (void)jk_exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2
+- (void)kvo_exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2
 {
 #if DEBUG
     NSAssert(idx1 >= 0, @"make sure idx1 >= 0 be YES");
@@ -154,7 +154,7 @@
     }
 }
 
-- (void)jk_removeAllObjects
+- (void)kvo_removeAllObjects
 {
     if (self.count > 0) {
         NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
@@ -170,7 +170,7 @@
     }
 }
 
-- (void)jk_removeObject:(id)anObject
+- (void)kvo_removeObject:(id)anObject
 {
 #if DEBUG
     NSAssert(anObject, @"anObject can't be nil");
@@ -190,7 +190,7 @@
     }
 }
 
-//- (void)jk_setNil:(NSMutableArray **)array
+//- (void)kvo_setNil:(NSMutableArray **)array
 //{
 //#if DEBUG
 //    NSAssert(array != NULL, @"make sure array != NULL be YES");

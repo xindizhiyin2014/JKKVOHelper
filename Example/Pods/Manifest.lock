@@ -1,5 +1,5 @@
 PODS:
-  - JKKVOHelper (0.1.13)
+  - JKKVOHelper (0.1.17)
   - Kiwi (3.0.0)
 
 DEPENDENCIES:
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  JKKVOHelper: 839e5cbed84ed0ba159e88f58972da05446e897c
+  JKKVOHelper: 3eb93be7496e36c0a1d306e2696373be82c47518
   Kiwi: fbeafef0f00e4d8f7dcb3420a4930afe70af77f7
 
 PODFILE CHECKSUM: 9c5f8e6c371cfa13d7a544a4d586710ad2b2faa1

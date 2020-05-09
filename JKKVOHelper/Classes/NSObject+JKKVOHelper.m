@@ -15,7 +15,7 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
 #pragma mark - - setter - -
 - (void)setIs_jk_observered:(BOOL)is_jk_observered
 {
-    objc_setAssociatedObject(self, is_jk_observeredKey, @(is_jk_observered), OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, is_jk_observeredKey, @(is_jk_observered), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 #pragma mark - - getter - -
 - (BOOL)is_jk_observered

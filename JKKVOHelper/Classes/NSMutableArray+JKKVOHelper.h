@@ -13,37 +13,37 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSMutableArray (JKKVOHelper)
 
-- (void)jk_addObject:(id)anObject;
-- (void)jk_insertObject:(id)anObject atIndex:(NSUInteger)index;
-- (void)jk_removeLastObject;
-- (void)jk_removeObjectAtIndex:(NSUInteger)index;
-- (void)jk_replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
+- (void)kvo_addObject:(id)anObject;
+- (void)kvo_insertObject:(id)anObject atIndex:(NSUInteger)index;
+- (void)kvo_removeLastObject;
+- (void)kvo_removeObjectAtIndex:(NSUInteger)index;
+- (void)kvo_replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 
-- (void)jk_addObjectsFromArray:(NSArray<id> *)otherArray;
-- (void)jk_exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
-- (void)jk_removeAllObjects;
-- (void)jk_removeObject:(id)anObject;
-//- (void)jk_setNil:(NSMutableArray *_Nonnull*_Nonnull)array;
+- (void)kvo_addObjectsFromArray:(NSArray<id> *)otherArray;
+- (void)kvo_exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
+- (void)kvo_removeAllObjects;
+- (void)kvo_removeObject:(id)anObject;
+//- (void)kvo_setNil:(NSMutableArray *_Nonnull*_Nonnull)array;
 /*
-- (void)jk_removeObject:(ObjectType)anObject inRange:(NSRange)range;
-- (void)jk_removeObjectIdenticalTo:(ObjectType)anObject inRange:(NSRange)range;
-- (void)jk_removeObjectIdenticalTo:(ObjectType)anObject;
-- (void)jk_removeObjectsInArray:(NSArray<ObjectType> *)otherArray;
-- (void)jk_removeObjectsInRange:(NSRange)range;
-- (void)jk_replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray<ObjectType> *)otherArray range:(NSRange)otherRange;
-- (void)jk_replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray<ObjectType> *)otherArray;
-- (void)jk_setArray:(NSArray<ObjectType> *)otherArray;
-- (void)jk_sortUsingFunction:(NSInteger (NS_NOESCAPE *)(ObjectType,  ObjectType, void * _Nullable))compare context:(nullable void *)context;
-- (void)jk_sortUsingSelector:(SEL)comparator;
+- (void)kvo_removeObject:(ObjectType)anObject inRange:(NSRange)range;
+- (void)kvo_removeObjectIdenticalTo:(ObjectType)anObject inRange:(NSRange)range;
+- (void)kvo_removeObjectIdenticalTo:(ObjectType)anObject;
+- (void)kvo_removeObjectsInArray:(NSArray<ObjectType> *)otherArray;
+- (void)kvo_removeObjectsInRange:(NSRange)range;
+- (void)kvo_replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray<ObjectType> *)otherArray range:(NSRange)otherRange;
+- (void)kvo_replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray<ObjectType> *)otherArray;
+- (void)kvo_setArray:(NSArray<ObjectType> *)otherArray;
+- (void)kvo_sortUsingFunction:(NSInteger (NS_NOESCAPE *)(ObjectType,  ObjectType, void * _Nullable))compare context:(nullable void *)context;
+- (void)kvo_sortUsingSelector:(SEL)comparator;
 
-- (void)jk_insertObjects:(NSArray<ObjectType> *)objects atIndexes:(NSIndexSet *)indexes;
-- (void)jk_removeObjectsAtIndexes:(NSIndexSet *)indexes;
-- (void)jk_replaceObjectsAtIndexes:(NSIndexSet *)indexes withObjects:(NSArray<ObjectType> *)objects;
+- (void)kvo_insertObjects:(NSArray<ObjectType> *)objects atIndexes:(NSIndexSet *)indexes;
+- (void)kvo_removeObjectsAtIndexes:(NSIndexSet *)indexes;
+- (void)kvo_replaceObjectsAtIndexes:(NSIndexSet *)indexes withObjects:(NSArray<ObjectType> *)objects;
 
-- (void)jk_setObject:(ObjectType)obj atIndexedSubscript:(NSUInteger)idx API_AVAILABLE(macos(10.8), ios(6.0), watchos(2.0), tvos(9.0));
+- (void)kvo_setObject:(ObjectType)obj atIndexedSubscript:(NSUInteger)idx API_AVAILABLE(macos(10.8), ios(6.0), watchos(2.0), tvos(9.0));
 
-- (void)jk_sortUsingComparator:(NSComparator NS_NOESCAPE)cmptr API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
-- (void)jk_sortWithOptions:(NSSortOptions)opts usingComparator:(NSComparator NS_NOESCAPE)cmptr API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
+- (void)kvo_sortUsingComparator:(NSComparator NS_NOESCAPE)cmptr API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
+- (void)kvo_sortWithOptions:(NSSortOptions)opts usingComparator:(NSComparator NS_NOESCAPE)cmptr API_AVAILABLE(macos(10.6), ios(4.0), watchos(2.0), tvos(9.0));
 */
 @end
 

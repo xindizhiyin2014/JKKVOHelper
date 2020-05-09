@@ -410,7 +410,7 @@ describe(@"JKKVOHelper", ^{
                 [[[change objectForKey:@"new"] should] haveCountOf:1];
                 invoked = YES;
             }];
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
@@ -420,11 +420,11 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
 
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
@@ -434,7 +434,7 @@ describe(@"JKKVOHelper", ^{
                 [[[change objectForKey:@"new"] should] haveCountOf:3];
                 invoked = YES;
             }];
-            [students jk_insertObject:person3 atIndex:1];
+            [students kvo_insertObject:person3 atIndex:1];
             [[theValue(invoked) shouldEventually] beYes];
         });
     it(@"jk_insertObject:atIndex:1", ^{
@@ -443,11 +443,11 @@ describe(@"JKKVOHelper", ^{
         teacher.students = students;
         JKPersonModel *person1 = [JKPersonModel new];
         person1.name = @"1";
-        [students jk_addObject:person1];
+        [students kvo_addObject:person1];
 
         JKPersonModel *person2 = [JKPersonModel new];
         person2.name = @"2";
-        [students jk_addObject:person2];
+        [students kvo_addObject:person2];
 
         JKPersonModel *person3 = [JKPersonModel new];
         person3.name = @"3";
@@ -457,7 +457,7 @@ describe(@"JKKVOHelper", ^{
             [[[change objectForKey:@"new"] should] haveCountOf:3];
             invoked = YES;
         }];
-        [students jk_insertObject:person3 atIndex:2];
+        [students kvo_insertObject:person3 atIndex:2];
         [[theValue(invoked) shouldEventually] beYes];
     });
 
@@ -467,22 +467,22 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
 
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             __block BOOL invoked = NO;
             [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
                 [[[change objectForKey:@"new"] should] haveCountOf:2];
                 invoked = YES;
             }];
-            [students jk_removeLastObject];
+            [students kvo_removeLastObject];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
@@ -492,22 +492,22 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
 
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             __block BOOL invoked = NO;
             [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
                 [[[change objectForKey:@"new"] should] haveCountOf:2];
                 invoked = YES;
             }];
-            [students jk_removeObjectAtIndex:1];
+            [students kvo_removeObjectAtIndex:1];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
@@ -517,15 +517,15 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
 
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
-            [students jk_addObject:person3];
+            [students kvo_addObject:person3];
             JKPersonModel *person4 = [JKPersonModel new];
             person4.name = @"4";
 
@@ -537,7 +537,7 @@ describe(@"JKKVOHelper", ^{
                 [[person should] equal:person4];
                 invoked = YES;
             }];
-            [students jk_replaceObjectAtIndex:2 withObject:person4];
+            [students kvo_replaceObjectAtIndex:2 withObject:person4];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
@@ -547,11 +547,11 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
 
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
@@ -564,7 +564,7 @@ describe(@"JKKVOHelper", ^{
                 [[[change objectForKey:@"new"] should] haveCountOf:4];
                 invoked = YES;
             }];
-            [students jk_addObjectsFromArray:array];
+            [students kvo_addObjectsFromArray:array];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
@@ -574,18 +574,18 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
 
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
-            [students jk_addObject:person3];
+            [students kvo_addObject:person3];
             JKPersonModel *person4 = [JKPersonModel new];
             person4.name = @"4";
-            [students jk_addObject:person4];
+            [students kvo_addObject:person4];
 
 
             __block BOOL invoked = NO;
@@ -598,7 +598,7 @@ describe(@"JKKVOHelper", ^{
                 [[person_2 should] equal:person3];
                 invoked = YES;
             }];
-            [students jk_exchangeObjectAtIndex:2 withObjectAtIndex:3];
+            [students kvo_exchangeObjectAtIndex:2 withObjectAtIndex:3];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
@@ -608,25 +608,25 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
 
             JKPersonModel *person2 = [JKPersonModel new];
             person2.name = @"2";
-            [students jk_addObject:person2];
+            [students kvo_addObject:person2];
 
             JKPersonModel *person3 = [JKPersonModel new];
             person3.name = @"3";
-            [students jk_addObject:person3];
+            [students kvo_addObject:person3];
             JKPersonModel *person4 = [JKPersonModel new];
             person4.name = @"4";
-            [students jk_addObject:person4];
+            [students kvo_addObject:person4];
 
             __block BOOL invoked = NO;
             [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
                 [[[change objectForKey:@"new"] should] haveCountOf:0];
                 invoked = YES;
             }];
-            [students jk_removeAllObjects];
+            [students kvo_removeAllObjects];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
@@ -636,13 +636,13 @@ describe(@"JKKVOHelper", ^{
             teacher.students = students;
             JKPersonModel *person1 = [JKPersonModel new];
             person1.name = @"1";
-            [students jk_addObject:person1];
+            [students kvo_addObject:person1];
             __block BOOL invoked = NO;
             [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
                 [[[change objectForKey:@"new"] should] haveCountOf:0];
                 invoked = YES;
             }];
-            [students jk_removeObject:person1];
+            [students kvo_removeObject:person1];
             [[theValue(invoked) shouldEventually] beYes];
         });
 
