@@ -144,6 +144,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param kvoObserver 被观察者
 + (NSArray <NSString *>*)observeredKeyPathsOfKvo_observer:(JKKVOObserver *)kvoObserver;
 
+/// 获取item.observered 为nil的item列表
+/// @param observered 被观察者
++ (NSArray <JKKVOItem *>*)dealloc_itemsOfObservered:(__kindof NSObject *)observered;
+
 /**
  实例方法替换
  

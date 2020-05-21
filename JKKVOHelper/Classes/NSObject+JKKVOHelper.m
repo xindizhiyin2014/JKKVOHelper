@@ -168,10 +168,9 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
 
 - (void)jk_removeObservers
 {
-    NSArray <JKKVOItem *>*items = [self jk_observerItems];
+    NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered:self];
     for (JKKVOItem *item in items) {
-        NSArray *keyPaths = [JKKVOItemManager observeredKeyPathsOfKvo_observer:item.kvoObserver];
-        [self jk_remove_kvoObserverWithItem:item forKeyPaths:keyPaths];
+        [self jk_remove_kvoObserverWithItem:item];
     }
 }
 
@@ -198,7 +197,7 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
 - (void)jkhook_dealloc
 {
     if ([self is_jk_observered] ) {
-        [self jk_removeObserverItems];
+        [self jk_dealloc_removeObservers];
         [self jkhook_dealloc];
     } else {
       [self jkhook_dealloc];
@@ -206,18 +205,8 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
 }
 
 - (void)jk_remove_kvoObserverWithItem:(JKKVOItem *)item
-                          forKeyPaths:(NSArray <NSString *>*)keyPaths
 {
-    for (NSString *keyPath in keyPaths) {
-        if ([item.keyPath isEqualToString:keyPath]) {
-            [self jk_remove_kvoObserverWithItem:item];
-        }
-    }
-}
-
-- (void)jk_remove_kvoObserverWithItem:(JKKVOItem *)item
-{
-  if (!item) {
+    if (!item) {
         return;
     }
     [JKKVOItemManager lock];
@@ -226,31 +215,14 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
     [JKKVOItemManager unLock];
 }
 
-- (NSArray <JKKVOItem *>*)jk_observerItemsForKeyPath:(NSString *)keyPath
+- (void)jk_dealloc_removeObservers
 {
-    NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered:self keyPath:keyPath];
-    return items;
-}
-
-- (void)jk_removeObserverItems
-{
-    NSArray <JKKVOItem *>*items = [self jk_observerItems];
+    NSArray <JKKVOItem *>*items = [JKKVOItemManager dealloc_itemsOfObservered:self];
     for (JKKVOItem *item in items) {
         [self jk_remove_kvoObserverWithItem:item];
     }
 }
 
-- (NSArray <JKKVOItem *>*)jk_observerItems;
-{
-    NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered:self];
-    return items;
-}
-
-- (NSArray <JKKVOItem *>*)jk_observeredItems
-{
-    NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObserver:self];
-    return items;
-}
 
 - (void)jk_exchangeDeallocMethod
 {

@@ -48,12 +48,16 @@
     return kvoObserver;
 }
 
-- (void)jkhook_observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context
+- (void)jkhook_observeValueForKeyPath:(NSString *)keyPath
+                             ofObject:(id)object
+                               change:(NSDictionary<NSKeyValueChangeKey,id> *)change
+                              context:(void *)context
 {
     if ([object isKindOfClass:[NSObject class]]) {
         NSObject *observeredObject = (NSObject *)object;
         JKKVOItem *item = [JKKVOItemManager isContainItemWith_kvoObserver:self observered:observeredObject keyPath:keyPath context:context];
-        if (!item.kvoObserver.originObserver) {
+        if (!item.kvoObserver.originObserver
+            || !item.observered) {
             return;
         }
         item.observered_property = [observeredObject valueForKeyPath:keyPath];
@@ -188,7 +192,9 @@
     NSArray *items = [JKKVOItemManager items];
     [self unLock];
     for (JKKVOItem *item in items) {
-        if ([[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
+        if (item.kvoObserver.originObserver
+            && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
+            && item.observered
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
             && [keyPath isEqualToString:item.keyPath]
             && context == item.context) {
@@ -208,7 +214,9 @@
     NSArray *items = [JKKVOItemManager items];
     [self unLock];
     for (JKKVOItem *item in items) {
-        if ([[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
+        if (item.kvoObserver.originObserver
+            && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
+            && item.observered
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             return YES;
         }
@@ -229,6 +237,7 @@
     [self unLock];
     for (JKKVOItem *item in items) {
         if ([kvoObserver isEqual:item.kvoObserver]
+            && item.observered
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
             && [keyPath isEqualToString:item.keyPath]
             && context == item.context) {
@@ -242,11 +251,16 @@
                                  observered:(__kindof NSObject *)observered
                                     keyPath:(nullable NSString *)keyPath
 {
+    if (!observer || !observered) {
+        return @[];
+    }
     [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
     for (JKKVOItem *item in items) {
-        if ([[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
+        if (item.kvoObserver.originObserver
+            && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
+            && item.observered
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (keyPath) {
                 if ([keyPath isEqualToString:item.keyPath]) {
@@ -273,11 +287,15 @@
 + (NSArray <JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
                                     keyPath:(nullable NSString *)keyPath
 {
+    if (!observered) {
+        return @[];
+    }
     [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
     for (JKKVOItem *item in items) {
-        if ([[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
+        if (item.observered
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (keyPath) {
                 if ([keyPath isEqualToString:item.keyPath]) {
                     if (![tmpArray containsObject:item]) {
@@ -297,6 +315,9 @@
 
 + (NSArray <JKKVOItem *>*)itemsOfObservered_property:(__kindof NSObject *)observered_property
 {
+    if (!observered_property) {
+        return @[];
+    }
     [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
@@ -313,11 +334,15 @@
 
 + (NSArray <JKKVOItem *>*)itemsOfObserver:(__kindof NSObject *)observer
 {
+    if (!observer) {
+        return @[];
+    }
     [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
     for (JKKVOItem *item in items) {
-        if ([[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]) {
+        if (item.kvoObserver.originObserver
+            && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]) {
             if (![tmpArray containsObject:item]) {
                 [tmpArray addObject:item];
             }
@@ -329,6 +354,9 @@
 
 + (NSArray <JKKVOItem *>*)itemsOfKvo_Observer:(__kindof NSObject *)kvoObserver
 {
+    if (!kvoObserver) {
+        return @[];
+    }
     [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
@@ -346,6 +374,9 @@
 + (NSArray <__kindof NSObject *>*)observersOfObservered:(__kindof NSObject *)observered
                                                 keyPath:(NSString *)keyPath
 {
+    if (!observered) {
+        return @[];
+    }
     NSArray *items = [JKKVOItemManager itemsOfObservered:observered keyPath:keyPath];
     [self lock];
     NSMutableSet *set = [NSMutableSet new];
@@ -360,11 +391,15 @@
 
 + (NSArray <NSString *>*)observeredKeyPathsOfObservered:(__kindof NSObject *)observered
 {
+    if (!observered) {
+        return @[];
+    }
     [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
     for (JKKVOItem *item in items) {
-        if ([[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
+        if (item.observered
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (item.keyPath) {
                 if (![tmpArray containsObject:item.keyPath]) {
                     [tmpArray addObject:item.keyPath];
@@ -379,12 +414,18 @@
 + (NSArray <NSString *>*)observeredKeyPathsOfObserered:(__kindof NSObject *)observered
                                               observer:(__kindof NSObject *)observer
 {
+    if (!observer || !observered) {
+        return @[];
+    }
     [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
     for (JKKVOItem *item in items) {
-        if ([[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
-            && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]) {
+        if (item.observered
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
+            && item.kvoObserver.originObserver
+            && [[NSString stringWithFormat:@"%p",observer]
+                isEqualToString:item.kvoObserver.originObserver_address]) {
             if (item.keyPath) {
                 if (![tmpArray containsObject:item.keyPath]) {
                     [tmpArray addObject:item.keyPath];
@@ -398,7 +439,10 @@
 
 + (NSArray <NSString *>*)observeredKeyPathsOfKvo_observer:(JKKVOObserver *)kvoObserver
 {
-   [self lock];
+    if (!kvoObserver) {
+        return @[];
+    }
+    [self lock];
     NSArray *items =  [JKKVOItemManager items];
     NSMutableArray *tmpArray = [NSMutableArray new];
     for (JKKVOItem *item in items) {
@@ -407,6 +451,27 @@
                 if (![tmpArray containsObject:item.keyPath]) {
                     [tmpArray addObject:item.keyPath];
                 }
+            }
+        }
+    }
+    [self unLock];
+    return [tmpArray copy];
+}
+
++ (NSArray <JKKVOItem *>*)dealloc_itemsOfObservered:(__kindof NSObject *)observered
+{
+    
+ if (!observered) {
+        return @[];
+    }
+    [self lock];
+    NSArray *items =  [JKKVOItemManager items];
+    NSMutableArray *tmpArray = [NSMutableArray new];
+    for (JKKVOItem *item in items) {
+        if (!item.observered
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
+            if (![tmpArray containsObject:item]) {
+               [tmpArray addObject:item];
             }
         }
     }

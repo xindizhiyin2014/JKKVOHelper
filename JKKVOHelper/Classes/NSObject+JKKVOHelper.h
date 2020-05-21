@@ -111,7 +111,8 @@ NS_ASSUME_NONNULL_BEGIN
               forKeyPaths:(NSArray <NSString *>*)keyPaths;
 
 /**
- 移除某个keyPath的所有obsevers对应的监听
+ 移除某个keyPath的obsevers对应的监听
+ 如果observers为nil，那么remove掉某个keyPath的所有obsevers对应的监听
  
  @param observers 观察者数组
  @param keyPath keyPath
