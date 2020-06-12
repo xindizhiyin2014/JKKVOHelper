@@ -6,6 +6,7 @@
 //
 
 #import "NSMutableArray+JKKVOHelper.h"
+#import "JKKVOItem.h"
 #import "JKKVOItemManager.h"
 
 @implementation NSMutableArray (JKKVOHelper)
@@ -16,13 +17,20 @@
     NSAssert(anObject, @"anObject can't be nil");
 #endif
     if (anObject) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
+            NSInteger oldIndex = NSNotFound;
+            NSInteger newIndex = [self count];
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeAddTail;
+            JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:anObject oldIndex:oldIndex newIndex:newIndex];
+            changedModel.changedElements = @[element];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
                 [self addObject:anObject];
-                [item.observered didChangeValueForKey:item.keyPath];
-            }
+                if (item) {
+                    [item addObserverOfElement:element];
+                }
+            }];
         } else {
           [self addObject:anObject];
         }
@@ -37,13 +45,20 @@
 #endif
     if (anObject
         && index <= self.count) {
-         NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
          if (items.count > 0) {
-             for (JKKVOItem *item in items) {
-                 [item.observered willChangeValueForKey:item.keyPath];
+             NSInteger oldIndex = NSNotFound;
+             NSInteger newIndex = index;
+             JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+             changedModel.changeType = JKKVOArrayChangeTypeAddAtIndex;
+             JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:anObject oldIndex:oldIndex newIndex:newIndex];
+             changedModel.changedElements = @[element];
+             [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
                  [self insertObject:anObject atIndex:index];
-                 [item.observered didChangeValueForKey:item.keyPath];
-             }
+                 if (item) {
+                     [item addObserverOfElement:element];
+                 }
+             }];
          } else {
            [self insertObject:anObject atIndex:index];
          }
@@ -56,13 +71,22 @@
     NSAssert(self.count > 0, @"make sure self.count > 0 be YES");
 #endif
     if (self.count > 0) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
+            NSInteger oldIndex = [self count] - 1;
+            NSInteger newIndex = NSNotFound;
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeRemoveTail;
+            JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:self.lastObject oldIndex:oldIndex newIndex:newIndex];
+            changedModel.changedElements = @[element];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+                __kindof NSObject *element = self.lastObject;
+                if (item) {
+                    [item removeObserverOfElement:element];
+                }
                 [self removeLastObject];
-                [item.observered didChangeValueForKey:item.keyPath];
-            }
+                
+            }];
         } else {
             [self removeLastObject];
         }
@@ -74,13 +98,21 @@
     NSAssert(index < self.count, @"make sure index < self.count be YES");
 #endif
     if (index < self.count) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
+            NSInteger oldIndex = index;
+            NSInteger newIndex = NSNotFound;
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeRemoveAtIndex;
+            JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:self[index] oldIndex:oldIndex newIndex:newIndex];
+            changedModel.changedElements = @[element];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+                __kindof NSObject *element = self[oldIndex];
+                if (item) {
+                    [item removeObserverOfElement:element];
+                }
                 [self removeObjectAtIndex:index];
-                [item.observered didChangeValueForKey:item.keyPath];
-            }
+            }];
         } else {
             [self removeObjectAtIndex:index];
         }
@@ -96,13 +128,20 @@
     if (anObject
         && index < self.count
         && ![self[index] isEqual:anObject]) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
+            NSObject *oldObject = self[index];
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeReplace;
+            JKKVOArrayElement *oldElement = [JKKVOArrayElement elementWithObject:oldObject oldIndex:index newIndex:NSNotFound];
+            JKKVOArrayElement *newElement = [JKKVOArrayElement elementWithObject:anObject oldIndex:NSNotFound newIndex:index];
+            changedModel.changedElements = @[oldElement,newElement];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
                 [self replaceObjectAtIndex:index withObject:anObject];
-                [item.observered didChangeValueForKey:item.keyPath];
-            }
+                if (item) {
+                    [item addObserverOfElement:anObject];
+                }
+            }];
         } else {
             [self replaceObjectAtIndex:index withObject:anObject];
         }
@@ -115,13 +154,27 @@
     NSAssert(otherArray.count > 0, @"make sure otherArray.count > 0 be YES");
 #endif
     if (otherArray.count > 0) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
-                [self addObjectsFromArray:otherArray];
-                [item.observered didChangeValueForKey:item.keyPath];
+            NSMutableArray *array = [NSMutableArray new];
+            for (NSInteger i = 0; i < otherArray.count; i++) {
+                NSObject *object = otherArray[i];
+                NSInteger oldIndex = NSNotFound;
+                NSInteger newIndex = self.count + i;
+                JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:object oldIndex:oldIndex newIndex:newIndex];
+                [array addObject:element];
             }
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeAddTail;
+            changedModel.changedElements = [array copy];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+                [self addObjectsFromArray:otherArray];
+                if (item) {
+                    for (JKKVOArrayElement *kvoElement in array) {
+                        [item addObserverOfElement:kvoElement.object];
+                    }
+                }
+            }];
         } else {
             [self addObjectsFromArray:otherArray];
         }
@@ -131,8 +184,6 @@
 - (void)kvo_exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2
 {
 #if DEBUG
-    NSAssert(idx1 >= 0, @"make sure idx1 >= 0 be YES");
-    NSAssert(idx2 >= 0, @"make sure idx2 >= 0 be YES");
     NSAssert(idx1 < self.count, @"make sure idx1 < self.count be YES");
     NSAssert(idx2 < self.count, @"make sure idx2 < self.count be YES");
 #endif
@@ -141,13 +192,22 @@
         && idx1 < self.count
         && idx2 < self.count
         && idx1 != idx2) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
+            NSObject *object1 = self[idx1];
+            NSInteger oldIndex1 = idx1;
+            NSInteger newIndex1 = idx2;
+            JKKVOArrayElement *element1 = [JKKVOArrayElement elementWithObject:object1 oldIndex:oldIndex1 newIndex:newIndex1];
+            NSObject *object2 = self[idx2];
+            NSInteger oldIndex2 = idx2;
+            NSInteger newIndex2 = idx1;
+            JKKVOArrayElement *element2 = [JKKVOArrayElement elementWithObject:object2 oldIndex:oldIndex2 newIndex:newIndex2];
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeReplace;
+            changedModel.changedElements = @[element1,element2];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
                 [self exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
-                [item.observered didChangeValueForKey:item.keyPath];
-            }
+            }];
         } else {
             [self exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
         }
@@ -157,13 +217,27 @@
 - (void)kvo_removeAllObjects
 {
     if (self.count > 0) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
-                [self removeAllObjects];
-                [item.observered didChangeValueForKey:item.keyPath];
+            NSMutableArray *array = [NSMutableArray new];
+            for (NSInteger i = 0; i < self.count; i++) {
+                NSObject *object = self[i];
+                NSInteger oldIndex = i;
+                NSInteger newIndex = NSNotFound;
+                JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:object oldIndex:oldIndex newIndex:newIndex];
+                [array addObject:element];
             }
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeRemoveTail;
+            changedModel.changedElements = [array copy];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+                if (item) {
+                    for (JKKVOArrayElement *kvoElement in array) {
+                        [item removeObserverOfElement:kvoElement.object];
+                    }
+                }
+                [self removeAllObjects];
+            }];
         } else {
             [self removeAllObjects];
         }
@@ -177,40 +251,59 @@
 #endif
     if (anObject
         && [self containsObject:anObject]) {
-        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
+        NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
         if (items.count > 0) {
-            for (JKKVOItem *item in items) {
-                [item.observered willChangeValueForKey:item.keyPath];
-                [self removeObject:anObject];
-                [item.observered didChangeValueForKey:item.keyPath];
+            NSMutableArray *array = [NSMutableArray new];
+            for (NSInteger i = 0; i < self.count; i++) {
+                NSObject *object = self[i];
+                if ([object isEqual:anObject]) {
+                    NSInteger oldIndex = i;
+                    NSInteger newIndex = NSNotFound;
+                    JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:object oldIndex:oldIndex newIndex:newIndex];
+                    [array addObject:element];
+                }
             }
+            JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+            changedModel.changeType = JKKVOArrayChangeTypeRemoveAtIndex;
+            changedModel.changedElements = [array copy];
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+                if (item) {
+                 for (JKKVOArrayElement *kvoElement in array) {
+                        [item removeObserverOfElement:kvoElement.object];
+                    }
+                }
+                [self removeObject:anObject];
+            }];
         } else {
             [self removeObject:anObject];
         }
     }
 }
 
-//- (void)kvo_setNil:(NSMutableArray **)array
-//{
-//#if DEBUG
-//    NSAssert(array != NULL, @"make sure array != NULL be YES");
-//    NSString *self_address = [NSString stringWithFormat:@"%p",self];
-//    NSString *array_address = [NSString stringWithFormat:@"%p",*array];
-//    NSAssert([self_address isEqualToString:array_address] , @"make sure [self_address isEqualToString:array_address] be YES");
-//#endif
-//        NSArray <JKKVOItem *>*items = [JKKVOItemManager itemsOfObservered_property:self];
-//        if (items.count > 0) {
-//            for (JKKVOItem *item in items) {
-//                [item.observered willChangeValueForKey:item.keyPath];
-//                [item.observered setValue:nil forKeyPath:item.keyPath];
-//                [item.observered didChangeValueForKey:item.keyPath];
-//            }
-//        } else {
-//            if (array != NULL) {
-//                *array = nil;
-//            }
-//        }
-//}
+- (void)invokeChangeWithItems:(NSArray<JKKVOArrayItem *>*)items
+                 changedModel:(JKKVOArrayChangeModel *)changedModel
+                  actionBlock:(void(^)(JKKVOArrayItem * _Nullable item))actionBlock
+{
+    for (JKKVOArrayItem *item in items) {
+        if (!item.detailBlock) {
+            if (actionBlock) {
+                actionBlock(nil);
+            }
+            return;
+        }
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        if ((item.options & NSKeyValueObservingOptionOld) == NSKeyValueObservingOptionOld) {
+            dic[NSKeyValueChangeOldKey] = [self mutableCopy];
+        }
+        if (actionBlock) {
+            actionBlock(item);
+        }
+        if ((item.options & NSKeyValueObservingOptionNew) == NSKeyValueObservingOptionNew) {
+            dic[NSKeyValueChangeNewKey] = self;
+        }
+        item.detailBlock(item.keyPath, dic, changedModel, item.context);
+    }
 
+}
 
 @end

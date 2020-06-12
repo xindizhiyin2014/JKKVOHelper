@@ -6,22 +6,40 @@
 //
 
 #import "NSObject+JKKVOHelper.h"
-#import "JKKVOItemManager.h"
 #import <objc/runtime.h>
+#import "JKKVOItem.h"
+
 static const void *is_jk_observeredKey = &is_jk_observeredKey;
+static const void *is_jk_deallocedKey = "is_jk_deallocedKey";
+
 
 @implementation NSObject (JKKVOHelper)
-
++ (void)load
+{
+   [self jk_exchangeDeallocMethod];
+}
 #pragma mark - - setter - -
 - (void)setIs_jk_observered:(BOOL)is_jk_observered
 {
     objc_setAssociatedObject(self, is_jk_observeredKey, @(is_jk_observered), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
+
+- (void)setIs_jk_dealloced:(BOOL)is_jk_dealloced
+{
+   objc_setAssociatedObject(self, is_jk_deallocedKey, @(is_jk_dealloced), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
 #pragma mark - - getter - -
 - (BOOL)is_jk_observered
 {
     return [objc_getAssociatedObject(self, is_jk_observeredKey) boolValue];
 }
+
+- (BOOL)is_jk_dealloced
+{
+   return [objc_getAssociatedObject(self, is_jk_deallocedKey) boolValue];
+}
+
 - (void)jk_addObserver:(NSObject *)observer
             forKeyPath:(NSString *)keyPath
                options:(NSKeyValueObservingOptions)options
@@ -39,7 +57,6 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
     if (!observer || !keyPath || !block) {
         return;
     }
-    [self jk_exchangeDeallocMethod];
     if (![JKKVOItemManager isContainItemWithObserver:observer
                                           observered:self
                                              keyPath:keyPath
@@ -47,7 +64,12 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
         [JKKVOItemManager lock];
         [self setIs_jk_observered:YES];
         JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
-        JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self observered_property:[self valueForKeyPath:keyPath] keyPath:keyPath context:context block:block detailBlock:nil];
+        void(^realBlock)(NSString *keyPath, NSDictionary *change, void *context) = ^(NSString *keyPath, NSDictionary *change, void *context){
+            if (block) {
+                block(change,context);
+            }
+        };
+        JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:realBlock];
         [JKKVOItemManager addItem:item];
         [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
         [JKKVOItemManager unLock];
@@ -63,7 +85,6 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
     if (!observer || !keyPaths || keyPaths.count == 0 || !detailBlock) {
         return;
     }
-    [self jk_exchangeDeallocMethod];
     for (NSString *keyPath in keyPaths) {
         if (![JKKVOItemManager isContainItemWithObserver:observer
                                               observered:self
@@ -72,7 +93,7 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
             [JKKVOItemManager lock];
             [self setIs_jk_observered:YES];
             JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
-            JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self observered_property:[self valueForKeyPath:keyPath] keyPath:keyPath context:context block:nil detailBlock:detailBlock];
+            JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:detailBlock];
             [JKKVOItemManager addItem:item];
             [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
             [JKKVOItemManager unLock];
@@ -102,6 +123,58 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
                        withBlock:(void(^)(NSDictionary *change, void *context))block
 {
     [self jk_addObserver:self forKeyPath:keyPath options:options context:context withBlock:block];
+}
+
+- (void)jk_addObserverOfArrayForKeyPath:(NSString *)keyPath
+                                options:(NSKeyValueObservingOptions)options
+                                context:(nullable void *)context
+                              withBlock:(void (^)(NSString *keyPath, NSDictionary *change,JKKVOArrayChangeModel *changedModel, void *context))block
+{
+    [self jk_addObserverOfArrayForKeyPath:keyPath options:options context:context elementKeyPaths:nil withBlock:block];
+}
+
+- (void)jk_addObserverOfArrayForKeyPath:(NSString *)keyPath
+                                options:(NSKeyValueObservingOptions)options
+                                context:(nullable void *)context
+                        elementKeyPaths:(nullable NSArray <NSString *>*)elementKeyPaths
+                              withBlock:(void (^)(NSString *keyPath, NSDictionary *change,JKKVOArrayChangeModel *changedModel, void *context))block
+{
+    [self jk_addObserverOfArray:self keyPath:keyPath options:options context:context elementKeyPaths:elementKeyPaths withBlock:block];
+}
+
+- (void)jk_addObserverOfArray:(__kindof NSObject *)observer
+                      keyPath:(NSString *)keyPath
+                      options:(NSKeyValueObservingOptions)options
+                      context:(nullable void *)context
+              elementKeyPaths:(nullable NSArray <NSString *>*)elementKeyPaths
+                    withBlock:(void (^)(NSString *keyPath, NSDictionary *change,JKKVOArrayChangeModel *changedModel, void *context))block
+{
+    if (!observer || !keyPath || !block) {
+        return;
+    }
+    if (![JKKVOItemManager isContainArrayItemWithObserver:observer
+                                         observered:self
+                                            keyPath:keyPath
+                                            context:context]) {
+       [JKKVOItemManager lock];
+       [self setIs_jk_observered:YES];
+       JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
+       NSArray *observered_property = [self valueForKeyPath:keyPath];
+        if (observered_property
+            && ![observered_property isKindOfClass:[NSArray class]]) {
+            NSAssert(NO, @"make sure [observered_property isKindOfClass:[NSArray class]] be YES");
+            return;
+        }
+            
+       JKKVOArrayItem *item = [JKKVOArrayItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context options:options observered_property:observered_property elementKeyPaths:elementKeyPaths detailBlock:block];
+       [JKKVOItemManager addItem:item];
+       [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
+        NSArray *elements = [observered_property copy];
+        for (NSObject *element in elements) {
+           [item addObserverOfElement:element];
+        }
+       [JKKVOItemManager unLock];
+   }
 }
 
 - (void)jk_removeObserver:(__kindof NSObject *)observer
@@ -196,12 +269,17 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
 
 - (void)jkhook_dealloc
 {
-    if ([self is_jk_observered] ) {
-        [self jk_dealloc_removeObservers];
-        [self jkhook_dealloc];
-    } else {
-      [self jkhook_dealloc];
+    if (![self is_jk_dealloced]) {
+        [self setIs_jk_dealloced:YES];
+        if ([self is_jk_observered]) {
+            [self setIs_jk_observered:NO];
+            [self jk_dealloc_removeObservers];
+            [self jkhook_dealloc];
+        } else {
+          [self jkhook_dealloc];
+        }
     }
+    
 }
 
 - (void)jk_remove_kvoObserverWithItem:(JKKVOItem *)item
@@ -222,7 +300,6 @@ static const void *is_jk_observeredKey = &is_jk_observeredKey;
         [self jk_remove_kvoObserverWithItem:item];
     }
 }
-
 
 - (void)jk_exchangeDeallocMethod
 {

@@ -6,6 +6,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "JKKVOItem.h"
+#import "JKKVOItemManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -84,6 +86,43 @@ NS_ASSUME_NONNULL_BEGIN
                           options:(NSKeyValueObservingOptions)options
                           context:(nullable void *)context
                   withDetailBlock:(void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock;
+
+/// 监听数组的变化，不监听数组元素属性的变化
+/// @param keyPath keyPath，keyPath对应的属性是数组
+/// @param options options
+/// @param context context
+/// @param block block
+- (void)jk_addObserverOfArrayForKeyPath:(NSString *)keyPath
+                                options:(NSKeyValueObservingOptions)options
+                                context:(nullable void *)context
+                              withBlock:(void (^)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context))block;
+
+/// 监听数组的变化，同时监听数组元素属性的变化,观察者是自己
+/// @param keyPath keyPath，keyPath对应的属性是数组
+/// @param options options
+/// @param context context
+/// @param elementKeyPaths elementKeyPaths 数组的元素对应的keypath组成的数组
+/// @param block block
+- (void)jk_addObserverOfArrayForKeyPath:(NSString *)keyPath
+                                options:(NSKeyValueObservingOptions)options
+                                context:(nullable void *)context
+                        elementKeyPaths:(nullable NSArray <NSString *>*)elementKeyPaths
+                              withBlock:(void (^)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context))block;
+
+/// 监听数组的变化，同时监听数组元素属性的变化
+/// @param observer 观察者
+/// @param keyPath keyPath keyPath，keyPath对应的属性是数组
+/// @param options options
+/// @param context context
+/// @param elementKeyPaths elementKeyPaths 数组的元素对应的keypath组成的数组
+/// @param block block
+- (void)jk_addObserverOfArray:(__kindof NSObject *)observer
+                      keyPath:(NSString *)keyPath
+                      options:(NSKeyValueObservingOptions)options
+                      context:(nullable void *)context
+              elementKeyPaths:(nullable NSArray <NSString *>*)elementKeyPaths
+                    withBlock:(void (^)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context))block;
+
 /**
  移除keyPath监听
  
