@@ -11,7 +11,9 @@
 #endif
 
 #import "JKKVOHelper.h"
+#import "JKKVOItem.h"
 #import "JKKVOItemManager.h"
+#import "JKKVOObserver.h"
 #import "NSMutableArray+JKKVOHelper.h"
 #import "NSObject+JKKVOHelper.h"
 

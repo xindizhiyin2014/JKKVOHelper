@@ -1,6 +1,6 @@
 {
   "name": "JKKVOHelper",
-  "version": "0.1.17",
+  "version": "0.1.19",
   "summary": "this is a tool to help developer to easily use KVO.",
   "description": "this is a tool to help developer to easily use KVO,it will update with the need",
   "homepage": "https://github.com/xindizhiyin2014/JKKVOHelper",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/xindizhiyin2014/JKKVOHelper.git",
-    "tag": "0.1.17"
+    "tag": "0.1.19"
   },
   "platforms": {
     "ios": "8.0"
