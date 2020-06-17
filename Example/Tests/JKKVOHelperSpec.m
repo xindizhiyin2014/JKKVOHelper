@@ -708,6 +708,40 @@ describe(@"JKKVOHelper", ^{
         person1.name = @"2";
         [[theValue(invoked) shouldEventually] beYes];
     });
+             
+             it(@"jk_removeObservers", ^{
+                 JKTeacher *teacher = [JKTeacher new];
+                 NSMutableArray *students = [NSMutableArray new];
+                 teacher.students = students;
+                 JKPersonModel *person1 = [JKPersonModel new];
+                 person1.name = @"1";
+                 [students kvo_addObject:person1];
+
+                 __block BOOL invoked = NO;
+                 [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil elementKeyPaths:@[@"name"] withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                     invoked = YES;
+                 }];
+                 person1.name = @"2";
+                 [[theValue(invoked) shouldEventually] beYes];
+                     [teacher jk_removeObservers];
+             });
+             
+             it(@"jk_removeObserver:forKeyPath:context:", ^{
+                 JKTeacher *teacher = [JKTeacher new];
+                 NSMutableArray *students = [NSMutableArray new];
+                 teacher.students = students;
+                 JKPersonModel *person1 = [JKPersonModel new];
+                 person1.name = @"1";
+                 [students kvo_addObject:person1];
+
+                 __block BOOL invoked = NO;
+                 [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil elementKeyPaths:@[@"name"] withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                     invoked = YES;
+                 }];
+                 person1.name = @"2";
+                 [[theValue(invoked) shouldEventually] beYes];
+                 [teacher jk_removeObserver:teacher forKeyPath:@"students" context:nil];
+             });
 
          });
          

@@ -125,7 +125,7 @@
 @interface JKKVOArrayItem()
 
 /// 被监听的属性对应的对象
-@property (nonatomic, weak, nullable, readwrite) __kindof NSObject *observered_property;
+@property (nonatomic, weak, nullable, readwrite) __kindof NSArray *observered_property;
 
 ///监听选项
 @property (nonatomic, assign, readwrite) NSKeyValueObservingOptions options;
@@ -201,7 +201,7 @@
             for (NSString *keyPath in self.elementKeyPaths) {
                 [element removeObserver:self.kvoObserver forKeyPath:keyPath context:self.context];
             }
-            [self.observered_elementMap setObject:nil forKey:element];
+            [self.observered_elementMap removeObjectForKey:element];
         }
     }
 }

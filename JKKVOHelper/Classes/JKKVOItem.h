@@ -82,7 +82,7 @@ typedef NS_ENUM(NSInteger,JKKVOArrayChangeType) {
 @interface JKKVOArrayItem : JKKVOItem
 
 /// 被监听的属性对应的对象
-@property (nonatomic, weak, nullable, readonly) __kindof NSObject *observered_property;
+@property (nonatomic, weak, nullable, readonly) __kindof NSArray *observered_property;
 ///监听选项
 @property (nonatomic, assign, readonly) NSKeyValueObservingOptions options;
 /// 数组元素需要监听的keyPath的数组
