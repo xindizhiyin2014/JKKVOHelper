@@ -760,6 +760,44 @@ describe(@"JKKVOHelper", ^{
                 }];
                 
     });
+             
+             it(@"two object, one array jk_addObject", ^{
+                 JKTeacher *teacher = [JKTeacher new];
+                 NSMutableArray *students = [NSMutableArray new];
+                 teacher.students = students;
+                 
+                 JKTeacher *teacher1 = [JKTeacher new];
+                 teacher1.students = students;
+                 JKPersonModel *person1 = [JKPersonModel new];
+                 person1.name = @"1";
+                 __block BOOL invoked = NO;
+                 __block BOOL invoked1 = NO;
+
+                 [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                     [[[change objectForKey:@"new"] should] haveCountOf:1];
+                     [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddTail)];
+                     [[changedModel.changedElements.firstObject.object should] equal:person1];
+                     [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
+                     [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
+                     invoked = YES;
+                 }];
+                 
+                 [teacher1 jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                     [[[change objectForKey:NSKeyValueChangeNewKey] should] haveCountOf:1];
+                     [[[change objectForKey:NSKeyValueChangeOldKey] should] haveCountOf:0];
+
+                     [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddTail)];
+                     [[changedModel.changedElements.firstObject.object should] equal:person1];
+                     [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
+                     [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
+                     invoked1 = YES;
+                 }];
+                 [students kvo_addObject:person1];
+                 [[theValue(invoked) shouldEventually] beYes];
+                 [[theValue(invoked1) shouldEventually] beYes];
+
+             });
+             
     afterAll(^{
         NSArray *array = [JKKVOItemManager items];
         [[array should]haveCountOf:0];

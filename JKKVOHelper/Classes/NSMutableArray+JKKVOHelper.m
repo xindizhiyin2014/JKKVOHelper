@@ -25,11 +25,12 @@
             changedModel.changeType = JKKVOArrayChangeTypeAddTail;
             JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:anObject oldIndex:oldIndex newIndex:newIndex];
             changedModel.changedElements = @[element];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 [self addObject:anObject];
                 if (item) {
                     [item addObserverOfElement:element];
                 }
+                return YES;
             }];
         } else {
           [self addObject:anObject];
@@ -53,11 +54,12 @@
              changedModel.changeType = JKKVOArrayChangeTypeAddAtIndex;
              JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:anObject oldIndex:oldIndex newIndex:newIndex];
              changedModel.changedElements = @[element];
-             [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+             [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                  [self insertObject:anObject atIndex:index];
                  if (item) {
                      [item addObserverOfElement:element];
                  }
+                 return YES;
              }];
          } else {
            [self insertObject:anObject atIndex:index];
@@ -79,13 +81,13 @@
             changedModel.changeType = JKKVOArrayChangeTypeRemoveTail;
             JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:self.lastObject oldIndex:oldIndex newIndex:newIndex];
             changedModel.changedElements = @[element];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 __kindof NSObject *element = self.lastObject;
                 if (item) {
                     [item removeObserverOfElement:element];
                 }
                 [self removeLastObject];
-                
+                return YES;
             }];
         } else {
             [self removeLastObject];
@@ -106,12 +108,13 @@
             changedModel.changeType = JKKVOArrayChangeTypeRemoveAtIndex;
             JKKVOArrayElement *element = [JKKVOArrayElement elementWithObject:self[index] oldIndex:oldIndex newIndex:newIndex];
             changedModel.changedElements = @[element];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 __kindof NSObject *element = self[oldIndex];
                 if (item) {
                     [item removeObserverOfElement:element];
                 }
                 [self removeObjectAtIndex:index];
+                return YES;
             }];
         } else {
             [self removeObjectAtIndex:index];
@@ -136,11 +139,12 @@
             JKKVOArrayElement *oldElement = [JKKVOArrayElement elementWithObject:oldObject oldIndex:index newIndex:NSNotFound];
             JKKVOArrayElement *newElement = [JKKVOArrayElement elementWithObject:anObject oldIndex:NSNotFound newIndex:index];
             changedModel.changedElements = @[oldElement,newElement];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 [self replaceObjectAtIndex:index withObject:anObject];
                 if (item) {
                     [item addObserverOfElement:anObject];
                 }
+                return YES;
             }];
         } else {
             [self replaceObjectAtIndex:index withObject:anObject];
@@ -167,13 +171,14 @@
             JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
             changedModel.changeType = JKKVOArrayChangeTypeAddTail;
             changedModel.changedElements = [array copy];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 [self addObjectsFromArray:otherArray];
                 if (item) {
                     for (JKKVOArrayElement *kvoElement in array) {
                         [item addObserverOfElement:kvoElement.object];
                     }
                 }
+                return YES;
             }];
         } else {
             [self addObjectsFromArray:otherArray];
@@ -205,8 +210,9 @@
             JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
             changedModel.changeType = JKKVOArrayChangeTypeReplace;
             changedModel.changedElements = @[element1,element2];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 [self exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
+                return YES;
             }];
         } else {
             [self exchangeObjectAtIndex:idx1 withObjectAtIndex:idx2];
@@ -230,13 +236,14 @@
             JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
             changedModel.changeType = JKKVOArrayChangeTypeRemoveTail;
             changedModel.changedElements = [array copy];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 if (item) {
                     for (JKKVOArrayElement *kvoElement in array) {
                         [item removeObserverOfElement:kvoElement.object];
                     }
                 }
                 [self removeAllObjects];
+                return YES;
             }];
         } else {
             [self removeAllObjects];
@@ -266,13 +273,14 @@
             JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
             changedModel.changeType = JKKVOArrayChangeTypeRemoveAtIndex;
             changedModel.changedElements = [array copy];
-            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^(JKKVOArrayItem * _Nullable item) {
+            [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 if (item) {
                  for (JKKVOArrayElement *kvoElement in array) {
                         [item removeObserverOfElement:kvoElement.object];
                     }
                 }
                 [self removeObject:anObject];
+                return YES;
             }];
         } else {
             [self removeObject:anObject];
@@ -282,8 +290,19 @@
 
 - (void)invokeChangeWithItems:(NSArray<JKKVOArrayItem *>*)items
                  changedModel:(JKKVOArrayChangeModel *)changedModel
-                  actionBlock:(void(^)(JKKVOArrayItem * _Nullable item))actionBlock
+                  actionBlock:(BOOL(^)(JKKVOArrayItem * _Nullable item))actionBlock
 {
+    NSMutableArray *old_self = nil;
+    BOOL hasAddedElement = NO;
+    for (JKKVOArrayItem *item in items) {
+        if (!old_self) {
+            if ((item.options & NSKeyValueObservingOptionOld) == NSKeyValueObservingOptionOld) {
+                 old_self = [self mutableCopy];
+            }
+        } else {
+            break;
+        }
+    }
     for (JKKVOArrayItem *item in items) {
         if (!item.detailBlock) {
             if (actionBlock) {
@@ -293,10 +312,12 @@
         }
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         if ((item.options & NSKeyValueObservingOptionOld) == NSKeyValueObservingOptionOld) {
-            dic[NSKeyValueChangeOldKey] = [self mutableCopy];
+            dic[NSKeyValueChangeOldKey] = old_self;
         }
-        if (actionBlock) {
-            actionBlock(item);
+        if (!hasAddedElement) {
+            if (actionBlock) {
+               hasAddedElement = actionBlock(item);
+            }
         }
         if ((item.options & NSKeyValueObservingOptionNew) == NSKeyValueObservingOptionNew) {
             dic[NSKeyValueChangeNewKey] = self;
