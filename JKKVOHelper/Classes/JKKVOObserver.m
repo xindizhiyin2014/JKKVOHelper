@@ -55,7 +55,13 @@
                               context:(void *)context
 {
     if ([object isKindOfClass:[NSObject class]]) {
-        JKKVOItem *item = [JKKVOItemManager isContainItemWith_kvoObserver:self];
+        JKKVOItem *item = nil;
+        if (self.observerCount > 1) {
+            item = [JKKVOItemManager isContainArrayItemWith_kvoObserver:self element_observered:object keyPath:keyPath context:context];
+        } else {
+            item = [JKKVOItemManager isContainItemWith_kvoObserver:self observered:object keyPath:keyPath context:context];
+        }
+        
         if (!item
             || !item.valid) {
             return;

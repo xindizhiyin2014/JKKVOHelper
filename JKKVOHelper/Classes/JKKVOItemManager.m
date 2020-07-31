@@ -8,13 +8,39 @@
 #import "JKKVOItemManager.h"
 #import <objc/runtime.h>
 #import "JKKVOItem.h"
+static const void *jk_kvo_items_key = "jk_kvo_items_key";
+
+@interface NSObject (JKKVOItemManager)
+
+@property (nonatomic, strong)NSMutableArray <__kindof JKKVOItem *>*jk_kvo_items;
+
+@end
+
+@implementation NSObject(JKKVOItemManager)
+
+- (void)setJk_kvo_items:(NSMutableArray<__kindof JKKVOItem *> *)jk_kvo_items
+{
+    objc_setAssociatedObject(self, jk_kvo_items_key, jk_kvo_items, OBJC_ASSOCIATION_RETAIN);
+}
+
+- (NSMutableArray<__kindof JKKVOItem *> *)jk_kvo_items
+{
+    NSMutableArray *tmpArray = objc_getAssociatedObject(self, jk_kvo_items_key);
+    if (!tmpArray) {
+        tmpArray = [NSMutableArray new];
+        [self setJk_kvo_items:tmpArray];
+    }
+    return tmpArray;
+}
+
+@end
 
 #pragma mark - - JKKVOItemManager - -
 
 @interface JKKVOItemManager()
 
 /// 所有的items
-@property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, strong) NSMutableArray <JKKVOArrayItem *>*arrayItems;
 
 @property (nonatomic, strong) NSRecursiveLock *lock;
 
@@ -29,7 +55,7 @@
     dispatch_once(&onceToken, ^{
         _manager = [[self alloc] init];
         _manager.lock = [[NSRecursiveLock alloc] init];
-        _manager.items = [NSMutableArray new];
+        _manager.arrayItems = [NSMutableArray new];
     });
     return _manager;
 }
@@ -44,38 +70,62 @@
     [[JKKVOItemManager sharedManager].lock unlock];
 }
 
-+ (void)addItem:(JKKVOItem *)item
++ (void)addItem:(__kindof JKKVOItem *)item
+     observered:(__kindof NSObject *)observered
 {
-    if (item
-        && ![[JKKVOItemManager sharedManager].items containsObject:item]) {
-        [[JKKVOItemManager sharedManager].items addObject:item];
+    if ([item isKindOfClass:[JKKVOArrayItem class]]) {
+        [self addArrayItem:item];
+    } else {
+        if (item
+            && observered
+            && ![observered.jk_kvo_items containsObject:item]) {
+            [observered.jk_kvo_items addObject:item];
+        }
     }
 }
 
-+ (void)removeItem:(JKKVOItem *)item
++ (void)removeItem:(__kindof JKKVOItem *)item
+        observered:(__kindof NSObject *)observered
 {
-    if (item) {
-        [[JKKVOItemManager sharedManager].items removeObject:item];
+    if ([item isKindOfClass:[JKKVOArrayItem class]]) {
+        [self removeArrayItem:item];
+    } else {
+        if (item
+            && observered
+            && [observered.jk_kvo_items containsObject:item]) {
+            [observered.jk_kvo_items removeObject:item];
+        }
     }
 }
 
-+ (NSArray *)items
++ (void)addArrayItem:(JKKVOArrayItem *)arrayItem
 {
-    return [[JKKVOItemManager sharedManager].items copy];
+    if (![[JKKVOItemManager sharedManager].arrayItems containsObject:arrayItem]) {
+        [[JKKVOItemManager sharedManager].arrayItems addObject:arrayItem];
+    }
 }
 
-+ (nullable JKKVOItem *)isContainItemWithObserver:(__kindof NSObject *)observer
-                                       observered:(__kindof NSObject *)observered
-                                          keyPath:(NSString *)keyPath
-                                          context:(nullable void *)context
++ (void)removeArrayItem:(JKKVOArrayItem *)arrayItem
+{
+   if ([[JKKVOItemManager sharedManager].arrayItems containsObject:arrayItem]) {
+        [[JKKVOItemManager sharedManager].arrayItems removeObject:arrayItem];
+    }
+}
+
++ (nullable __kindof JKKVOItem *)isContainItemWithObserver:(__kindof NSObject *)observer
+                                                observered:(__kindof NSObject *)observered
+                                                   keyPath:(NSString *)keyPath
+                                                   context:(nullable void *)context
 {
     if (!observer || !observered || !keyPath) {
         return nil;
     }
     [self lock];
-    NSArray *items = [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     [self unLock];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
             && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
@@ -96,16 +146,15 @@
         return nil;
     }
     [self lock];
-    NSArray *items = [JKKVOItemManager items];
+    NSArray *items = [[JKKVOItemManager sharedManager].arrayItems copy];
     [self unLock];
-    for (JKKVOItem *item in items) {
-        if ([item isKindOfClass:[JKKVOArrayItem class]]
-            && item.valid
+    for (JKKVOArrayItem *item in items) {
+        if (item.valid
             && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
             && [keyPath isEqualToString:item.keyPath]
             && context == item.context) {
-            return (JKKVOArrayItem *)item;
+            return item;
         }
     }
     return nil;
@@ -118,9 +167,11 @@
         return NO;
     }
     [self lock];
-    NSArray *items = [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     [self unLock];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
             && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
@@ -130,57 +181,87 @@
     return NO;
 }
 
-+ (nullable JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
-                                           observered:(__kindof NSObject *)observered
-                                              keyPath:(NSString *)keyPath
-                                              context:(nullable void *)context
++ (nullable __kindof JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
+                                                    observered:(__kindof NSObject *)observered
+{
+    if (!kvoObserver || !observered) {
+        return nil;
+    }
+    [self lock];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
+    [self unLock];
+    for (__kindof JKKVOItem *item in items) {
+        if (item.valid
+            && [kvoObserver isEqual:item.kvoObserver]
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
+            return item;
+        }
+    }
+    return nil;
+}
+
++ (nullable __kindof JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
+                                                    observered:(__kindof NSObject *)observered
+                                                       keyPath:(NSString *)keyPath
+                                                       context:(nullable void *)context
 {
  if (!kvoObserver || !observered || !keyPath) {
         return nil;
     }
     [self lock];
-    NSArray *items = [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     [self unLock];
-    for (JKKVOItem *item in items) {
-        if (item.valid
-            && [kvoObserver isEqual:item.kvoObserver]
-            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
-            && [keyPath isEqualToString:item.keyPath]
-            && context == item.context) {
-            return item;
-        }
-    }
+     for (__kindof JKKVOItem *item in items) {
+           if (item.valid
+               && [kvoObserver isEqual:item.kvoObserver]
+               && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
+               && [keyPath isEqualToString:item.keyPath]
+               && context == item.context) {
+               return item;
+           }
+       }
     return nil;
 }
 
-+ (nullable JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
++ (nullable JKKVOArrayItem *)isContainArrayItemWith_kvoObserver:(JKKVOObserver *)kvoObserver                                            element_observered:(__kindof NSObject *)element_observered
+                                                        keyPath:(NSString *)keyPath
+                                                        context:(nullable void *)context
 {
-    if (!kvoObserver) {
-        return nil;
-    }
-    [self lock];
-    NSArray *items = [JKKVOItemManager items];
-    [self unLock];
-    for (JKKVOItem *item in items) {
-        if (item.valid
-            && [kvoObserver isEqual:item.kvoObserver]) {
-            return item;
+    
+   if (kvoObserver.observerCount > 1) { // observered is an element of a array
+        [self lock];
+        NSMutableArray *items = [[JKKVOItemManager sharedManager].arrayItems copy];
+        [self unLock];
+        for (JKKVOArrayItem *item in items) {
+            if (item.valid
+                && [kvoObserver isEqual:item.kvoObserver]
+                && [item.elementKeyPaths containsObject:keyPath]
+                && context == item.context) {
+                return item;
+            }
         }
+
     }
     return nil;
 }
 
-+ (NSArray <JKKVOItem *>*)itemsWithObserver:(__kindof NSObject *)observer
-                                 observered:(__kindof NSObject *)observered
-                                    keyPath:(nullable NSString *)keyPath
++ (NSArray <__kindof JKKVOItem *>*)itemsWithObserver:(__kindof NSObject *)observer
+                                          observered:(__kindof NSObject *)observered
+                                             keyPath:(nullable NSString *)keyPath
 {
     if (!observer || !observered) {
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
             && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
@@ -201,21 +282,23 @@
     return [tmpArray copy];
 }
 
-+ (NSArray <JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
++ (NSArray <__kindof JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
 {
     return [self itemsOfObservered:observered keyPath:nil];
 }
 
-+ (NSArray <JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
++ (NSArray <__kindof JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
                                     keyPath:(nullable NSString *)keyPath
 {
     if (!observered) {
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (keyPath) {
@@ -235,42 +318,21 @@
     return [tmpArray copy];
 }
 
-
-+ (NSArray <JKKVOArrayItem *>*)arrayItemsOfObservered_property:(__kindof NSObject *)observered_property
-{
-  if (!observered_property) {
-        return @[];
-    }
-    [self lock];
-    NSArray *items =  [JKKVOItemManager items];
-    NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *tmpItem in items) {
-        if ([tmpItem isKindOfClass:[JKKVOArrayItem class]]) {
-            JKKVOArrayItem *item = (JKKVOArrayItem *)tmpItem;
-            if (item.valid
-                && [observered_property isEqual:item.observered_property]) {
-                if (![tmpArray containsObject:item]) {
-                    [tmpArray addObject:item];
-                }
-            }
-        }
-        
-    }
-    [self unLock];
-    return [tmpArray copy];
-}
-
-+ (NSArray <JKKVOItem *>*)itemsOfObserver:(__kindof NSObject *)observer
++ (NSArray <__kindof JKKVOItem *>*)itemsOfObserver:(__kindof NSObject *)observer
+                                        observered:(__kindof NSObject *)observered
 {
     if (!observer) {
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
-            && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]) {
+            && [[NSString stringWithFormat:@"%p",observer] isEqualToString:item.kvoObserver.originObserver_address]
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (![tmpArray containsObject:item]) {
                 [tmpArray addObject:item];
             }
@@ -280,17 +342,41 @@
     return [tmpArray copy];
 }
 
-+ (NSArray <JKKVOItem *>*)itemsOfKvo_Observer:(__kindof NSObject *)kvoObserver
++ (NSArray <__kindof JKKVOItem *>*)itemsOf_kvoObserver:(__kindof NSObject *)kvoObserver
+                                            observered:(__kindof NSObject *)observered
 {
     if (!kvoObserver) {
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
-            && [kvoObserver isEqual:item.kvoObserver]) {
+            && [kvoObserver isEqual:item.kvoObserver]
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
+            if (![tmpArray containsObject:item]) {
+                [tmpArray addObject:item];
+            }
+        }
+    }
+    [self unLock];
+    return [tmpArray copy];
+}
+
++ (NSArray <JKKVOArrayItem *>*)arrayItemsOfObservered_property:(__kindof NSObject *)observered_property
+{
+  if (!observered_property) {
+        return @[];
+    }
+    [self lock];
+    NSArray *items = [[JKKVOItemManager sharedManager].arrayItems copy];
+    NSMutableArray *tmpArray = [NSMutableArray new];
+    for (JKKVOArrayItem *item in items) {
+        if (item.valid
+            && [observered_property isEqual:item.observered_property]) {
             if (![tmpArray containsObject:item]) {
                 [tmpArray addObject:item];
             }
@@ -301,18 +387,26 @@
 }
 
 + (NSArray <__kindof NSObject *>*)observersOfObservered:(__kindof NSObject *)observered
-                                                keyPath:(NSString *)keyPath
+                                                keyPath:(nullable NSString *)keyPath
 {
     if (!observered) {
         return @[];
     }
-    NSArray *items = [JKKVOItemManager itemsOfObservered:observered keyPath:keyPath];
     [self lock];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableSet *set = [NSMutableSet new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
-            && item.kvoObserver.originObserver) {
-            [set addObject:item.kvoObserver.originObserver];
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
+            if (keyPath) {
+                if ([keyPath isEqualToString:item.keyPath]) {
+                    [set addObject:item.kvoObserver.originObserver];
+                }
+            } else {
+               [set addObject:item.kvoObserver.originObserver];
+            }
         }
     }
     [self unLock];
@@ -325,9 +419,11 @@
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (item.keyPath) {
@@ -348,9 +444,11 @@
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]
             && [[NSString stringWithFormat:@"%p",observer]
@@ -366,17 +464,21 @@
     return [tmpArray copy];
 }
 
-+ (NSArray <NSString *>*)observeredKeyPathsOfKvo_observer:(JKKVOObserver *)kvoObserver
++ (NSArray <NSString *>*)observeredKeyPathsOf_kvoObserver:(JKKVOObserver *)kvoObserver
+                                               observered:(__kindof NSObject *)observered
 {
-    if (!kvoObserver) {
+    if (!kvoObserver || !observered) {
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (item.valid
-            && [kvoObserver isEqual:item.kvoObserver]) {
+            && [kvoObserver isEqual:item.kvoObserver]
+            && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (item.keyPath) {
                 if (![tmpArray containsObject:item.keyPath]) {
                     [tmpArray addObject:item.keyPath];
@@ -395,9 +497,11 @@
         return @[];
     }
     [self lock];
-    NSArray *items =  [JKKVOItemManager items];
+    NSArray *jk_kvo_items = [observered.jk_kvo_items copy];
+    NSMutableArray *items = [NSMutableArray arrayWithArray:jk_kvo_items];
+    [items addObjectsFromArray:[JKKVOItemManager sharedManager].arrayItems];
     NSMutableArray *tmpArray = [NSMutableArray new];
-    for (JKKVOItem *item in items) {
+    for (__kindof JKKVOItem *item in items) {
         if (!item.valid
             && [[NSString stringWithFormat:@"%p",observered] isEqualToString:item.observered_address]) {
             if (![tmpArray containsObject:item]) {

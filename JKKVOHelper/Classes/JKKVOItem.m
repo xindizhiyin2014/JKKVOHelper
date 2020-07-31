@@ -183,9 +183,11 @@
     } else {
         for (NSString *keyPath in self.elementKeyPaths) {
             [element addObserver:self.kvoObserver forKeyPath:keyPath options:self.options context:self.context];
+            self.kvoObserver.observerCount++;
         }
         [self.observered_elementMap setObject:@(1) forKey:element];
     }
+
     
 }
 
@@ -200,6 +202,7 @@
         } else {
             for (NSString *keyPath in self.elementKeyPaths) {
                 [element removeObserver:self.kvoObserver forKeyPath:keyPath context:self.context];
+                self.kvoObserver.observerCount--;
             }
             [self.observered_elementMap removeObjectForKey:element];
         }

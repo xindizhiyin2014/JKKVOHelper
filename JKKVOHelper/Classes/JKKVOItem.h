@@ -77,6 +77,7 @@ typedef NS_ENUM(NSInteger,JKKVOArrayChangeType) {
 @property (nonatomic, assign) JKKVOArrayChangeType changeType;
 
 @property (nonatomic, strong) NSArray <JKKVOArrayElement *>*changedElements;
+
 @end
 
 @interface JKKVOArrayItem : JKKVOItem
@@ -102,8 +103,12 @@ typedef NS_ENUM(NSInteger,JKKVOArrayChangeType) {
                      elementKeyPaths:(nullable NSArray *)elementKeyPaths
                          detailBlock:(nullable void(^)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context))detailBlock;
 
+/// 为数组中的元素添加指定的监听
+/// @param element 数组元素
 - (void)addObserverOfElement:(nonnull __kindof NSObject *)element;
 
+/// 为数组中的元素移除指定的监听
+/// @param element 数组元素
 - (void)removeObserverOfElement:(nonnull __kindof NSObject *)element;
 
 - (nullable NSArray <JKKVOArrayElement *>*)kvoElementsWithElement:(nonnull __kindof NSObject *)element;

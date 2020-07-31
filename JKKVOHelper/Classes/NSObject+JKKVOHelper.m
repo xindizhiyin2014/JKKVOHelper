@@ -70,7 +70,7 @@ static const void *is_jk_deallocedKey = "is_jk_deallocedKey";
             }
         };
         JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:realBlock];
-        [JKKVOItemManager addItem:item];
+        [JKKVOItemManager addItem:item observered:self];
         [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
         [JKKVOItemManager unLock];
     }
@@ -94,7 +94,7 @@ static const void *is_jk_deallocedKey = "is_jk_deallocedKey";
             [self setIs_jk_observered:YES];
             JKKVOObserver *kvoObserver = [JKKVOObserver initWithOriginObserver:observer];
             JKKVOItem *item = [JKKVOItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context block:detailBlock];
-            [JKKVOItemManager addItem:item];
+            [JKKVOItemManager addItem:item observered:self];
             [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
             [JKKVOItemManager unLock];
         }
@@ -167,7 +167,7 @@ static const void *is_jk_deallocedKey = "is_jk_deallocedKey";
         }
             
        JKKVOArrayItem *item = [JKKVOArrayItem initWith_kvoObserver:kvoObserver observered:self keyPath:keyPath context:context options:options observered_property:observered_property elementKeyPaths:elementKeyPaths detailBlock:block];
-       [JKKVOItemManager addItem:item];
+       [JKKVOItemManager addItem:item observered:self];
        [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
         NSArray *elements = [observered_property copy];
         for (NSObject *element in elements) {
@@ -203,7 +203,7 @@ static const void *is_jk_deallocedKey = "is_jk_deallocedKey";
                 [arrayItem removeObserverOfElement:element];
             }
         }
-        [JKKVOItemManager removeItem:item];
+        [JKKVOItemManager removeItem:item observered:self];
         [JKKVOItemManager unLock];
     }
 }
@@ -227,7 +227,7 @@ static const void *is_jk_deallocedKey = "is_jk_deallocedKey";
     }
     if (!observers) {
         [JKKVOItemManager lock];
-        NSArray *items = [JKKVOItemManager items];
+        NSArray *items = [JKKVOItemManager itemsOfObservered:self];
         [JKKVOItemManager unLock];
          for (JKKVOItem *item in items) {
              if ([item.keyPath isEqualToString:keyPath]) {
@@ -300,7 +300,7 @@ static const void *is_jk_deallocedKey = "is_jk_deallocedKey";
             [arrayItem removeObserverOfElement:element];
         }
     }
-    [JKKVOItemManager removeItem:item];
+    [JKKVOItemManager removeItem:item observered:self];
     [JKKVOItemManager unLock];
 }
 
