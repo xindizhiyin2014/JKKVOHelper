@@ -12,10 +12,8 @@
 #import "JKTeacher.h"
 #import "JKWorker.h"
 
-
-
 SPEC_BEGIN(JKKVOHelperSpec)
-/// <#Description#>
+
 describe(@"JKKVOHelper", ^{
          context(@"addObserver", ^{
         it(@"addObserver", ^{
@@ -73,7 +71,7 @@ describe(@"JKKVOHelper", ^{
       it(@"test observer and observered are the same object", ^{
             JKPersonModel *person = [JKPersonModel new];
             __block BOOL invoked1 = NO;
-            [person jk_addObserver:person forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+            [person jk_addObserverForKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
                 [[[change objectForKey:@"new"] should] equal:@"zhangsan"];
                 invoked1 = YES;
             }];
@@ -81,16 +79,21 @@ describe(@"JKKVOHelper", ^{
             NSArray *array = [JKKVOItemManager itemsOfObservered:person];
             [[array should] haveCountOf:1];
             [[theValue(invoked1) shouldEventually] beYes];
+            
+            NSArray *observers = [person jk_observersOfKeyPath:@"name"];
+            [[observers should]haveCountOf:1];
+            [[observers.firstObject should] equal:person];
         });
 
 
 });
     context(@"singleInstance addObserver", ^{
+        static JKWorker *tmp_worker = nil;
         it(@"JKFactory", ^{
             JKFactory *factory = [JKFactory sharedInstance];
-            JKWorker *worker = [JKWorker new];
+            tmp_worker = [JKWorker new];
             __block BOOL invoked1 = NO;
-            [factory jk_addObserver:worker forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+            [factory jk_addObserver:tmp_worker forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
                 [[[change objectForKey:@"new"] should] equal:@"北京"];
                 invoked1 = YES;
             }];
@@ -98,6 +101,12 @@ describe(@"JKKVOHelper", ^{
             NSArray *array = [JKKVOItemManager itemsOfObservered:factory];
             [[array should] haveCountOf:1];
             [[theValue(invoked1) shouldEventually] beYes];
+        });
+        
+        afterAll(^{
+            JKFactory *factory = [JKFactory sharedInstance];
+            NSArray *array = [JKKVOItemManager itemsOfObservered:factory];
+            [[array should] haveCountOf:1];
         });
 });
 
@@ -215,7 +224,7 @@ describe(@"JKKVOHelper", ^{
                         }];
                 [worker jk_removeObserver:person forKeyPath:@"name"];
                 NSArray *array = [JKKVOItemManager itemsOfObservered:worker];
-                [[theValue([array count]) should] equal:theValue(0)];
+            [[array should] haveCountOf:0];
         });
 
         it(@"jk_removeObserver:forKeyPath:context:", ^{
@@ -230,12 +239,12 @@ describe(@"JKKVOHelper", ^{
             }];
 
             NSArray *array = [JKKVOItemManager itemsOfObservered:worker];
-            [[theValue([array count]) should] equal:theValue(2)];
+            [[array should] haveCountOf:2];
             [worker jk_removeObserver:person forKeyPath:@"name" context:aaa];
             NSArray *array1 = [JKKVOItemManager itemsOfObservered:worker];
-            [[theValue([array1 count]) should] equal:theValue(1)];
+            [[array1 should] haveCountOf:1];
             JKKVOItem *item = array1.firstObject;
-            [[item.keyPath should] equal:@"name"];
+            [[theValue(item.context==NULL) should] beYes];
         });
 
     it(@"jk_removeObserver:forKeyPaths:", ^{
@@ -613,7 +622,6 @@ describe(@"JKKVOHelper", ^{
             [[theValue(invoked) shouldEventually] beYes];
             NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
             [[items should] haveCountOf:1];
-            [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
         });
 
         it(@"jk_removeObject:", ^{
@@ -643,7 +651,6 @@ describe(@"JKKVOHelper", ^{
             [[theValue(invoked) shouldEventually] beYes];
             NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
             [[items should] haveCountOf:1];
-            [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
         });
     
     it(@"element's property change", ^{
