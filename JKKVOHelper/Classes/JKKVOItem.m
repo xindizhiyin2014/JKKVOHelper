@@ -210,12 +210,12 @@
 
 - (nullable NSArray <JKKVOArrayElement *>*)kvoElementsWithElement:(nonnull __kindof NSObject *)element
 {
-    [JKKVOItemManager lock];
     NSMutableArray *kvoElements = nil;
     NSArray *observered_property = self.observered_property;
     if (!observered_property || observered_property.count == 0) {
         return kvoElements;
     }
+    [JKKVOItemManager lock];
     NSArray *elements = [observered_property copy];
     if ([elements containsObject:element]) {
         kvoElements = [NSMutableArray new];
