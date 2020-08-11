@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger,JKKVOArrayChangeType) {
 
 @interface JKKVOArrayElement : NSObject
 
-@property (nonatomic, strong, nonnull, readonly) NSObject *object;
+@property (nonatomic, strong, nonnull, readonly) __kindof NSObject *object;
 
 @property (nonatomic, assign, readonly) NSInteger oldIndex;
 

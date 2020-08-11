@@ -93,7 +93,7 @@
 
 @interface JKKVOArrayElement()
 
-@property (nonatomic, strong, nonnull, readwrite) NSObject *object;
+@property (nonatomic, strong, nonnull, readwrite) __kindof NSObject *object;
 
 @property (nonatomic, assign, readwrite) NSInteger oldIndex;
 
@@ -178,17 +178,16 @@
     NSNumber *value = [self.observered_elementMap objectForKey:element];
     if (value) {
         NSUInteger observeredCount = [value unsignedIntegerValue];
-        observeredCount++;
+        observeredCount += self.elementKeyPaths.count;
         [self.observered_elementMap setObject:@(observeredCount) forKey:element];
     } else {
         for (NSString *keyPath in self.elementKeyPaths) {
             [element addObserver:self.kvoObserver forKeyPath:keyPath options:self.options context:self.context];
             self.kvoObserver.observerCount++;
         }
-        [self.observered_elementMap setObject:@(1) forKey:element];
+        NSUInteger observeredCount = self.elementKeyPaths.count;
+        [self.observered_elementMap setObject:@(observeredCount) forKey:element];
     }
-
-    
 }
 
 - (void)removeObserverOfElement:(nonnull __kindof NSObject *)element
@@ -196,7 +195,7 @@
     NSNumber *value = [self.observered_elementMap objectForKey:element];
     if (value) {
         NSUInteger observeredCount = [value unsignedIntegerValue];
-        observeredCount--;
+        observeredCount -= self.elementKeyPaths.count;
         if (observeredCount > 0) {
             [self.observered_elementMap setObject:@(observeredCount) forKey:element];
         } else {

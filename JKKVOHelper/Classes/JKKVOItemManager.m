@@ -39,7 +39,7 @@ static const void *jk_kvo_items_key = "jk_kvo_items_key";
 
 @interface JKKVOItemManager()
 
-/// 所有的items
+/// 所有的JKKVOArrayItem
 @property (nonatomic, strong) NSMutableArray <JKKVOArrayItem *>*arrayItems;
 
 @property (nonatomic, strong) NSRecursiveLock *lock;
@@ -71,29 +71,27 @@ static const void *jk_kvo_items_key = "jk_kvo_items_key";
 }
 
 + (void)addItem:(__kindof JKKVOItem *)item
-     observered:(__kindof NSObject *)observered
 {
     if ([item isKindOfClass:[JKKVOArrayItem class]]) {
         [self addArrayItem:item];
     } else {
         if (item
-            && observered
-            && ![observered.jk_kvo_items containsObject:item]) {
-            [observered.jk_kvo_items addObject:item];
+            && item.observered
+            && ![item.observered.jk_kvo_items containsObject:item]) {
+            [item.observered.jk_kvo_items addObject:item];
         }
     }
 }
 
 + (void)removeItem:(__kindof JKKVOItem *)item
-        observered:(__kindof NSObject *)observered
 {
     if ([item isKindOfClass:[JKKVOArrayItem class]]) {
         [self removeArrayItem:item];
     } else {
         if (item
-            && observered
-            && [observered.jk_kvo_items containsObject:item]) {
-            [observered.jk_kvo_items removeObject:item];
+            && item.observered
+            && [item.observered.jk_kvo_items containsObject:item]) {
+            [item.observered.jk_kvo_items removeObject:item];
         }
     }
 }
@@ -288,7 +286,7 @@ static const void *jk_kvo_items_key = "jk_kvo_items_key";
 }
 
 + (NSArray <__kindof JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
-                                    keyPath:(nullable NSString *)keyPath
+                                             keyPath:(nullable NSString *)keyPath
 {
     if (!observered) {
         return @[];

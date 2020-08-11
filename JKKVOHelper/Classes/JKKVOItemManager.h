@@ -23,11 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)unLock;
 
-+ (void)addItem:(__kindof JKKVOItem *)item
-     observered:(__kindof NSObject *)observered;
++ (void)addItem:(__kindof JKKVOItem *)item;
 
-+ (void)removeItem:(__kindof JKKVOItem *)item
-        observered:(__kindof NSObject *)observered;
++ (void)removeItem:(__kindof JKKVOItem *)item;
 
 /// 判断是否存在item
 /// @param observer 观察者
