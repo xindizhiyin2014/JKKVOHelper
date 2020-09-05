@@ -9,6 +9,7 @@
 #import "JKViewController.h"
 #import "JKTeacher.h"
 #import "JKKVOHelper.h"
+#import <objc/runtime.h>
 
 @interface JKViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -21,6 +22,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+        
     
 //    JKTeacher *teacher = [JKTeacher new];
 //    [teacher jk_addObserverForKeyPath:@"students" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
@@ -40,8 +43,60 @@
 //    [array removeObjectAtIndex:1];
     
     
-
-
+//    JKPersonModel *person = [JKPersonModel new];
+//    unsigned int a;
+//
+//        objc_property_t * result = class_copyPropertyList(object_getClass(person), &a);
+//
+//        for (unsigned int i = 0; i < a; i++) {
+//            objc_property_t o_t =  result[i];
+////            NSLog(@"name: %@", [NSString stringWithFormat:@"%s", property_getName(o_t)]);
+//            NSLog(@"att: %@", [NSString stringWithFormat:@"%s", property_getAttributes(o_t)]);
+//
+//        }
+//        return;
+//    [person jk_initComputed];
+//    person.firstName = @"A";
+//    person.lastName = @"B";
+//    NSLog(@"AAA_fullName1 %@",person.fullName);
+//    NSLog(@"AAA_fullName2 %@",person.fullName);
+//
+//    [person jk_addObserverForKeyPath:@"fullName" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+//        NSLog(@"JKJK");
+//    }];
+//
+//    [person jk_addObserverForKeyPath:@"firstName" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+//        NSLog(@"MMM");
+//    }];
+//    person.firstName = @"C";
+//    NSLog(@"AAA");
+    
+//    JKPersonModel *person1 = [JKPersonModel new];
+//    person1.firstName = @"C";
+//    person1.lastName = @"D";
+//    NSLog(@"BBB_fullName1 %@",person1.fullName);
+//    NSLog(@"BBB");
+//     NSLog(@"UIViewController : %s", @encode(JKPersonModel));
+//    JKPersonModel *person = [JKPersonModel new];
+//    [person jk_initComputed];
+//    person.width = 1;
+//    person.height = 2;
+//    NSLog(@"width %@",@(person.width));
+//    NSLog(@"height %@",@(person.height));
+//
+//    //
+//    NSLog(@"width_1 %ld",(long)person.size.width);
+//    NSLog(@"height_1 %ld",(long)person.size.height);
+    
+//    [person jk_addObserverForKeyPath:@"fullName" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+//        NSLog(@"JKJK");
+//    }];
+//
+//    [person jk_addObserverForKeyPath:@"firstName" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+//        NSLog(@"MMM");
+//    }];
+//    person.firstName = @"C";
+//    NSLog(@"AAA");
 
 
 

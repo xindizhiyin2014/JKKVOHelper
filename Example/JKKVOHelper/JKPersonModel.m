@@ -11,6 +11,39 @@
 #import "JKKVOItemManager.h"
 
 @implementation JKPersonModel
+@synthesize size = _size;
+- (NSDictionary<NSString *,NSArray *> *)jk_computedProperty_config
+{
+    return @{@"fullName":@[@"firstName",@"lastName"],
+             @"size":@[@"width",@"height"],
+             @"sum":@[@"a",@"b"]
+    };
+}
+
+- (NSString *)fullName
+{
+    self.invokedCount++;
+    return [NSString stringWithFormat:@"%@%@",self.firstName,self.lastName];
+}
+
+- (CGSize)size
+{
+    self.invokedCount++;
+    return CGSizeMake(self.width, self.height);
+}
+
+- (NSInteger)sum
+{
+    self.invokedCount++;
+    return self.a + self.b;
+}
+
+- (void)setSize:(CGSize)size
+{
+//    _size = size;
+}
+
+
 
 - (void)dealloc
 {

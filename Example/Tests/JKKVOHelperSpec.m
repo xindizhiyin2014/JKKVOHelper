@@ -79,7 +79,7 @@ describe(@"JKKVOHelper", ^{
             NSArray *array = [JKKVOItemManager itemsOfObservered:person];
             [[array should] haveCountOf:1];
             [[theValue(invoked1) shouldEventually] beYes];
-            
+
             NSArray *observers = [person jk_observersOfKeyPath:@"name"];
             [[observers should]haveCountOf:1];
             [[observers.firstObject should] equal:person];
@@ -102,7 +102,7 @@ describe(@"JKKVOHelper", ^{
             [[array should] haveCountOf:1];
             [[theValue(invoked1) shouldEventually] beYes];
         });
-        
+
         afterAll(^{
             JKFactory *factory = [JKFactory sharedInstance];
             NSArray *array = [JKKVOItemManager itemsOfObservered:factory];
@@ -111,7 +111,7 @@ describe(@"JKKVOHelper", ^{
 });
 
          context(@"addObserver context", ^{
-           
+
             it(@"no context", ^{
                 JKWorker *worker = [JKWorker new];
                 JKPersonModel *person = [JKPersonModel new];
@@ -282,9 +282,9 @@ describe(@"JKKVOHelper", ^{
         NSArray *array = [JKKVOItemManager itemsOfObservered:person];
         [[array should] haveCountOf:0];
     });
-    
+
 });
-         context(@"array action", ^{
+    context(@"array action", ^{
         it(@"init", ^{
             JKTeacher *teacher = [JKTeacher new];
             __block BOOL invoked = NO;
@@ -348,44 +348,44 @@ describe(@"JKKVOHelper", ^{
                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
                 invoked = YES;
             }];
-            
+
             [students kvo_insertObject:person3 atIndex:1];
             [[theValue(invoked) shouldEventually] beYes];
             NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
             [[items should] haveCountOf:1];
             [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
         });
-    it(@"jk_insertObject:atIndex:1", ^{
-        JKTeacher *teacher = [JKTeacher new];
-        NSMutableArray *students = [NSMutableArray new];
-        teacher.students = students;
-        JKPersonModel *person1 = [JKPersonModel new];
-        person1.name = @"1";
-        [students kvo_addObject:person1];
+        it(@"jk_insertObject:atIndex:1", ^{
+            JKTeacher *teacher = [JKTeacher new];
+            NSMutableArray *students = [NSMutableArray new];
+            teacher.students = students;
+            JKPersonModel *person1 = [JKPersonModel new];
+            person1.name = @"1";
+            [students kvo_addObject:person1];
 
-        JKPersonModel *person2 = [JKPersonModel new];
-        person2.name = @"2";
-        [students kvo_addObject:person2];
+            JKPersonModel *person2 = [JKPersonModel new];
+            person2.name = @"2";
+            [students kvo_addObject:person2];
 
-        JKPersonModel *person3 = [JKPersonModel new];
-        person3.name = @"3";
+            JKPersonModel *person3 = [JKPersonModel new];
+            person3.name = @"3";
 
-        __block BOOL invoked = NO;
-        [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
-            [[[change objectForKey:@"new"] should] haveCountOf:3];
-            [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddAtIndex)];
-            [[changedModel.changedElements should] haveCountOf:1];
-            [[changedModel.changedElements.firstObject.object should] equal:person3];
-            [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(2)];
-            [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
-            invoked = YES;
-        }];
-        [students kvo_insertObject:person3 atIndex:2];
-        [[theValue(invoked) shouldEventually] beYes];
-        NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
-        [[items should] haveCountOf:1];
-        [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
-    });
+            __block BOOL invoked = NO;
+            [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                [[[change objectForKey:@"new"] should] haveCountOf:3];
+                [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddAtIndex)];
+                [[changedModel.changedElements should] haveCountOf:1];
+                [[changedModel.changedElements.firstObject.object should] equal:person3];
+                [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(2)];
+                [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
+                invoked = YES;
+            }];
+            [students kvo_insertObject:person3 atIndex:2];
+            [[theValue(invoked) shouldEventually] beYes];
+            NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
+            [[items should] haveCountOf:1];
+            [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
+        });
 
         it(@"jk_removeLastObject", ^{
             JKTeacher *teacher = [JKTeacher new];
@@ -448,7 +448,7 @@ describe(@"JKKVOHelper", ^{
                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(1)];
                 invoked = YES;
             }];
-            
+
             [students kvo_removeObjectAtIndex:1];
             [[theValue(invoked) shouldEventually] beYes];
             NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
@@ -482,12 +482,12 @@ describe(@"JKKVOHelper", ^{
                 [[changedModel.changedElements.lastObject.object should] equal:person4];
                 [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(NSNotFound)];
                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(2)];
-                
+
                 [[theValue(changedModel.changedElements.lastObject.newIndex) should] equal:theValue(2)];
                 [[theValue(changedModel.changedElements.lastObject.oldIndex) should] equal:theValue(NSNotFound)];
                 invoked = YES;
             }];
-            
+
             [students kvo_replaceObjectAtIndex:2 withObject:person4];
             [[theValue(invoked) shouldEventually] beYes];
             NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
@@ -521,7 +521,7 @@ describe(@"JKKVOHelper", ^{
                 [[changedModel.changedElements.firstObject.object should] equal:person3];
                 [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(2)];
                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
-                
+
                 [[changedModel.changedElements.lastObject.object should] equal:person4];
                 [[theValue(changedModel.changedElements.lastObject.newIndex) should] equal:theValue(3)];
                 [[theValue(changedModel.changedElements.lastObject.oldIndex) should] equal:theValue(NSNotFound)];
@@ -562,7 +562,7 @@ describe(@"JKKVOHelper", ^{
                 [[changedModel.changedElements.firstObject.object should] equal:person3];
                 [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(3)];
                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(2)];
-                
+
                 [[changedModel.changedElements.lastObject.object should] equal:person4];
                 [[theValue(changedModel.changedElements.lastObject.newIndex) should] equal:theValue(2)];
                 [[theValue(changedModel.changedElements.lastObject.oldIndex) should] equal:theValue(3)];
@@ -599,23 +599,23 @@ describe(@"JKKVOHelper", ^{
                 [[[change objectForKey:@"new"] should] haveCountOf:0];
                 [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeRemoveTail)];
                 [[changedModel.changedElements should] haveCountOf:4];
-                
+
                 [[changedModel.changedElements[0].object should] equal:person1];
                 [[theValue(changedModel.changedElements[0].newIndex) should] equal:theValue(NSNotFound)];
                 [[theValue(changedModel.changedElements[0].oldIndex) should] equal:theValue(0)];
-                
+
                 [[changedModel.changedElements[1].object should] equal:person2];
                 [[theValue(changedModel.changedElements[1].newIndex) should] equal:theValue(NSNotFound)];
                 [[theValue(changedModel.changedElements[1].oldIndex) should] equal:theValue(1)];
-                
+
                 [[changedModel.changedElements[2].object should] equal:person3];
                 [[theValue(changedModel.changedElements[2].newIndex) should] equal:theValue(NSNotFound)];
                 [[theValue(changedModel.changedElements[2].oldIndex) should] equal:theValue(2)];
-                
+
                 [[changedModel.changedElements[3].object should] equal:person4];
                 [[theValue(changedModel.changedElements[3].newIndex) should] equal:theValue(NSNotFound)];
                 [[theValue(changedModel.changedElements[3].oldIndex) should] equal:theValue(3)];
-                
+
                 invoked = YES;
             }];
             [students kvo_removeAllObjects];
@@ -641,7 +641,7 @@ describe(@"JKKVOHelper", ^{
                 [[changedModel.changedElements.firstObject.object should] equal:person1];
                 [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(NSNotFound)];
                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(0)];
-                
+
                 [[changedModel.changedElements.lastObject.object should] equal:person1];
                 [[theValue(changedModel.changedElements.lastObject.newIndex) should] equal:theValue(NSNotFound)];
                 [[theValue(changedModel.changedElements.lastObject.oldIndex) should] equal:theValue(1)];
@@ -652,31 +652,31 @@ describe(@"JKKVOHelper", ^{
             NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
             [[items should] haveCountOf:1];
         });
-    
-    it(@"element's property change", ^{
-        JKTeacher *teacher = [JKTeacher new];
-        NSMutableArray *students = [NSMutableArray new];
-        teacher.students = students;
-        JKPersonModel *person1 = [JKPersonModel new];
-        person1.name = @"1";
-        [students kvo_addObject:person1];
 
-        __block BOOL invoked = NO;
-        [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil elementKeyPaths:@[@"name"] withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
-            [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeElement)];
-            [[changedModel.changedElements should] haveCountOf:1];
-            [[changedModel.changedElements.firstObject.object should] equal:person1];
-            [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
-            [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(0)];
-            invoked = YES;
-        }];
-        person1.name = @"2";
-        [[theValue(invoked) shouldEventually] beYes];
-        NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
-        [[items should] haveCountOf:1];
-        [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
-    });
-             
+        it(@"element's property change", ^{
+            JKTeacher *teacher = [JKTeacher new];
+            NSMutableArray *students = [NSMutableArray new];
+            teacher.students = students;
+            JKPersonModel *person1 = [JKPersonModel new];
+            person1.name = @"1";
+            [students kvo_addObject:person1];
+
+            __block BOOL invoked = NO;
+            [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil elementKeyPaths:@[@"name"] withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeElement)];
+                [[changedModel.changedElements should] haveCountOf:1];
+                [[changedModel.changedElements.firstObject.object should] equal:person1];
+                [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
+                [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(0)];
+                invoked = YES;
+            }];
+            person1.name = @"2";
+            [[theValue(invoked) shouldEventually] beYes];
+            NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
+            [[items should] haveCountOf:1];
+            [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
+        });
+
              it(@"jk_removeObservers", ^{
                  JKTeacher *teacher = [JKTeacher new];
                  NSMutableArray *students = [NSMutableArray new];
@@ -698,9 +698,9 @@ describe(@"JKKVOHelper", ^{
                  NSArray *items1 = [JKKVOItemManager itemsOfObservered:teacher];
                  [[items1 should] haveCountOf:0];
 
-                 
+
              });
-             
+
              it(@"jk_removeObserver:forKeyPath:context:", ^{
                  JKTeacher *teacher = [JKTeacher new];
                  NSMutableArray *students = [NSMutableArray new];
@@ -722,68 +722,193 @@ describe(@"JKKVOHelper", ^{
                  NSArray *items1 = [JKKVOItemManager itemsOfObservered:teacher];
                  [[items1 should] haveCountOf:0];
              });
+        
+        it(@"two object, one array jk_addObject", ^{
+            JKTeacher *teacher = [JKTeacher new];
+            NSMutableArray *students = [NSMutableArray new];
+            teacher.students = students;
+            
+            JKTeacher *teacher1 = [JKTeacher new];
+            teacher1.students = students;
+            JKPersonModel *person1 = [JKPersonModel new];
+            person1.name = @"1";
+            __block BOOL invoked = NO;
+            __block BOOL invoked1 = NO;
 
-         });
-         
-         
-             
-         it(@"two object, one array jk_addObject", ^{
-             JKTeacher *teacher = [JKTeacher new];
-             NSMutableArray *students = [NSMutableArray new];
-             teacher.students = students;
-             
-             JKTeacher *teacher1 = [JKTeacher new];
-             teacher1.students = students;
-             JKPersonModel *person1 = [JKPersonModel new];
-             person1.name = @"1";
-             __block BOOL invoked = NO;
-             __block BOOL invoked1 = NO;
-
-             [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
-                 [[[change objectForKey:@"new"] should] haveCountOf:1];
-                 [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddTail)];
-                 [[changedModel.changedElements.firstObject.object should] equal:person1];
-                 [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
-                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
-                 invoked = YES;
-             }];
-             
-             [teacher1 jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
-                 [[[change objectForKey:NSKeyValueChangeNewKey] should] haveCountOf:1];
-                 [[[change objectForKey:NSKeyValueChangeOldKey] should] haveCountOf:0];
-
-                 [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddTail)];
-                 [[changedModel.changedElements.firstObject.object should] equal:person1];
-                 [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
-                 [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
-                 invoked1 = YES;
-             }];
-             [students kvo_addObject:person1];
-             [[theValue(invoked) shouldEventually] beYes];
-             [[theValue(invoked1) shouldEventually] beYes];
-             NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
-             [[items should] haveCountOf:1];
-             [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
-             
-             NSArray *items1 = [JKKVOItemManager itemsOfObservered:teacher];
-             [[items1 should] haveCountOf:1];
-             [[items1.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
-         });
-             
-});
-
-context(@"observerd is nil", ^{
-       
-        it(@"observerd is nil", ^{
-            JKPersonModel *person = [JKPersonModel new];
-            JKWorker *worker = [JKWorker new];
-            [person jk_addObserver:worker forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
-                
+            [teacher jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                [[[change objectForKey:@"new"] should] haveCountOf:1];
+                [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddTail)];
+                [[changedModel.changedElements.firstObject.object should] equal:person1];
+                [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
+                [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
+                invoked = YES;
             }];
             
-});
-        
+            [teacher1 jk_addObserverOfArrayForKeyPath:@"students" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil withBlock:^(NSString * _Nonnull keyPath, NSDictionary *change, JKKVOArrayChangeModel * _Nonnull changedModel, void * _Nonnull context) {
+                [[[change objectForKey:NSKeyValueChangeNewKey] should] haveCountOf:1];
+                [[[change objectForKey:NSKeyValueChangeOldKey] should] haveCountOf:0];
 
+                [[theValue(changedModel.changeType) should] equal:theValue(JKKVOArrayChangeTypeAddTail)];
+                [[changedModel.changedElements.firstObject.object should] equal:person1];
+                [[theValue(changedModel.changedElements.firstObject.newIndex) should] equal:theValue(0)];
+                [[theValue(changedModel.changedElements.firstObject.oldIndex) should] equal:theValue(NSNotFound)];
+                invoked1 = YES;
+            }];
+            [students kvo_addObject:person1];
+            [[theValue(invoked) shouldEventually] beYes];
+            [[theValue(invoked1) shouldEventually] beYes];
+            NSArray *items = [JKKVOItemManager itemsOfObservered:teacher];
+            [[items should] haveCountOf:1];
+            [[items.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
+            
+            NSArray *items1 = [JKKVOItemManager itemsOfObservered:teacher];
+            [[items1 should] haveCountOf:1];
+            [[items1.firstObject should] beKindOfClass:[JKKVOArrayItem class]];
+        });
+
+    });
+         
+        
+    context(@"observerd is nil", ^{
+
+            it(@"observerd is nil", ^{
+                JKPersonModel *person = [JKPersonModel new];
+                JKWorker *worker = [JKWorker new];
+                [person jk_addObserver:worker forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+
+                }];
+
+            });
+    });
+    
+    context(@"computed property", ^{
+//        it(@"property is a string", ^{
+//            JKPersonModel *person = [JKPersonModel new];
+//            [person jk_initComputed];
+//            person.firstName = @"A";
+//            __block BOOL invoked = NO;
+//            [person jk_addObserverForKeyPath:@"fullName" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+//                invoked = YES;
+//                NSString *oldStr = change[NSKeyValueChangeOldKey];
+//                NSString *newStr = change[NSKeyValueChangeNewKey];
+//                [[theValue([oldStr hasPrefix:@"A"]) should] beYes];
+//                [[theValue(oldStr.length > person.firstName.length) should] beYes];
+//                [[theValue([newStr isEqualToString:@"AB"]) should] beYes];
+//            }];
+//            person.lastName = @"B";
+//            [[theValue(invoked) should] beYes];
+//            [[theValue(person.invokedCount == 2) should] beYes];
+//            NSLog(@"fullName: %@",person.fullName);
+//            [[theValue(person.invokedCount == 2) should] beYes];
+//            [[theValue([person.fullName isEqualToString:@"AB"]) should] beYes];
+//        });
+        
+        it(@"property is a CGSize", ^{
+          JKPersonModel *person = [JKPersonModel new];
+            [person jk_initComputed];
+            person.width = 1;
+            __block BOOL invoked = NO;
+            [person jk_addObserverForKeyPath:@"size" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+                invoked = YES;
+                CGSize oldSize = [change[NSKeyValueChangeOldKey] CGSizeValue];
+                CGSize newSize = [change[NSKeyValueChangeNewKey] CGSizeValue];
+                [[theValue(oldSize.width == 1) should] beYes];
+            }];
+            person.height = 5;
+            [[theValue(invoked) should] beYes];
+            [[theValue(person.invokedCount == 2) should] beYes];
+            NSLog(@"size: {%@,%@}",@(person.size.width),@(person.size.height));
+            [[theValue(person.invokedCount == 2) should] beYes];
+            [[theValue(CGSizeEqualToSize(person.size, CGSizeMake(1, 5))) should] beYes];
+        });
+        
+        it(@"property is a CGPoint", ^{
+            
+        });
+        
+        it(@"property is a CGRect", ^{
+            
+        });
+        
+        it(@"property is a UIEdgeInsets", ^{
+            
+        });
+        
+        it(@"property is a CGAffineTransform", ^{
+            
+        });
+        
+        it(@"property is a UIOffset", ^{
+            
+        });
+        
+        it(@"property is a char", ^{
+            
+        });
+        
+        it(@"property is a int", ^{
+            
+        });
+        
+        it(@"property is a short", ^{
+            
+        });
+        
+        it(@"property is a long", ^{
+            
+        });
+        
+        it(@"property is a long long", ^{
+            
+        });
+        
+        it(@"property is a unsigned char", ^{
+            
+        });
+        
+        it(@"property is a unsigned int", ^{
+            
+        });
+        
+        it(@"property is a unsigned short", ^{
+            
+        });
+        
+        it(@"property is a unsigned long", ^{
+            
+        });
+        
+        it(@"property is a unsigned long long", ^{
+            
+        });
+        
+        it(@"property is a float", ^{
+            
+        });
+        
+        it(@"property is a double", ^{
+            
+        });
+        
+        it(@"property is a BOOL", ^{
+            
+        });
+        
+        it(@"property is a char*", ^{
+            
+        });
+        
+        it(@"property is a Class", ^{
+            
+        });
+        
+        it(@"property is a SEL", ^{
+            
+        });
+    });
+    
 });
+
+
 
 SPEC_END

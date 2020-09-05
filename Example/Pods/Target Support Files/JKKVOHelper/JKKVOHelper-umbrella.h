@@ -11,6 +11,7 @@
 #endif
 
 #import "JKKVOHelper.h"
+#import "JKKVOHelperMacro.h"
 #import "JKKVOItem.h"
 #import "JKKVOItemManager.h"
 #import "JKKVOObserver.h"
