@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak, nullable, readonly) __kindof NSObject *originObserver;
 @property (nonatomic, copy, nullable, readonly) NSString *originObserver_address;
 @property (nonatomic, assign) NSUInteger observerCount;
+@property (nonatomic, copy) NSString *itemClassName;
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

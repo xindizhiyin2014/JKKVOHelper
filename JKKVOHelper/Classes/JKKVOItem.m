@@ -5,46 +5,17 @@
 //  Created by JackLee on 2020/5/26.
 //
 
-#ifndef weakify
-#if DEBUG
-#if __has_feature(objc_arc)
-#define weakify(object) autoreleasepool{} __weak __typeof__(object) weak##_##object = object;
-#else
-#define weakify(object) autoreleasepool{} __block __typeof__(object) block##_##object = object;
-#endif
-#else
-#if __has_feature(objc_arc)
-#define weakify(object) try{} @finally{} {} __weak __typeof__(object) weak##_##object = object;
-#else
-#define weakify(object) try{} @finally{} {} __block __typeof__(object) block##_##object = object;
-#endif
-#endif
-#endif
 
-#ifndef strongify
-#if DEBUG
-#if __has_feature(objc_arc)
-#define strongify(object) autoreleasepool{} __typeof__(object) object = weak##_##object;
-#else
-#define strongify(object) autoreleasepool{} __typeof__(object) object = block##_##object;
-#endif
-#else
-#if __has_feature(objc_arc)
-#define strongify(object) try{} @finally{} __typeof__(object) object = weak##_##object;
-#else
-#define strongify(object) try{} @finally{} __typeof__(object) object = block##_##object;
-#endif
-#endif
-#endif
 
 
 #import "JKKVOItem.h"
 #import "JKKVOObserver.h"
 #import "NSObject+JKKVOHelper.h"
+#import "JKKVOHelperMacro.h"
 
+static void *jk_computed_observer_context = "jk_computed_observer_context";
 
-
-@interface JKKVOItem()
+@interface JKBaseKVOItem()
 /// 观察者
 @property (nonatomic, strong, nonnull, readwrite) JKKVOObserver *kvoObserver;
 /// 被观察的对象
@@ -53,8 +24,23 @@
 @property (nonatomic, copy, nullable, readwrite)  NSString * observered_address;
 /// 监听的keyPath
 @property (nonatomic, copy, nonnull, readwrite) NSString *keyPath;
+///监听选项
+@property (nonatomic, assign, readwrite) NSKeyValueObservingOptions options;
 /// 上下文
 @property (nonatomic, nullable, readwrite) void *context;
+
+@end
+
+@implementation JKBaseKVOItem
+
+- (BOOL)valid
+{
+    return self.kvoObserver.originObserver && self.observered;
+}
+
+@end
+
+@interface JKKVOItem()
 /// 回调
 @property (nonatomic, copy, readwrite) void(^block)(NSString *keyPath, NSDictionary *change, void *context);
 
@@ -66,26 +52,22 @@
 + (instancetype)initWith_kvoObserver:(nonnull JKKVOObserver *)kvoObserver
                           observered:(nonnull __kindof NSObject *)observered
                              keyPath:(nonnull NSString *)keyPath
+                             options:(NSKeyValueObservingOptions)options
                              context:(nullable void *)context
-                               block:(nullable void(^)(NSString *keyPath, NSDictionary *change, void *context))block;
+                               block:(nullable void(^)(NSString *keyPath,  NSDictionary *change, void *context))block;
 {
-    JKKVOItem *item = [[self alloc] init];
+    __kindof JKKVOItem *item = [[self alloc] init];
     if (item) {
         item.kvoObserver = kvoObserver;
+        kvoObserver.itemClassName = NSStringFromClass([self class]);
         item.observered = observered;
         item.observered_address = [NSString stringWithFormat:@"%p",observered];
         item.keyPath = keyPath;
+        item.options = options;
         item.context = context;
         item.block = block;
     }
     return item;
-}
-
-
-
-- (BOOL)valid
-{
-    return self.kvoObserver.originObserver && self.observered;
 }
 
 @end
@@ -126,20 +108,14 @@
 
 /// 被监听的属性对应的对象
 @property (nonatomic, weak, nullable, readwrite) __kindof NSArray *observered_property;
-
-///监听选项
-@property (nonatomic, assign, readwrite) NSKeyValueObservingOptions options;
-
 /// 数组元素需要监听的keyPath的数组
 @property (nonatomic, strong, nullable, readwrite) NSArray *elementKeyPaths;
 /// 回调
 @property (nonatomic, copy, readwrite) void(^detailBlock)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context);
-
 /// 被监听的元素map   key:element   value: 添加监听的次数
 @property (nonatomic, strong, nonnull, readwrite) NSMapTable *observered_elementMap;
 
 @end
-
 
 @implementation JKKVOArrayItem
 
@@ -156,6 +132,7 @@
     JKKVOArrayItem *item = [[self alloc] init];
     if (item) {
         item.kvoObserver = kvoObserver;
+        kvoObserver.itemClassName = NSStringFromClass([self class]);
         item.observered = observered;
         item.observered_address = [NSString stringWithFormat:@"%p",observered];
         item.keyPath = keyPath;
@@ -233,5 +210,56 @@
     return kvoElements;
 }
 
+@end
+
+@interface JKKVOComputedItem()
+
+@property (nonatomic, strong, readwrite) NSArray <NSString *>*dependentProperties;
+/// 回调
+@property (nonatomic, copy, readwrite) void(^block)(NSString *keyPath, NSDictionary *change, void *context);
+
+@end
+
+@implementation JKKVOComputedItem
+
++ (instancetype)initWith_kvoObserver:(nonnull JKKVOObserver *)kvoObserver
+                          observered:(nonnull __kindof NSObject *)observered
+                             keyPath:(nonnull NSString *)keyPath
+                 dependentProperties:(NSArray <NSString *>*)dependentProperties
+                               block:(nullable void(^)(NSString *keyPath,  NSDictionary *change, void *context))block
+{
+    JKKVOComputedItem *item = [[self alloc] init];
+    if (item) {
+        item.kvoObserver = kvoObserver;
+        kvoObserver.itemClassName = NSStringFromClass([self class]);
+        item.observered = observered;
+        item.observered_address = [NSString stringWithFormat:@"%p",observered];
+        item.keyPath = keyPath;
+        item.dependentProperties = dependentProperties;
+        item.block = block;
+    }
+    return item;
+}
+
+- (void)addDependentPropertiesObserver
+{
+    for (NSString *keyPath in self.dependentProperties) {
+        [self.observered addObserver:self.kvoObserver forKeyPath:keyPath options:NSKeyValueObservingOptionNew context:jk_computed_observer_context];
+        self.kvoObserver.observerCount++;
+    }
+}
+
+- (void)removeDependentPropertiesObserver
+{
+    for (NSString *keyPath in self.dependentProperties) {
+        [self.observered removeObserver:self.kvoObserver forKeyPath:keyPath];
+        self.kvoObserver.observerCount--;
+    }
+}
+
++ (void *)computedObserverContext
+{
+    return jk_computed_observer_context;
+}
 
 @end

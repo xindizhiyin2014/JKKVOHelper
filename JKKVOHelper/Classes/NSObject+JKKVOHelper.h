@@ -156,8 +156,14 @@ NS_ASSUME_NONNULL_BEGIN
  @param observers 观察者数组
  @param keyPath keyPath
  */
-- (void)jk_removeObservers:(NSArray <__kindof NSObject *>*)observers
+- (void)jk_removeObservers:(nullable NSArray <__kindof NSObject *>*)observers
                 forKeyPath:(NSString *)keyPath;
+
+/**
+ 移除特定观察者
+ @param observer 观察者
+*/
+- (void)jk_removeObserver:(__kindof NSObject *)observer;
 
 /**
  移除所有通过jk_前缀添加的观察者，默认在被观察的对象dealloc的时候调用
@@ -182,6 +188,12 @@ NS_ASSUME_NONNULL_BEGIN
  @return keyPath组成的列表
  */
 - (NSArray <NSString *>*)jk_keyPathsObserveredBy:(__kindof NSObject *)observer;
+
+/// 计算属性的配置 key:计算属性的属性名字  value:计算属性变化依赖的基础属性的属性名字
+- (NSDictionary <NSString *,NSArray *>*)jk_computedProperty_config;
+
+/// 初始化计算属性配置信息
+- (void)jk_initComputed;
 
 @end
 

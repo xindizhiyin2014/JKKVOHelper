@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class JKKVOItem,JKKVOArrayItem,JKKVOObserver;
+@class JKBaseKVOItem,JKKVOItem,JKKVOArrayItem,JKKVOComputedItem,JKKVOObserver;
 
 @interface JKKVOItemManager : NSObject
 
@@ -23,19 +23,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void)unLock;
 
-+ (void)addItem:(__kindof JKKVOItem *)item;
++ (void)addItem:(__kindof JKBaseKVOItem *)item;
 
-+ (void)removeItem:(__kindof JKKVOItem *)item;
++ (void)removeItem:(__kindof JKBaseKVOItem *)item;
 
 /// 判断是否存在item
 /// @param observer 观察者
 /// @param observered 被观察者
 /// @param keyPath keyPath
 /// @param context context
-+ (nullable __kindof JKKVOItem *)isContainItemWithObserver:(__kindof NSObject *)observer
-                                                observered:(__kindof NSObject *)observered
-                                                   keyPath:(NSString *)keyPath
-                                                   context:(nullable void *)context;
++ (nullable __kindof JKBaseKVOItem *)isContainItemWithObserver:(__kindof NSObject *)observer
+                                                    observered:(__kindof NSObject *)observered
+                                                       keyPath:(NSString *)keyPath
+                                                       context:(nullable void *)context;
 /// 是否存在JKKVOArrayItem
 /// @param observer 观察者
 /// @param observered 被观察者
@@ -45,6 +45,13 @@ NS_ASSUME_NONNULL_BEGIN
                                                  observered:(__kindof NSObject *)observered
                                                     keyPath:(NSString *)keyPath
                                                     context:(nullable void *)context;
+/// 是否存在JKKVOArrayItem
+/// @param observer 观察者
+/// @param observered 被观察者
+/// @param keyPath keyPath
++ (nullable JKKVOComputedItem *)isContainComputedItemWithObserver:(__kindof NSObject *)observer
+                                                       observered:(__kindof NSObject *)observered
+                                                          keyPath:(NSString *)keyPath;
 
 /// 是否存在item
 /// @param observer 观察者
@@ -52,58 +59,43 @@ NS_ASSUME_NONNULL_BEGIN
 + (BOOL)isContainItemWithObserver:(__kindof NSObject *)observer
                        observered:(__kindof NSObject *)observered;
 
-/// 根据kvoObserver判断是否存在对应的item
-/// @param kvoObserver kvoObserver
-/// @param observered 被观察者
-+ (nullable __kindof JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
-                                                    observered:(__kindof NSObject *)observered;
-/// 判断是否存在item
+/// 判断是否存在item JKKVOItem,JKKVOArrayItem,JKKVOComputedItem
 /// @param kvoObserver 观察者
 /// @param observered 被观察者
 /// @param keyPath keyPath
 /// @param context context
-+ (nullable __kindof JKKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
-                                                    observered:(__kindof NSObject *)observered
-                                                       keyPath:(NSString *)keyPath
-                                                       context:(nullable void *)context;
-
-/// 判断是否存在arrayItem
-/// @param kvoObserver kvoObserver
-/// @param element_observered element_observered
-/// @param keyPath keyPath
-/// @param context context
-+ (nullable JKKVOArrayItem *)isContainArrayItemWith_kvoObserver:(JKKVOObserver *)kvoObserver                                            element_observered:(__kindof NSObject *)element_observered
-                                                        keyPath:(NSString *)keyPath
-                                                        context:(nullable void *)context;
-
++ (nullable __kindof JKBaseKVOItem *)isContainItemWith_kvoObserver:(JKKVOObserver *)kvoObserver
+                                                        observered:(__kindof NSObject *)observered
+                                                           keyPath:(NSString *)keyPath
+                                                           context:(nullable void *)context;
 /// 获取item列表
 /// @param observer 观察者
 /// @param observered 被观察者
 /// @param keyPath keyPath
-+ (NSArray <__kindof JKKVOItem *>*)itemsWithObserver:(__kindof NSObject *)observer
-                                          observered:(__kindof NSObject *)observered
-                                             keyPath:(nullable NSString *)keyPath;
++ (NSArray <__kindof JKBaseKVOItem *>*)itemsWithObserver:(__kindof NSObject *)observer
+                                              observered:(__kindof NSObject *)observered
+                                                 keyPath:(nullable NSString *)keyPath;
 
 /// 获取item列表
 /// @param observered 被观察者
-+ (NSArray <__kindof JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered;
++ (NSArray <__kindof JKBaseKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered;
 
 /// 获取item列表
 /// @param observered 被观察者
 /// @param keyPath keyPath
-+ (NSArray <__kindof JKKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
-                                             keyPath:(nullable NSString *)keyPath;
++ (NSArray <__kindof JKBaseKVOItem *>*)itemsOfObservered:(__kindof NSObject *)observered
+                                                 keyPath:(nullable NSString *)keyPath;
 /// 获取item列表
 /// @param observer 观察者
 /// @param observered 被观察者
-+ (NSArray <__kindof JKKVOItem *>*)itemsOfObserver:(__kindof NSObject *)observer
-                                        observered:(__kindof NSObject *)observered;
++ (NSArray <__kindof JKBaseKVOItem *>*)itemsOfObserver:(__kindof NSObject *)observer
+                                            observered:(__kindof NSObject *)observered;
 
 /// 获取item列表
 /// @param kvoObserver 真正的观察者
 /// @param observered 被观察者
-+ (NSArray <__kindof JKKVOItem *>*)itemsOf_kvoObserver:(__kindof NSObject *)kvoObserver
-                                            observered:(__kindof NSObject *)observered;
++ (NSArray <__kindof JKBaseKVOItem *>*)itemsOf_kvoObserver:(__kindof NSObject *)kvoObserver
+                                                observered:(__kindof NSObject *)observered;
 
 /// 获取JKKVOArrayItem列表
 /// @param observered_property 被观察者对应的属性对象
@@ -132,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 获取item.observered 为nil的item列表
 /// @param observered 被观察者
-+ (NSArray <JKKVOItem *>*)dealloc_itemsOfObservered:(__kindof NSObject *)observered;
++ (NSArray <__kindof JKBaseKVOItem *>*)dealloc_itemsOfObservered:(__kindof NSObject *)observered;
 
 /**
  实例方法替换

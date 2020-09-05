@@ -10,7 +10,9 @@
 #import "JKKVOItem.h"
 
 @interface JKKVOArrayItem(Private)
+
 @property (nonatomic, weak, nullable, readwrite) __kindof NSObject *observered_property;
+
 @end
 
 @implementation JKKVOArrayItem(Private)
@@ -55,18 +57,11 @@
                               context:(void *)context
 {
     if ([object isKindOfClass:[NSObject class]]) {
-        JKKVOItem *item = nil;
-        if (self.observerCount > 1) {
-            item = [JKKVOItemManager isContainArrayItemWith_kvoObserver:self element_observered:object keyPath:keyPath context:context];
-        } else {
-            item = [JKKVOItemManager isContainItemWith_kvoObserver:self observered:object keyPath:keyPath context:context];
-        }
-        
+        JKBaseKVOItem *item = [JKKVOItemManager isContainItemWith_kvoObserver:self observered:object keyPath:keyPath context:context];
         if (!item
             || !item.valid) {
             return;
         }
-        
         if ([item isKindOfClass:[JKKVOArrayItem class]]) {
             JKKVOArrayItem *arrayItem = (JKKVOArrayItem *)item;
             NSObject *observeredObject = (NSObject *)object;
@@ -98,8 +93,15 @@
                 }
             }
             
-        } else {
-            void(^block)(NSString *keyPath, NSDictionary *change, void *context) = item.block;
+        } else if ([item isKindOfClass:[JKKVOComputedItem class]]) {
+            JKKVOComputedItem *computedItem = (JKKVOComputedItem *)item;
+            void(^block)(NSString *keyPath, NSDictionary *change, void *context) = computedItem.block;
+            if (block) {
+                block(keyPath,change,context);
+            }
+        } else if ([item isKindOfClass:[JKKVOItem class]]) {
+            JKKVOItem *kvoItem = (JKKVOItem *)item;
+            void(^block)(NSString *keyPath, NSDictionary *change, void *context) = kvoItem.block;
             if (block) {
                 block(keyPath,change,context);
             }
