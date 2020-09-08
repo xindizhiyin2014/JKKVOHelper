@@ -439,31 +439,53 @@ static void *jk_computed_getter(NSObject* self, SEL _cmd)
                 void *oldValue = computed_item.value;
                 void *newValue = ((void* (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
                 if (oldValue != newValue) {
-                    computed_item.value = newValue;
                     computed_item.dirty = NO;
                     NSString *setterName = [self jk_setterForGetter:getterName];
-                    jk_property_setter(self, NSSelectorFromString(setterName), newValue);
+                    void(^block)(void) = ^(void) {
+                        computed_item.value = newValue;
+                    };
+                    jk_computedProperty_setter(self, NSSelectorFromString(setterName), newValue,block);
                 }
             }
             return computed_item.value;
         } else {
-            return jk_non_objc_getter(self, _cmd,computed_item, superClazz,getterName);
+            return jk_non_objc_getter(self, _cmd, computed_item, superClazz, getterName);
         }
     }
 }
 
 static void * jk_non_objc_getter(NSObject *self, SEL _cmd, JKKVOComputedItem *computed_item, struct objc_super superClazz, NSString *getterName)
 {
+//    if (strstr(computed_item.valueType, "{CGRect=")) {//CGRect
+//        if (computed_item.dirty) {
+//            NSValue *oldValue = computed_item.non_obj_value;
+//            CGRect rect = ((CGRect (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
+//            NSValue *newValue = [NSValue valueWithCGRect:rect];
+//            if (![oldValue isEqualToValue:newValue]) {
+//                computed_item.dirty = NO;
+//                NSString *setterName = [self jk_setterForGetter:getterName];
+//                void(^block)(void) = ^(void) {
+//                     computed_item.non_obj_value = newValue;
+//                 };
+//                jk_computedProperty_setter(self, NSSelectorFromString(setterName), &rect, block);
+//            }
+//        }
+//        CGRect rect = [computed_item.non_obj_value CGRectValue];
+//        void *value = &rect;
+//        return value;
+//    }
     if (strstr(computed_item.valueType, "{CGSize=")) {//CGSize
         if (computed_item.dirty) {
             NSValue *oldValue = computed_item.non_obj_value;
             CGSize size = ((CGSize (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
             NSValue *newValue = [NSValue valueWithCGSize:size];
             if (![oldValue isEqualToValue:newValue]) {
-                computed_item.non_obj_value = newValue;
                 computed_item.dirty = NO;
                 NSString *setterName = [self jk_setterForGetter:getterName];
-                jk_property_setter(self, NSSelectorFromString(setterName), &size);
+                void(^block)(void) = ^(void) {
+                    computed_item.non_obj_value = newValue;
+                };
+                jk_computedProperty_setter(self, NSSelectorFromString(setterName), &size, block);
             }
         }
         CGSize size = [computed_item.non_obj_value CGSizeValue];
@@ -476,339 +498,155 @@ static void * jk_non_objc_getter(NSObject *self, SEL _cmd, JKKVOComputedItem *co
             CGPoint point = ((CGPoint (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
             NSValue *newValue = [NSValue valueWithCGPoint:point];
             if (![oldValue isEqualToValue:newValue]) {
-                computed_item.non_obj_value = newValue;
                 computed_item.dirty = NO;
                 NSString *setterName = [self jk_setterForGetter:getterName];
-                jk_property_setter(self, NSSelectorFromString(setterName), &point);
+                void(^block)(void) = ^(void) {
+                     computed_item.non_obj_value = newValue;
+                 };
+                jk_computedProperty_setter(self, NSSelectorFromString(setterName), &point, block);
             }
         }
         CGPoint point = [computed_item.non_obj_value CGPointValue];
         void *value = &point;
         return value;
     }
-    if (strstr(computed_item.valueType, "{CGRect=")) {//CGRect
-        if (computed_item.dirty) {
-            NSValue *oldValue = computed_item.non_obj_value;
-            CGRect rect = ((CGRect (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-            NSValue *newValue = [NSValue valueWithCGRect:rect];
-            if (![oldValue isEqualToValue:newValue]) {
-                computed_item.non_obj_value = newValue;
-                computed_item.dirty = NO;
-                NSString *setterName = [self jk_setterForGetter:getterName];
-                jk_property_setter(self, NSSelectorFromString(setterName), &rect);
-            }
-        }
-        CGRect rect = [computed_item.non_obj_value CGRectValue];
-        void *value = &rect;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "{UIEdgeInsets=")) {//UIEdgeInsets
-        if (computed_item.dirty) {
-            NSValue *oldValue = computed_item.non_obj_value;
-            UIEdgeInsets edgeInsets = ((UIEdgeInsets (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-            NSValue *newValue = [NSValue valueWithUIEdgeInsets:edgeInsets];
-            if (![oldValue isEqualToValue:newValue]) {
-                computed_item.non_obj_value = newValue;
-                computed_item.dirty = NO;
-                NSString *setterName = [self jk_setterForGetter:getterName];
-                jk_property_setter(self, NSSelectorFromString(setterName), &edgeInsets);
-            }
-        }
-        UIEdgeInsets edgeInsets = [computed_item.non_obj_value UIEdgeInsetsValue];
-        void *value = &edgeInsets;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "{CGAffineTransform=")) {//CGAffineTransform
-        if (computed_item.dirty) {
-            NSValue *oldValue = computed_item.non_obj_value;
-            CGAffineTransform transform = ((CGAffineTransform (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-            NSValue *newValue = [NSValue valueWithCGAffineTransform:transform];
-            if (![oldValue isEqualToValue:newValue]) {
-                computed_item.non_obj_value = newValue;
-                computed_item.dirty = NO;
-                NSString *setterName = [self jk_setterForGetter:getterName];
-                jk_property_setter(self, NSSelectorFromString(setterName), &transform);
-            }
-        }
-        CGAffineTransform transform = [computed_item.non_obj_value CGAffineTransformValue];
-        void *value = &transform;
-        return value;
-    }
+//    if (strstr(computed_item.valueType, "{UIEdgeInsets=")) {//UIEdgeInsets
+//        if (computed_item.dirty) {
+//            NSValue *oldValue = computed_item.non_obj_value;
+//            UIEdgeInsets edgeInsets = ((UIEdgeInsets (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
+//            NSValue *newValue = [NSValue valueWithUIEdgeInsets:edgeInsets];
+//            if (![oldValue isEqualToValue:newValue]) {
+//                computed_item.dirty = NO;
+//                NSString *setterName = [self jk_setterForGetter:getterName];
+//                void(^block)(void) = ^(void) {
+//                    computed_item.non_obj_value = newValue;
+//                };
+//                jk_computedProperty_setter(self, NSSelectorFromString(setterName), &edgeInsets, block);
+//            }
+//        }
+//        UIEdgeInsets edgeInsets = [computed_item.non_obj_value UIEdgeInsetsValue];
+//        void *value = &edgeInsets;
+//        return value;
+//    }
+//    if (strstr(computed_item.valueType, "{CGAffineTransform=")) {//CGAffineTransform
+//        if (computed_item.dirty) {
+//            NSValue *oldValue = computed_item.non_obj_value;
+//            CGAffineTransform transform = ((CGAffineTransform (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
+//            NSValue *newValue = [NSValue valueWithCGAffineTransform:transform];
+//            if (![oldValue isEqualToValue:newValue]) {
+//                computed_item.dirty = NO;
+//                NSString *setterName = [self jk_setterForGetter:getterName];
+//                void(^block)(void) = ^(void) {
+//                     computed_item.non_obj_value = newValue;
+//                 };
+//                jk_computedProperty_setter(self, NSSelectorFromString(setterName), &transform, block);
+//            }
+//        }
+//        CGAffineTransform transform = [computed_item.non_obj_value CGAffineTransformValue];
+//        void *value = &transform;
+//        return value;
+//    }
     if (strstr(computed_item.valueType, "{UIOffset=")) {//CGSize
         if (computed_item.dirty) {
             NSValue *oldValue = computed_item.non_obj_value;
             UIOffset offset = ((UIOffset (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
             NSValue *newValue = [NSValue valueWithUIOffset:offset];
             if (![oldValue isEqualToValue:newValue]) {
-                computed_item.non_obj_value = newValue;
                 computed_item.dirty = NO;
                 NSString *setterName = [self jk_setterForGetter:getterName];
-                jk_property_setter(self, NSSelectorFromString(setterName), &offset);
+                void(^block)(void) = ^(void) {
+                     computed_item.non_obj_value = newValue;
+                 };
+                jk_computedProperty_setter(self, NSSelectorFromString(setterName), &offset, block);
             }
         }
         UIOffset offset = [computed_item.non_obj_value UIOffsetValue];
         void *value = &offset;
         return value;
     }
-    if (strstr(computed_item.valueType, "c")) {//A char
+    if (strstr(computed_item.valueType, "c")       //A char
+        || strstr(computed_item.valueType, "i")    //An int
+        || strstr(computed_item.valueType, "s")    //A short
+        || strstr(computed_item.valueType, "l")    //A long is treated as a 32-bit quantity on 64-bit programs.
+        || strstr(computed_item.valueType, "q")    //A long long
+        || strstr(computed_item.valueType, "C")    //An unsigned char
+        || strstr(computed_item.valueType, "I")    //An unsigned int
+        || strstr(computed_item.valueType, "S")    //An unsigned short
+        || strstr(computed_item.valueType, "L")    //An unsigned long
+        || strstr(computed_item.valueType, "Q")    //An unsigned long long
+        || strstr(computed_item.valueType, "B")    //A C++ bool or a C99 _Bool
+        || strstr(computed_item.valueType, "*")    //A character string (char *)
+        || strstr(computed_item.valueType, "#")    //A class object (Class)
+        ) {
         if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             char charValue = ((char (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithChar:charValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
+             void *oldValue = computed_item.value;
+             void *newValue = ((void * (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
+             if (oldValue != newValue) {
                  computed_item.dirty = NO;
                  NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &charValue);
+                 void(^block)(void) = ^(void) {
+                      computed_item.value = newValue;
+                  };
+                 jk_computedProperty_setter(self, NSSelectorFromString(setterName), newValue, block);
              }
          }
-         char charValue = [(NSNumber *)computed_item.non_obj_value charValue];
-         void *value = &charValue;
-         return value;
+        return computed_item.value;
     }
-    if (strstr(computed_item.valueType, "i")) {//An int
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             int intValue = ((int (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithInt:intValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &intValue);
-             }
-         }
-         int intValue = [(NSNumber *)computed_item.non_obj_value intValue];
-         void *value = &intValue;
-         return value;
-    }
-    if (strstr(computed_item.valueType, "s")) {//A short
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             short shortValue = ((short (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithShort:shortValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &shortValue);
-             }
-         }
-         short shortValue = [(NSNumber *)computed_item.non_obj_value shortValue];
-         void *value = &shortValue;
-         return value;
-    }
-    if (strstr(computed_item.valueType, "l")) {//A longl is treated as a 32-bit quantity on 64-bit programs.
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             long longValue = ((long (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithLong:longValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &longValue);
-             }
-         }
-        long longValue = [(NSNumber *)computed_item.non_obj_value longValue];
-        void *value = &longValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "q")) {//A long long
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             long long longLongValue = ((long long (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithLongLong:longLongValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &longLongValue);
-             }
-         }
-        long long longLongValue = [(NSNumber *)computed_item.non_obj_value longLongValue];
-        void *value = &longLongValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "C")) {//An unsigned char
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             unsigned char unsignedCharValue = ((unsigned char (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithUnsignedChar:unsignedCharValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &unsignedCharValue);
-             }
-         }
-        unsigned char unsignedCharValue = [(NSNumber *)computed_item.non_obj_value unsignedCharValue];
-        void *value = &unsignedCharValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "I")) {//An unsigned int
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             unsigned int unsignedIntValue = ((unsigned int (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithUnsignedInt:unsignedIntValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &unsignedIntValue);
-             }
-         }
-        unsigned int unsignedIntValue = [(NSNumber *)computed_item.non_obj_value unsignedIntValue];
-        void *value = &unsignedIntValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "S")) {//An unsigned short
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             unsigned short unsignedShortValue = ((unsigned short (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithUnsignedShort:unsignedShortValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &unsignedShortValue);
-             }
-         }
-        unsigned short unsignedShortValue = [(NSNumber *)computed_item.non_obj_value unsignedShortValue];
-        void *value = &unsignedShortValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "L")) {//An unsigned long
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             unsigned long unsignedLongValue = ((unsigned long (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithUnsignedLong:unsignedLongValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &unsignedLongValue);
-             }
-         }
-        unsigned long unsignedLongValue = [(NSNumber *)computed_item.non_obj_value unsignedLongValue];
-        void *value = &unsignedLongValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "Q")) {//An unsigned long long
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             unsigned long long unsignedLongLongValue = ((unsigned long long (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &unsignedLongLongValue);
-             }
-         }
-        unsigned long long unsignedLongLongValue = [(NSNumber *)computed_item.non_obj_value unsignedLongLongValue];
-        void *value = &unsignedLongLongValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "f")) {//A float
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             float floatValue = ((float (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithFloat:floatValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &floatValue);
-             }
-         }
-        float floatValue = [(NSNumber *)computed_item.non_obj_value floatValue];
-        void *value = &floatValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "d")) {//A double
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             double doubleValue = ((double (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithDouble:doubleValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &doubleValue);
-             }
-         }
-        double doubleValue = [(NSNumber *)computed_item.non_obj_value doubleValue];
-        void *value = &doubleValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "B")) {//A C++ bool or a C99 _Bool
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             BOOL boolValue = ((BOOL (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-             NSNumber *newValue = [NSNumber numberWithBool:boolValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &boolValue);
-             }
-         }
-        BOOL boolValue = [(NSNumber *)computed_item.non_obj_value boolValue];
-        void *value = &boolValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "*")) {//A character string (char *)
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             char* charPointValue = ((char* (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-            NSNumber *newValue = [NSNumber numberWithChar:*charPointValue];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &charPointValue);
-             }
-         }
-        char charValue = [(NSNumber *)computed_item.non_obj_value charValue];
-        char *charPointValue = &charValue;
-        void *value = &charPointValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, "#")) {//A class object (Class)
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             Class classValue = ((Class (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-            NSValue *newValue = [NSValue value:&classValue withObjCType:computed_item.valueType];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &classValue);
-             }
-         }
-        Class classValue;
-        [computed_item.non_obj_value getValue:&classValue];
-        void *value = &classValue;
-        return value;
-    }
-    if (strstr(computed_item.valueType, ":")) {//A method selector (SEL)
-        if (computed_item.dirty) {
-             NSValue *oldValue = computed_item.non_obj_value;
-             SEL selValue = ((SEL (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
-            NSValue *newValue = [NSValue value:&selValue withObjCType:computed_item.valueType];
-             if (![oldValue isEqualToValue:newValue]) {
-                 computed_item.non_obj_value = newValue;
-                 computed_item.dirty = NO;
-                 NSString *setterName = [self jk_setterForGetter:getterName];
-                 jk_property_setter(self, NSSelectorFromString(setterName), &selValue);
-             }
-         }
-        SEL selValue;
-        [computed_item.non_obj_value getValue:&selValue];
-        void *value = &selValue;
-        return value;
-    }
+//    if (strstr(computed_item.valueType, "f")) {//A float
+//        if (computed_item.dirty) {
+//             NSValue *oldValue = computed_item.non_obj_value;
+//             float floatValue = ((float (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
+//             NSNumber *newValue = [NSNumber numberWithFloat:floatValue];
+//             if (![oldValue isEqualToValue:newValue]) {
+//                 computed_item.dirty = NO;
+//                 NSString *setterName = [self jk_setterForGetter:getterName];
+//                 void(^block)(void) = ^(void) {
+//                      computed_item.non_obj_value = newValue;
+//                  };
+//                 jk_computedProperty_setter(self, NSSelectorFromString(setterName), &floatValue, block);
+//             }
+//         }
+//        float floatValue = [(NSNumber *)computed_item.non_obj_value floatValue];
+//        void *value = &floatValue;
+//        return value;
+//    }
+//    if (strstr(computed_item.valueType, "d")) {//A double
+//        if (computed_item.dirty) {
+//             NSValue *oldValue = computed_item.non_obj_value;
+//             double doubleValue = ((double (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
+//             NSNumber *newValue = [NSNumber numberWithDouble:doubleValue];
+//             if (![oldValue isEqualToValue:newValue]) {
+//                 computed_item.dirty = NO;
+//                 NSString *setterName = [self jk_setterForGetter:getterName];
+//                 void(^block)(void) = ^(void) {
+//                      computed_item.non_obj_value = newValue;
+//                  };
+//                 jk_computedProperty_setter(self, NSSelectorFromString(setterName), &doubleValue, block);
+//             }
+//         }
+//        double doubleValue = [(NSNumber *)computed_item.non_obj_value doubleValue];
+//        void *value = &doubleValue;
+//        return value;
+//    }
+//    if (strstr(computed_item.valueType, ":")) {//A method selector (SEL)
+//        if (computed_item.dirty) {
+//             NSValue *oldValue = computed_item.non_obj_value;
+//             SEL selValue = ((SEL (*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
+//            NSValue *newValue = [NSValue value:&selValue withObjCType:computed_item.valueType];
+//             if (![oldValue isEqualToValue:newValue]) {
+//                 computed_item.dirty = NO;
+//                 NSString *setterName = [self jk_setterForGetter:getterName];
+//                 void(^block)(void) = ^(void) {
+//                      computed_item.non_obj_value = newValue;
+//                  };
+//                 jk_computedProperty_setter(self, NSSelectorFromString(setterName), &selValue, block);
+//             }
+//         }
+//        SEL selValue;
+//        [computed_item.non_obj_value getValue:&selValue];
+//        void *value = &selValue;
+//        return value;
+//    }
     return ((void *(*)(void *, SEL))objc_msgSendSuper)(&superClazz, _cmd);
 }
 
@@ -840,7 +678,7 @@ static void jk_dependentProperty_setter(id self, SEL _cmd, void *newValue)
     }
 }
 
-static void jk_property_setter(id self, SEL _cmd, void *newValue)
+static void jk_computedProperty_setter(id self, SEL _cmd, void *newValue, void(^block)(void))
 {
     struct objc_super superClazz = {
         .receiver = self,
@@ -858,9 +696,15 @@ static void jk_property_setter(id self, SEL _cmd, void *newValue)
     if (hasExternalObserver) {
         [self willChangeValueForKey:getterName];
         ((void (*)(void *, SEL, typeof(newValue)))objc_msgSendSuper)(&superClazz, _cmd, newValue);
+        if (block) {
+            block();
+        }
         [self didChangeValueForKey:getterName];
     } else {
         ((void (*)(void *, SEL, typeof(newValue)))objc_msgSendSuper)(&superClazz, _cmd, newValue);
+        if (block) {
+            block();
+        }
     }
 }
 

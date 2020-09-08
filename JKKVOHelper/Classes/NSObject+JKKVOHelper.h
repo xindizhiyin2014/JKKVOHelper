@@ -190,6 +190,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray <NSString *>*)jk_keyPathsObserveredBy:(__kindof NSObject *)observer;
 
 /// 计算属性的配置 key:计算属性的属性名字  value:计算属性变化依赖的基础属性的属性名字
+/// 支持的类型：CGSize,CGPoint,UIOffset,char,int,short,long,long long,unsigned char,unsigned int,unsigned short,unsigned long,unsigned long long,BOOL,Class
+/// 不支持的类型：UCGRect,IEdgeInsets,CGAffineTransform,float,double,char*,SEL 可以通过NSValue封装的形式实现
 - (NSDictionary <NSString *,NSArray *>*)jk_computedProperty_config;
 
 /// 初始化计算属性配置信息
