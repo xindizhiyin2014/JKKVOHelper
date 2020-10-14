@@ -11,7 +11,6 @@
 #import "JKKVOItemManager.h"
 
 @implementation JKPersonModel
-@synthesize size = _size;
 - (NSDictionary<NSString *,NSArray *> *)jk_computedProperty_config
 {
     return @{@"fullName":@[@"firstName",@"lastName"],
@@ -206,16 +205,7 @@
    return NSSelectorFromString(@"testC");
 }
 
-- (void)setSize:(CGSize)size
-{
-//    _size = size;
-}
 
-- (void)setDoubleA:(double)doubleA
-{
-    _doubleA = doubleA;
-    NSLog(@"AAA");
-}
 
 
 

@@ -1264,6 +1264,20 @@ describe(@"JKKVOHelper", ^{
 //        });
     });
     
+    context(@"cycle invoke assert", ^{
+        it(@"JKKVOItem", ^{
+            
+            [[theBlock(^{
+                JKPersonModel *person = [JKPersonModel new];
+                [person jk_addObserverForKeyPath:@"age" options:NSKeyValueObservingOptionNew context:nil withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+                    person.age++;
+                }];
+                person.age = 1;
+            }) should] raiseWithReason:@"you have cycle invoke!"];
+            
+        });
+    });
+    
 });
 
 
