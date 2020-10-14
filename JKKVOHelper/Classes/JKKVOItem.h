@@ -26,6 +26,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, nullable, readonly) void *context;
 /// 是否有效
 @property (nonatomic, assign, readonly) BOOL valid;
+#if DEBUG
+/// 正在处理的引起变化的回调的数量，每次回调开始自动加1，回调结束自动减1
+@property (nonatomic, assign) NSUInteger handlingCount;
+#endif
 
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

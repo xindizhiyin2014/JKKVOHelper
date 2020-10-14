@@ -136,6 +136,9 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)jk_exchangeInstanceMethod:(Class)targetClass
                       originalSel:(SEL)originalSel
                       swizzledSel:(SEL)swizzledSel;
+/// 判断是否出现了循环调用
++ (void)jk_judgeCycleInvokeWithItem:(__kindof JKBaseKVOItem *)item
+                              block:(void(^)(void))block;
 @end
 
 NS_ASSUME_NONNULL_END

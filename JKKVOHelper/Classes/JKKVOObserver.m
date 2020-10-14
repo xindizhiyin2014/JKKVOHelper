@@ -72,7 +72,10 @@
                 }
                 void(^detailBlock)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context) = arrayItem.detailBlock;
                 if (detailBlock) {
-                    detailBlock(keyPath,change,nil,context);
+                    [JKKVOItemManager jk_judgeCycleInvokeWithItem:arrayItem block:^{
+                        detailBlock(keyPath,change,nil,context);
+                    }];
+                    
                 }
             } else { // 数组元素对应的属性的变化
                void(^detailBlock)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context) = arrayItem.detailBlock;
@@ -89,7 +92,10 @@
                     if ((arrayItem.options & NSKeyValueObservingOptionNew) == NSKeyValueObservingOptionNew) {
                         dic[NSKeyValueChangeNewKey] = arrayItem.observered_property;
                     }
-                    detailBlock(arrayItem.keyPath,dic,changedModel,arrayItem.context);
+                    [JKKVOItemManager jk_judgeCycleInvokeWithItem:arrayItem block:^{
+                        detailBlock(arrayItem.keyPath,dic,changedModel,arrayItem.context);
+                    }];
+                    
                 }
             }
             
@@ -97,13 +103,18 @@
             JKKVOComputedItem *computedItem = (JKKVOComputedItem *)item;
             void(^block)(NSString *keyPath, NSDictionary *change, void *context) = computedItem.block;
             if (block) {
-                block(keyPath,change,context);
+                [JKKVOItemManager jk_judgeCycleInvokeWithItem:computedItem block:^{
+                    block(keyPath,change,context);
+                }];
+                
             }
         } else if ([item isKindOfClass:[JKKVOItem class]]) {
             JKKVOItem *kvoItem = (JKKVOItem *)item;
             void(^block)(NSString *keyPath, NSDictionary *change, void *context) = kvoItem.block;
             if (block) {
-                block(keyPath,change,context);
+                [JKKVOItemManager jk_judgeCycleInvokeWithItem:kvoItem block:^{
+                    block(keyPath,change,context);
+                }];
             }
         }
         

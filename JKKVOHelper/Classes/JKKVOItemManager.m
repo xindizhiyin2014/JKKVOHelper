@@ -622,4 +622,22 @@ static const void *jk_kvo_computedItems_key = "jk_kvo_computedItems_key";
         method_exchangeImplementations(originalMethod, swizzledMethod);
     }
 }
+
++ (void)jk_judgeCycleInvokeWithItem:(__kindof JKBaseKVOItem *)item
+                              block:(void(^)(void))block
+{
+#if DEBUG
+    item.handlingCount++;
+    if (item.handlingCount > 30) {
+        NSLog(@"you have cycle invoke! observered:%p,class:%@,keyPath:%@",item.observered,NSStringFromClass([item.observered class]),item.keyPath);
+        NSAssert(NO, @"you have cycle invoke!");
+    }
+#endif
+    if (block) {
+        block();
+    }
+#if DEBUG
+    item.handlingCount--;
+#endif
+}
 @end

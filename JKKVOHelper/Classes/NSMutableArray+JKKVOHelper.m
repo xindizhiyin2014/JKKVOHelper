@@ -322,7 +322,10 @@
         if ((item.options & NSKeyValueObservingOptionNew) == NSKeyValueObservingOptionNew) {
             dic[NSKeyValueChangeNewKey] = self;
         }
-        item.detailBlock(item.keyPath, dic, changedModel, item.context);
+        [JKKVOItemManager jk_judgeCycleInvokeWithItem:item block:^{
+            item.detailBlock(item.keyPath, dic, changedModel, item.context);
+        }];
+        
     }
 
 }
