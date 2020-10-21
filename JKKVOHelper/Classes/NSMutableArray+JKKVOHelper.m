@@ -155,7 +155,7 @@
 - (void)kvo_addObjectsFromArray:(NSArray<id> *)otherArray
 {
 #if DEBUG
-    NSAssert(otherArray.count > 0, @"make sure otherArray.count > 0 be YES");
+    NSAssert(otherArray, @"otherArray can't be nil");
 #endif
     if (otherArray.count > 0) {
         NSArray <JKKVOArrayItem *>*items = [JKKVOItemManager arrayItemsOfObservered_property:self];
