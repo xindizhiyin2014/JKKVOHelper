@@ -97,6 +97,10 @@ static NSString *const JKComputedPrefix = @"JKComputed_";
         [JKKVOItemManager addItem:item];
         [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
         [JKKVOItemManager unLock];
+    } else {
+#if DEBUG
+        NSAssert(NO, @"add duplicate observer,please check");
+#endif
     }
 }
 
@@ -121,6 +125,10 @@ static NSString *const JKComputedPrefix = @"JKComputed_";
             [JKKVOItemManager addItem:item];
             [self addObserver:kvoObserver forKeyPath:keyPath options:options context:context];
             [JKKVOItemManager unLock];
+        } else {
+#if DEBUG
+           NSAssert(NO, @"add duplicate observer,please check");
+#endif
         }
     }
 }
@@ -197,7 +205,11 @@ static NSString *const JKComputedPrefix = @"JKComputed_";
            [item addObserverOfElement:element];
         }
        [JKKVOItemManager unLock];
-   }
+   }  else {
+#if DEBUG
+      NSAssert(NO, @"add duplicate observer,please check");
+#endif
+    }
 }
 
 - (void)jk_removeObserver:(__kindof NSObject *)observer
