@@ -79,6 +79,9 @@ static NSString *const JKComputedPrefix = @"JKComputed_";
              withBlock:(void(^)(NSDictionary *change, void *context))block
 {
     if (!observer || !keyPath || keyPath.length == 0 || !block) {
+#if DEBUG
+        NSAssert(NO, @"params error,please check");
+#endif
         return;
     }
     if (![JKKVOItemManager isContainItemWithObserver:observer
@@ -111,6 +114,9 @@ static NSString *const JKComputedPrefix = @"JKComputed_";
        withDetailBlock:(void(^)(NSString *keyPath, NSDictionary *change, void *context))detailBlock
 {
     if (!observer || !keyPaths || keyPaths.count == 0 || !detailBlock) {
+#if DEBUG
+        NSAssert(NO, @"params error,please check");
+#endif
         return;
     }
     for (NSString *keyPath in keyPaths) {
@@ -181,6 +187,9 @@ static NSString *const JKComputedPrefix = @"JKComputed_";
                     withBlock:(void (^)(NSString *keyPath, NSDictionary *change,JKKVOArrayChangeModel *changedModel, void *context))block
 {
     if (!observer || !keyPath || keyPath.length == 0 || !block) {
+#if DEBUG
+        NSAssert(NO, @"params error,please check");
+#endif
         return;
     }
     if (![JKKVOItemManager isContainArrayItemWithObserver:observer
