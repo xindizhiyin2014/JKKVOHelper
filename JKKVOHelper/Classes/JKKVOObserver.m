@@ -73,7 +73,9 @@
                 void(^detailBlock)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context) = arrayItem.detailBlock;
                 if (detailBlock) {
                     [JKKVOItemManager jk_judgeCycleInvokeWithItem:arrayItem block:^{
-                        detailBlock(keyPath,change,nil,context);
+                        JKKVOArrayChangeModel *changedModel = [JKKVOArrayChangeModel new];
+                        changedModel.changeType = JKKVOArrayChangeTypePoint;
+                        detailBlock(keyPath,change,changedModel,context);
                     }];
                     
                 }

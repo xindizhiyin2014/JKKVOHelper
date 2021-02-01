@@ -122,15 +122,13 @@ describe(@"JKKVOHelper", ^{
                     invoked1 = YES;
                 }];
 
-                [worker jk_addObserver:person forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
-                    [[[change objectForKey:@"new"] should] equal:@"zhangsan"];
-                    invoked2 = YES;
-                }];
-                worker.name = @"zhangsan";
-                [[theValue(invoked1) shouldEventually] beYes];
-                [[theValue(invoked2) shouldEventually] beNo];
-                NSArray *array = [JKKVOItemManager itemsOfObservered:worker];
-                [[array should] haveCountOf:1];
+                [[theBlock(^{
+                                                    [worker jk_addObserver:person forKeyPath:@"name" options:NSKeyValueObservingOptionNew withBlock:^(NSDictionary * _Nonnull change, void * _Nonnull context) {
+                                                        [[[change objectForKey:@"new"] should] equal:@"zhangsan"];
+                                                        invoked2 = YES;
+                                                    }];
+                }) should] raiseWithReason:@"add duplicate observer,please check"];
+               
             });
 
             it(@"has context", ^{

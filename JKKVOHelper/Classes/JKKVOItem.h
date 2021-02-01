@@ -67,6 +67,8 @@ typedef NS_ENUM(NSInteger,JKKVOArrayChangeType) {
     JKKVOArrayChangeTypeReplace,
     /// 元素内容改变，指针不变
     JKKVOArrayChangeTypeElement,
+    /// 数组指针发生改变
+    JKKVOArrayChangeTypePoint,
 };
 
 @interface JKKVOArrayElement : NSObject
