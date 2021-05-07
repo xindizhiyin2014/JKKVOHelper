@@ -106,6 +106,9 @@ typedef NS_ENUM(NSInteger,JKKVOArrayChangeType) {
 /// 回调
 @property (nonatomic, copy, readonly) void(^detailBlock)(NSString *keyPath, NSDictionary *change, JKKVOArrayChangeModel *changedModel, void *context);
 
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
+
 + (instancetype)initWith_kvoObserver:(nonnull JKKVOObserver *)kvoObserver
                           observered:(nonnull __kindof NSObject *)observered
                              keyPath:(nonnull NSString *)keyPath
@@ -142,6 +145,9 @@ typedef NS_ENUM(NSInteger,JKKVOArrayChangeType) {
 @property (nonatomic, strong, readonly) NSArray <NSString *>*dependentProperties;
 /// 回调
 @property (nonatomic, copy, readonly) void(^block)(NSString *keyPath, NSDictionary *change, void *context);
+
++ (instancetype)new NS_UNAVAILABLE;
+- (instancetype)init NS_UNAVAILABLE;
 
 + (instancetype)initWith_kvoObserver:(nonnull JKKVOObserver *)kvoObserver
                           observered:(nonnull __kindof NSObject *)observered
