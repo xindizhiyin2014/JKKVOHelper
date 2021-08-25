@@ -34,6 +34,8 @@
 		BD691AFC2460151900BAD240 /* JKTeacher.m in Sources */ = {isa = PBXBuildFile; fileRef = BD07E6EB231CE64D0085656E /* JKTeacher.m */; };
 		BD691AFD2460151900BAD240 /* JKWorker.m in Sources */ = {isa = PBXBuildFile; fileRef = BD691AF52460146B00BAD240 /* JKWorker.m */; };
 		BD691AFE2460151900BAD240 /* JKFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = BD5C617B236D154900E2112A /* JKFactory.m */; };
+		BDE7D29326D61CEF0057FB8F /* ObjectKVOSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = BDE7D29226D61CEE0057FB8F /* ObjectKVOSpec.m */; };
+		BDE7D29526D621630057FB8F /* ArrayKVOSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = BDE7D29426D621630057FB8F /* ArrayKVOSpec.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +87,8 @@
 		BD5C617B236D154900E2112A /* JKFactory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JKFactory.m; sourceTree = "<group>"; };
 		BD691AF42460146B00BAD240 /* JKWorker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKWorker.h; sourceTree = "<group>"; };
 		BD691AF52460146B00BAD240 /* JKWorker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKWorker.m; sourceTree = "<group>"; };
+		BDE7D29226D61CEE0057FB8F /* ObjectKVOSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectKVOSpec.m; sourceTree = "<group>"; };
+		BDE7D29426D621630057FB8F /* ArrayKVOSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ArrayKVOSpec.m; sourceTree = "<group>"; };
 		D0AD695BB10D4D41769BFA81 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D2F9F6559735B21AF0053ADB /* Pods_JKKVOHelper_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JKKVOHelper_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D98DC9E94F7FE7BB409C8048 /* JKKVOHelper.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = JKKVOHelper.podspec; path = ../JKKVOHelper.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -203,6 +207,8 @@
 			children = (
 				BD58FCAB23B6EBE7007B339A /* Tests.m */,
 				BD58FCAD23B6EBF4007B339A /* JKKVOHelperSpec.m */,
+				BDE7D29226D61CEE0057FB8F /* ObjectKVOSpec.m */,
+				BDE7D29426D621630057FB8F /* ArrayKVOSpec.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -432,6 +438,8 @@
 				BD691AFB2460151900BAD240 /* JKPersonModel.m in Sources */,
 				BD691AFC2460151900BAD240 /* JKTeacher.m in Sources */,
 				BD691AFD2460151900BAD240 /* JKWorker.m in Sources */,
+				BDE7D29526D621630057FB8F /* ArrayKVOSpec.m in Sources */,
+				BDE7D29326D61CEF0057FB8F /* ObjectKVOSpec.m in Sources */,
 				BD691AFE2460151900BAD240 /* JKFactory.m in Sources */,
 				BD58FCAE23B6EBF4007B339A /* JKKVOHelperSpec.m in Sources */,
 				BD58FCAC23B6EBE7007B339A /* Tests.m in Sources */,

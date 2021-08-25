@@ -140,8 +140,8 @@
             [self invokeChangeWithItems:items changedModel:changedModel actionBlock:^BOOL(JKKVOArrayItem * _Nullable item) {
                 [self replaceObjectAtIndex:index withObject:anObject];
                 if (item) {
-                    [item addObserverOfElement:newElement.object];
                     [item removeObserverOfElement:oldElement.object];
+                    [item addObserverOfElement:newElement.object];
                 }
                 return YES;
             }];
