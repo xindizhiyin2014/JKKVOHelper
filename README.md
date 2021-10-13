@@ -19,6 +19,16 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'JKKVOHelper'
 ```
+## 实现历程博客
+[《OC实现KVO监听block方式响应事件》](https://blog.csdn.net/hanhailong18/article/details/100176210?spm=1001.2014.3001.5501)
+
+[《iOS 通过KVO实现响应式编程（一）》](https://blog.csdn.net/hanhailong18/article/details/106009365?spm=1001.2014.3001.5501)
+
+[《iOS基于KVO实现响应式编程之完结篇》](https://blog.csdn.net/hanhailong18/article/details/107010369?spm=1001.2014.3001.5501)
+
+[《发现手动实现KVO的一个坑》](https://blog.csdn.net/hanhailong18/article/details/108426174?spm=1001.2014.3001.5501)
+
+[《JKKVOHelper实现对计算属性的监听与缓存》](https://blog.csdn.net/hanhailong18/article/details/108504000?spm=1001.2014.3001.5501)
 
 ## Author
 
