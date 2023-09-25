@@ -1,0 +1,27 @@
+PODS:
+  - JKChangeCapture (0.1.0):
+    - RxSwift (~> 5.0.0)
+  - RxSwift (5.0.1)
+  - SnapKit (5.0.1)
+
+DEPENDENCIES:
+  - JKChangeCapture (from `../../JKChangeCapture.podspec`)
+  - SnapKit (~> 5.0.0)
+
+SPEC REPOS:
+  trunk:
+    - RxSwift
+    - SnapKit
+
+EXTERNAL SOURCES:
+  JKChangeCapture:
+    :path: "../../JKChangeCapture.podspec"
+
+SPEC CHECKSUMS:
+  JKChangeCapture: a0384aa2f66c771b1d79bf2357beeb8a41bb3245
+  RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+
+PODFILE CHECKSUM: 7b1710d81e3cfae0e2d578ebc198230d07847a8f
+
+COCOAPODS: 1.11.3

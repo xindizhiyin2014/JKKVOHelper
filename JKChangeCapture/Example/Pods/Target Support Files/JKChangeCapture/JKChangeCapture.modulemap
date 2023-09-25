@@ -1,0 +1,6 @@
+framework module JKChangeCapture {
+  umbrella header "JKChangeCapture-umbrella.h"
+
+  export *
+  module * { export * }
+}

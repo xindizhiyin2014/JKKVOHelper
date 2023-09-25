@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'JKKVOHelper'
-  s.version          = '0.1.29'
-  s.summary          = 'this is a tool to help developer to easily use KVO.'
+  s.name             = 'JKChangeCapture'
+  s.version          = '0.1.0'
+  s.summary          = 'a tool to help developer to easily use RxSwift,to catch property\'s change.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-this is a tool to help developer to easily use KVO,it will update with the need
+this is a tool to help developer to easily use RxSwift,to catch property's change,it will update with the need
                        DESC
 
   s.homepage         = 'https://github.com/xindizhiyin2014/JKKVOHelper'
@@ -28,15 +28,14 @@ this is a tool to help developer to easily use KVO,it will update with the need
   s.source           = { :git => 'https://github.com/xindizhiyin2014/JKKVOHelper.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '10.0'
 
-  s.source_files = 'JKKVOHelper/JKKVOHelper/Classes/**/*'
-  
+  s.source_files = 'JKChangeCapture/JKChangeCapture/Classes/**/*'
   # s.resource_bundles = {
-  #   'JKKVOHelper' => ['JKKVOHelper/Assets/*.png']
+  #   'JKChangeCapture' => ['JKChangeCapture/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'RxSwift', '~> 5.0.0'
 end
