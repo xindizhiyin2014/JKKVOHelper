@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'JKChangeCapture'
-  s.version          = '0.1.0'
+  s.version          = '0.1.30'
   s.summary          = 'a tool to help developer to easily use RxSwift,to catch property\'s change.'
 
 # This description is used to generate tags and improve search results.
