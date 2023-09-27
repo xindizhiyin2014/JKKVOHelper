@@ -30,6 +30,11 @@ pod 'JKKVOHelper'
 
 [《JKKVOHelper实现对计算属性的监听与缓存》](https://blog.csdn.net/hanhailong18/article/details/108504000?spm=1001.2014.3001.5501)
 
+
+
+## Swift版本
+[JKChangeCaptureReadMe](https://github.com/xindizhiyin2014/JKKVOHelper/blob/master/JKChangeCapture_README.md)
+
 ## Author
 
 xindizhiyin2014, 929097264@qq.com

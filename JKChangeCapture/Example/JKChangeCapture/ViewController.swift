@@ -58,23 +58,23 @@ class ViewController:UIViewController {
 //        }.disposed(by: disposeBag)
 
         
-//        viewModel.observe(key: "age", of: Int.self) { value, oldValue in
-//            debugLog("aaa \(value)")
-//            debugLog("bbb \(oldValue)")
-//        }.disposed(by: disposeBag)
+        viewModel.observe(key: "age", of: Int.self) { value, oldValue in
+            print("aaa \(value)")
+            print("bbb \(oldValue)")
+        }.disposed(by: disposeBag)
         
-//        viewModel.observe(key: "age", of: Int.self) { subject in
-//           return subject.skip(1)
-//        } detailBlock: { value, oldValue in
-//
-//            debugLog("aaa \(value)")
-//            debugLog("bbb \(oldValue)")
-//        }.disposed(by: disposeBag)
+        viewModel.observe(key: "age", of: Int.self) { subject in
+           return subject.skip(1)
+        } detailBlock: { value, oldValue in
+
+            print("aaa \(value)")
+            print("bbb \(oldValue)")
+        }.disposed(by: disposeBag)
         
-//        viewModel.observe(keys: ["age","num"]) { message in
-//            print("aaa key: \(message?.key), value:\(message?.value), oldValue: \(message?.oldValue)")
-//        }.disposed(by: disposeBag)
-//
+        viewModel.observe(keys: ["age","num"]) { message in
+            print("aaa key: \(message?.key), value:\(message?.value), oldValue: \(message?.oldValue)")
+        }.disposed(by: disposeBag)
+
 //
 //        viewModel.observe(keys: ["age","num"]) { subject, key in
 //            return subject.skip(2)
